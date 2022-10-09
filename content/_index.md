@@ -22,7 +22,7 @@ You can reach me at:
 
 :fire: blogs
 
-- [Cats vs Dogs Classification using CNN Keras](https://viblo.asia/p/cats-vs-dogs-classification-using-cnn-keras-1Je5EAx15nL)
-- [Spark - Distributed ML model with Pandas UDFs](https://viblo.asia/p/spark-distributed-ml-model-with-pandas-udfs-maGK7rWe5j2)
-- [Serving ML Models in Production with FastAPI and Celery](https://viblo.asia/p/serving-ml-models-in-production-with-fastapi-and-celery-924lJROmlPM)
-- [Real time analytics: Airflow + Kafka + Druid + Superset](https://viblo.asia/p/real-time-analytics-airflow-kafka-druid-superset-1Je5EAYj5nL)
+- [[Vie]](https://viblo.asia/p/cats-vs-dogs-classification-using-cnn-keras-1Je5EAx15nL)/[[Eng]](/posts/cats-vs-dogs-classification-using-cnn-keras.html) - Cats vs Dogs Classification using CNN Keras
+- [[Vie]](https://viblo.asia/p/spark-distributed-ml-model-with-pandas-udfs-maGK7rWe5j2)/[[Eng]](/posts/spark-distributed-ml-model-with-pandas-udfs) - Spark Distributed ML model with Pandas UDFs
+- [[Vie]](https://viblo.asia/p/serving-ml-models-in-production-with-fastapi-and-celery-924lJROmlPM)/[[Eng]](/posts/serving-ml-models-in-production-with-fastapi-and-celery) - Serving ML Models in Production with FastAPI and Celery
+- [[Vie]](https://viblo.asia/p/real-time-analytics-airflow-kafka-druid-superset-1Je5EAYj5nL)/[[Eng]](/posts/real-time-analytics-airflow-kafka-druid-superset) - Real time analytics: Airflow + Kafka + Druid + Superset
