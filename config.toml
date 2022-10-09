@@ -17,7 +17,7 @@ googleAnalytics = ''
 [menu]
 [[menu.main]]
   identifier = 'home'
-  name = 'home'
+  name = '~/'
   url = '/'
   weight = -110
 [[menu.main]]
