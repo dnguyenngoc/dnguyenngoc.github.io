@@ -1,6 +1,5 @@
 baseURL = "https://dnguyenngoc.github.io/"
 title = "Duy Nguyen"
-theme = "wisdom"
 
 languageCode = "en-us"
 enableRobotsTXT = true
