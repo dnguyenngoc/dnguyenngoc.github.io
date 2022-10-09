@@ -5,6 +5,7 @@ on:
     branches:
       - main
 
+
 jobs:
   deploy:
     runs-on: ubuntu-20.04
@@ -34,3 +35,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+          publish_branch: main
