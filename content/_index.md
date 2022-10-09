@@ -1,9 +1,6 @@
----
-title: "Tao-cung-quy-lun"
-date: 2022-10-10
-draft: true
-noindex: false
----
++++
+title = "Hugo Authors"
++++
 
 Hi there, my name is Duy Senior Data Engineer at [DIGI-TEXX](https://digi-texx.com/).
 
