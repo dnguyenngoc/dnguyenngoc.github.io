@@ -8,7 +8,7 @@ You can reach me at:
 
 - [duynguyenngoc@hotmail.com](mailto:duynguyenngoc@hotmail.com)
 - [@dnguyenngoc](https://github.com/dnguyenngoc/) on GitHub
-- [LinkedIn](https://www.linkedin.com/in/duynguyenngoc/)
+- [LinkedIn](https://www.linkedin.com/in/dnguyenngoc/) on LinkedIn
 
 ## Thinks I do.
 
