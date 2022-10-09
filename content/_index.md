@@ -1,5 +1,5 @@
 ---
-title = "Hugo Authors"
+title: "Hugo Authors"
 ---
 
 Hi there, my name is Duy Senior Data Engineer at [DIGI-TEXX](https://digi-texx.com/).
