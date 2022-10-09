@@ -1,9 +1,3 @@
----
-title: "Hi, I'm Duy 👋"
-date: 2022-10-09T08:47:11+01:00
-draft: false
----
-
 Hi there, my name is Duy Senior Data Engineer at [DIGI-TEXX](https://digi-texx.com/).
 
 You can reach me at:
