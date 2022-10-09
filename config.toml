@@ -1,0 +1,28 @@
+baseURL = "https://dnguyenngoc.github.io"
+title = "Duy Nguyen"
+theme = "wisdom"
+
+languageCode = "en-us"
+enableRobotsTXT = true
+
+googleAnalytics = ''
+
+[params]
+  author = "Duy Nguyen"
+  description =  "A blog by Duy Nguyen on technology and life."
+  latestPostsLimit = 10
+  hideReadingTime = true
+  hideAuthor = true
+  keywords = [ "cyber-security", "programming" ]
+
+[menu]
+[[menu.main]]
+  identifier = 'home'
+  name = 'home'
+  url = '/'
+  weight = -110
+[[menu.main]]
+  identifier = 'posts'
+  name = 'posts'
+  url = '/posts/'
+  weight = -100

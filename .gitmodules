@@ -1,0 +1,3 @@
+[submodule "themes/wisdom"]
+	path = themes/wisdom
+	url = https://github.com/maxrodrigo/hugo-theme-wisdom.git
