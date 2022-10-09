@@ -6,6 +6,14 @@ enableRobotsTXT = true
 encoding = "UTF-8"
 googleAnalytics = ''
 
+[params]
+  author = "Duy Nguyen"
+  description =  "A blog by Duy Nguyen on technology and life."
+  latestPostsLimit = 10
+  hideReadingTime = true
+  hideAuthor = true
+  keywords = [ "technology", "programming" ]
+
 [menu]
 [[menu.main]]
   identifier = 'home'
