@@ -1,7 +1,7 @@
 ---
 title: "Real time analytics: Airflow + Kafka + Druid + Superset - [Eng]"
-date: 2022-10-09 16:00:00
-draft: true
+date: 2022-10-19 10:00:00
+draft: false
 aliases:
     - /notes/serving-ml-models-in-production-with-fastapi-and-celery.html
 ---
