@@ -1,13 +1,13 @@
 ---
 title: "Serving ML Models in Production with FastAPI and Celery - [Eng]"
-date: 2022-10-10 22:00:00
+date: 2022-10-10 18:00:00
 draft: false
 aliases:
     - /notes/serving-ml-models-in-production-with-fastapi-and-celery.html
 ---
 
 ## Overview
-This article talks about how to implement Machine Learning in a real project. An example to implement a Machine Learning model using Celery and FastAPI. All the code can be found in the archive here. [Github](https://github.com/apot-group/ml-models-in-production)
+This article talks about how to implement Machine Learning in a real project. An example to implement a Machine Learning model using Celery and FastAPI. All the code can be found in the archive here. [Github](https://github.com/apot-group/ml-models-in-production). `Vietnamese version` can be read at [Vie](https://viblo.asia/p/serving-ml-models-in-production-with-fastapi-and-celery-924lJROmlPM).
 
 In this tutorial we use the object-detection model trained with [Tensorflow](https://github.com/tensorflow/models) base on [Coco Dataset](https://cocodataset.org/#home). In general, it is an object recognition model with about 80 classes such as dogs, cats, birds (birds), chickens, ducks ... Instructions to train the model are not mentioned in this article.
 
@@ -64,7 +64,7 @@ Since building the image from scratch, this can take a while. After executing th
 | API          | http://localhost/api/docs   | None                            |
 ```
 
-Finally, login to [http://localhost](http://localhost) with user "ml_user" and pass `CBSy3NaBMxLF` select the file you need to predict and see the results.
+3. Finally, login to [http://localhost](http://localhost) with user "ml_user" and pass `CBSy3NaBMxLF` select the file you need to predict and see the results.
 
 ![](https://images.viblo.asia/7e6dbe9c-b1aa-4120-8445-5fcb9bc1f00b.png)
 

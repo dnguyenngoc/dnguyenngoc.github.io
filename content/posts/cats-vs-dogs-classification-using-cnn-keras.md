@@ -1,6 +1,6 @@
 ---
 title: "Cats vs Dogs Classification using CNN Keras - [Eng]"
-date: 2022-10-10 10:00:00
+date: 2022-10-09 10:00:00
 draft: false
 aliases:
     - /notes/cats-vs-dogs-classification-using-cnn-keras.html
@@ -9,7 +9,7 @@ aliases:
 ![](https://images.viblo.asia/28ee805e-cc5a-40f7-bd2d-28e4b980e7cb.gif)
 Image from [analyticsindiamag.com](analyticsindiamag.com)
 
-Let's go quickly to the main problem the initial requirement needs a `classification` image of `objects` in this case Cat and Dog. Instructional articles how to develop a Deep Convolutional Neural Network Step-by-Step to Classify Photographs of Dogs and Cats. The entire code is uploaded at [Github](https://github.com/dnguyenngoc/lab-spark). If you are only interested in notebooks, here it is [Notebook](https://github.com/dnguyenngoc/lab-spark/blob/main/share_storages/lab/Cats%20vs%20Dogs%20Classification%20using%20CNN%20Keras.ipynb).
+Let's go quickly to the main problem the initial requirement needs a `classification` image of `objects` in this case Cat and Dog. Instructional articles how to develop a Deep Convolutional Neural Network Step-by-Step to Classify Photographs of Dogs and Cats. The entire code is uploaded at [Github](https://github.com/dnguyenngoc/lab-spark). If you are only interested in notebooks, here it is [Notebook](https://github.com/dnguyenngoc/lab-spark/blob/main/share_storages/lab/Cats%20vs%20Dogs%20Classification%20using%20CNN%20Keras.ipynb). Vietnamese version can be read at [Vie](https://viblo.asia/p/cats-vs-dogs-classification-using-cnn-keras-1Je5EAx15nL).
 
 
 ## Steps to build Cats vs Dogs classifier
