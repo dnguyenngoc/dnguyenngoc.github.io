@@ -38,6 +38,7 @@ git clone https://github.com/apot-group/real-time-analytic.git
 # Goto root folder
 cd real-time-analytic
 ```
+
 2. Next, we need to build the `local` images.
 ```bash
 # build image by docker-compose
@@ -55,16 +56,21 @@ Superset      |  http://localhost:8088/ | docker exec -it superset bash superset
 Airflow       |  http://localhost:3000/ | admin - app/standalone_admin_password.txt   |
 ```
 
-- Note that for the Airflow user is `admin` and the password will be automatically generated at the a-airflow directory path `/app/standalone_admin_password.txt` after the server running. As for the Superset, it is necessary to go to the running container and execute the command unit to create the user with the tag:
+- Note that for the Airflow user is <strong>admin</strong> and the password will be automatically generated at the a-airflow directory path <strong>/app/standalone_admin_password.txt</strong> after the server running. As for the Superset, it is necessary to go to the running container and execute the command unit to create the user with the tag:
 
- 
- ```bash
- # can using docker ps command to give superset_container_name
- docker exec -it <superset_container_name> bash 
- superset-init
+
+```sh
+$ docker exec -it superset superset-init
+Username [admin]: admin
+User first name [admin]: Admin
+User last name [user]: User
+Email [admin@fab.org]: admin@superset.com
+Password:
+Repeat for confirmation:
 ```
 
-- Airflow Scheduler `a-airflow /app/dags/demo.py` is configured to run once a minute executing a message to the Kafka 'demo' topic with list and price coin data `['BTC','ETH','BTT','DOT']` The structure of the message data is as below, I just randomize the price for simplicity. To start streaming, sign in to airflow and `enable` demo dags.
+- Airflow Scheduler <strong>app_airflow/app/dags/demo.py</strong> is configured to run once a minute executing a message to the Kafka <strong>demo</strong> topic with list and price coin data <strong>['BTC','ETH','BTT','DOT']</strong> The structure of the message data is as below, I just randomize the price for simplicity. To start streaming, sign in to airflow and `enable` demo dags.
+
 
 ```javascript
 {
@@ -74,16 +80,35 @@ Airflow       |  http://localhost:3000/ | admin - app/standalone_admin_password.
 }
 ```
 
+![](https://images.viblo.asia/2961ccf7-0b42-48cc-88f7-ec65cf648d9e.png)
+
+- **Note:** you also can using python to run ```producer.py``` like alternative airflow demo dags.
+
+```python
+$ python3 producer.py
+Producing message @ 2022-10-22 12:29:20.479806 | Message = {'data_id': 100, 'name': 'BTC', 'timestamp': 1666391360}
+Producing message @ 2022-10-22 12:29:20.482750 | Message = {'data_id': 23, 'name': 'ETH', 'timestamp': 1666391360}
+Producing message @ 2022-10-22 12:29:20.482898 | Message = {'data_id': 32, 'name': 'BTT', 'timestamp': 1666391360}
+Producing message @ 2022-10-22 12:29:20.482991 | Message = {'data_id': 158, 'name': 'DOT', 'timestamp': 1666391360}
+```
+
 3. Configure Druid to receive streaming
 
-- From Druid Service [http://localhost:8888/](http://localhost:8888/) select load data > kafka enter information kafka server ```kakfa:9092``` and topic ```demo``` and config output.
+From Druid Service [http://localhost:8888/](http://localhost:8888/) select load data > kafka enter information kafka server ```kakfa:9092``` and topic ```demo``` and config output.
 
 ![](https://images.viblo.asia/4bdf7bf6-e3a6-40e5-ac9f-e7a75b61d476.gif)
 
-4. Setup dashboard with supperset
+4. Setup supperset connect to druid like datasource
 
-Login into Superset [http://localhost:8088/](http://localhost:8088/) create new database connection on Druid using sqlalchemy uri: ```druid://broker:8082/druid/v2/sql/```  for detail can read at [Superset-Database-Connect](https://superset.apache.org/docs/databases/db-connection-ui)
+Login into Superset [http://localhost:8088/](http://localhost:8088/) create new database ```Data > Databases > + Database``` connection on Druid using sqlalchemy uri: ```druid://broker:8082/druid/v2/sql/```  for detail can read at [Superset-Database-Connect](https://superset.apache.org/docs/databases/db-connection-ui)
 
-Finally is create a chart > dashboard and enjoy it! :fire: :fire:
+
+5. Create dashboard
+
+To create dashboards with superset. Go to ```SQL Lab > SQL Editor``` select the database as `druid` , schema `druid` , table `demo` and execute the query you need. Once done, click on `Explore` select your chart and publicizes it as a dashboard.
+
+![](https://images.viblo.asia/9b1c9a07-4646-4dd7-99ec-1a2ab40ed146.png)
+
+Finally enjoy it! :fire: :fire:
 
 ![](https://images.viblo.asia/80181253-1bb4-4f9a-8767-bb8cac951f94.png)
