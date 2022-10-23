@@ -7,8 +7,6 @@ aliases:
 ---
 
 
-<!-- {{<figure src="img/pi-logo.png" >}} -->
-
 <div style='padding-top:20px; display: inline-flex; white-space:nowrap;'>
     <span>A couple of days ago, An interesting. I cleaned warehouse and found out two raspberries</span> 
     <img src='img/pi-logo.png' style='white-space:nowrap; margin-top: -15px; width:35px; height:35px; padding-left: 18px;'/>
@@ -217,4 +215,4 @@ aliases:
 
 13. Reboot
 
-Continue read Part 2 (Install K3s on Alpine) at [Part-2](/posts/raspberry-pi-k3s-alpine-linux/part-2/)
+Continue read Part 2 (Install K3s on Alpine) at [Part-2](/posts/raspberry-pi-k3s-alpine-linux-part-2/)
