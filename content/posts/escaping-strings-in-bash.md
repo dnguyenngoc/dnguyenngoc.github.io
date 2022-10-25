@@ -1,7 +1,7 @@
 ---
 title: Escaping strings in Bash
 date: 2020-10-06
-draft: false
+draft: true
 aliases:
     - /notes/escaping-strings-in-bash.html
 ---

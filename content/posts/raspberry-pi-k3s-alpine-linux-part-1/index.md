@@ -20,6 +20,11 @@ aliases:
 
     There are currently three versions of Alpine for Raspberry Pi: `armhf`, `armv7`, and `aarch64`. The aarch64 build should be compatible Raspberry Pi 3 and Compute Module 3, and Raspberry Pi 4 Model B. i will choice `aarch64`.
 
+    ```sh
+    cd /tmp
+    wget https://dl-cdn.alpinelinux.org/alpine/v3.16/releases/aarch64/alpine-rpi-3.16.2-aarch64.tar.gz
+    ```
+
 2. Partition and format the memory card.
     
     I using `Raspbian` to create `usb` alpine `boot` for rpi. Install [GNU Parted](https://www.gnu.org/software/parted/) (parted) if not available.
@@ -84,12 +89,13 @@ aliases:
 
 3. Mount the boot partition.
     ```sh
+    sudo mkdir /mnt/sd
     sudo mount /dev/sda1 /mnt/sd
     ```
 
 4. Unpack the Alpine package onto the partition.
     ```sh
-    # i have download alpine image at /tmp
+    # i have download alpine image at /tmp in step-1
     sudo tar xf /tmp/alpine-rpi-**.tar.gz -C /mnt/sd --no-same-owner
     ```
 
@@ -215,4 +221,4 @@ aliases:
 
 13. Reboot
 
-Continue read Part 2 (Install K3s on Alpine) at [Part-2](/posts/raspberry-pi-k3s-alpine-linux-part-2/)
+Continue read Part 2 (Install K3s on Alpine) at [Raspberry Pi K3s Alpine Linux Part 2](/posts/raspberry-pi-k3s-alpine-linux-part-2/)
