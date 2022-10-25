@@ -12,6 +12,8 @@ aliases:
     <img src='img/pi-logo.png' style='white-space:nowrap; margin-top: -15px; width:35px; height:35px; padding-left: 18px;'/>
 </div>
  <span>one is 3b+ and the other is 4B. It's also a pity to quit, so spending some free time creating <span style='color:white; background-color: black;'>k3s cluster</span> to play around. Making it difficult for myself, I decided to install <span style='color:white; background-color: black;'>alpine linux</span> for them.</span>
+
+ ![](img/alpine-image.png)
     
 ### Setup OS
 
