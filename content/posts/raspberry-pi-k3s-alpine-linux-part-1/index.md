@@ -8,7 +8,7 @@ aliases:
 
 Vietnamese version can be read at [Vie-Ver](https://viblo.asia/p/install-k3s-on-raspberry-pi-alpine-linux-part1-bXP4WPbpJ7G).
 <div style='padding-top:20px; display: inline-flex; white-space:nowrap;'>
-    <span>A couple of days ago, An interesting. I cleaned warehouse and found out two raspberries</span> 
+    <span>A couple of days ago, Interesting. I cleaned warehouse and found out two raspberries</span> 
     <img src='img/pi-logo.png' style='white-space:nowrap; margin-top: -15px; width:35px; height:35px; padding-left: 18px;'/>
 </div>
  <span>one is 3b+ and the other is 4B. It's also a pity to quit, so spending some free time creating <span style='color:white; background-color: black;'>k3s cluster</span> to play around. Making it difficult for myself, I decided to install <span style='color:white; background-color: black;'>alpine linux</span> for them.</span>
