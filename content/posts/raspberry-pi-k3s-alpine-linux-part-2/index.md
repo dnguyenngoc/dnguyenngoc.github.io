@@ -223,7 +223,7 @@ spec:
 
 Create the resource by entering:
 ```sh
-kubectl create -f ingress.yaml
+kubectl apply -f hello.yaml
 ```
 
 Get status.
