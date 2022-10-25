@@ -60,7 +60,7 @@ Reboot to load wireguard.
 reboot
 ```
 
-K3s is installed through a bash script that performs all the actions in the background without user input. Open the console of your Alpine Linux and run the command below. We also push option include `--flannel-backend=wireguard`, `--disable-cloud-controller`, and `--no-deploy traefik` (i want to using ingress-nginx).
+K3s is installed through a bash script that performs all the actions in the background without user input. Open the console of your Alpine Linux and run the command below. We also push option include `--flannel-backend=wireguard`, `--disable-cloud-controller`, and `--no-deploy traefik` (use ingress-nginx as alternative).
 
 ```sh
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--no-deploy traefik --flannel-backend=wireguard --node-taint CriticalAddonsOnly=true:NoExecute --disable-cloud-controller" sh -s -
