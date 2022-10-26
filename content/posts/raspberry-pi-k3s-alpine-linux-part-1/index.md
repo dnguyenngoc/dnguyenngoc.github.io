@@ -6,6 +6,14 @@ aliases:
     - /notes/raspberry-pi-k3s-alpine-linux-part-1.html
 ---
 
+<div>
+    <div style='display: inline-flex; list-style-type: none; padding-top: 15px;'>
+        <li>
+            <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io-posts-raspberry-pi-k3s-alpine-linux-part-1&left_text=Visitors'/>
+        </li>
+    </div>
+</div>
+
 Vietnamese version can be read at [Vie-Ver](https://viblo.asia/p/install-k3s-on-raspberry-pi-alpine-linux-part1-bXP4WPbpJ7G).
 <div style='padding-top:20px; display: inline-flex; white-space:nowrap;'>
     <span>A couple of days ago, Interesting. I cleaned warehouse and found out two raspberries</span> 

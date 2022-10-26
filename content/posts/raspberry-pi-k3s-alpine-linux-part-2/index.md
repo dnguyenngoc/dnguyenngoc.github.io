@@ -6,6 +6,14 @@ aliases:
     - /notes/raspberry-pi-k3s-alpine-linux-part-2.html
 ---
 
+<div>
+    <div style='display: inline-flex; list-style-type: none; padding-top: 15px;'>
+        <li>
+            <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io-posts-raspberry-pi-k3s-alpine-linux-part-2&left_text=Visitors'/>
+        </li>
+    </div>
+</div>
+
 Continue part 2 of [Raspberry Pi K3s Alpine Linux Part 1](/posts/raspberry-pi-k3s-alpine-linux-part-1/). Now we are going to deploy `K3s` (a light version of Kubernetes) on **Raspberry Pi**.
 
 ![Image from internet](img/k8s-rpi-k3s.jpeg)

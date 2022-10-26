@@ -6,6 +6,14 @@ aliases:
     - /notes/spark-distributed-ml-model-with-pandas-udfs.html
 ---
 
+<div>
+    <div style='display: inline-flex; list-style-type: none; padding-top: 15px;'>
+        <li>
+            <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io-posts-spark-distributed-ml-model-with-pandas-udfs&left_text=Visitors'/>
+        </li>
+    </div>
+</div>
+
 ## Why?
 
 Recently, I am learning about [Apache Spark](https://spark.apache.org/) distributed computing platform that executes Machine Learning tasks for Big-Data system. Spark has 2 languages ​​used, scala and python (pypark), so this article refers to Pyspark, maybe I will write an article about scala (not today :heart_eyes:). The full code can be found at the repo [Github](https://github.com/dnguyenngoc/lab-spark.git). `Vietnamese version` can be read at [Vie](https://viblo.asia/p/spark-distributed-ml-model-with-pandas-udfs-maGK7rWe5j2).

@@ -6,6 +6,14 @@ aliases:
     - /notes/serving-ml-models-in-production-with-fastapi-and-celery.html
 ---
 
+<div>
+    <div style='display: inline-flex; list-style-type: none; padding-top: 15px;'>
+        <li>
+            <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io-posts-serving-ml-models-in-production-with-fastapi-and-celery&left_text=Visitors'/>
+        </li>
+    </div>
+</div>
+
 ## Overview
 This article talks about how to implement Machine Learning in a real project. An example to implement a Machine Learning model using Celery and FastAPI. All the code can be found in the archive here. [Github](https://github.com/apot-group/ml-models-in-production). `Vietnamese version` can be read at [Vie](https://viblo.asia/p/serving-ml-models-in-production-with-fastapi-and-celery-924lJROmlPM).
 
