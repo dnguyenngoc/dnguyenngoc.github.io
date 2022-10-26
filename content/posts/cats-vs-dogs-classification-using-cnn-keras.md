@@ -6,6 +6,15 @@ aliases:
     - /notes/cats-vs-dogs-classification-using-cnn-keras.html
 ---
 
+<div>
+    <div style='display: inline-flex; list-style-type: none; padding-top: 15px;'>
+        <li>
+            <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io-posts-cats-vs-dogs-classification-using-cnn-keras&left_text=Visitors'/>
+        </li>
+    </div>
+</div>
+
+
 ![](https://images.viblo.asia/28ee805e-cc5a-40f7-bd2d-28e4b980e7cb.gif)
 Image from [analyticsindiamag.com](analyticsindiamag.com)
 

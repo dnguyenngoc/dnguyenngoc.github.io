@@ -6,6 +6,14 @@ aliases:
     - /notes/serving-ml-models-in-production-with-fastapi-and-celery.html
 ---
 
+<div>
+    <div style='display: inline-flex; list-style-type: none; padding-top: 15px;'>
+        <li>
+            <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io-posts-real-time-analytics-airflow-kafka-druid-superset&left_text=Visitors'/>
+        </li>
+    </div>
+</div>
+
 Real-time analytics has become a `necessity` for large companies around the world. When your data has been analyzed in a streaming fashion that allows you to `continuously` analyze customer behavior and act on it. I also want to test Druid real time capability, i am looking for realtime analytics solution. This blogs give an introdution to setting up streaming analytics using open source technologies. All code has been uploaded repo [Github](https://github.com/apot-group/real-time-analytic). Vietnamese version can be read at [Vie](https://viblo.asia/p/real-time-analytics-airflow-kafka-druid-superset-1Je5EAYj5nL).
 
 ![](https://images.viblo.asia/80181253-1bb4-4f9a-8767-bb8cac951f94.png)

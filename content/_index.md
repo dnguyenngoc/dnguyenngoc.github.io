@@ -2,6 +2,14 @@
 title: "Hi, I'm Duy 👋"
 ---
 
+<div>
+    <div style='display: inline-flex; list-style-type: none; padding-top: 15px;'>
+        <li>
+            <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io&left_text=Visitors'/>
+        </li>
+    </div>
+</div>
+
 Hi there, my name is Duy Senior Data Engineer at [DIGI-TEXX](https://digi-texx.com/).
 
 - 👀 I’m interested in AI Technology
