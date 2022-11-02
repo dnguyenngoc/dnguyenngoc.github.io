@@ -55,7 +55,7 @@ apk add wireguard-tools
 modprobe wireguard
 ```
 
-Edit `/etc/module` and add `wireguard` in last line.
+Edit `/etc/modules` and add `wireguard` in last line.
 
 ```sh
 af_packet
@@ -68,7 +68,7 @@ Reboot to load wireguard.
 reboot
 ```
 
-K3s is installed through a bash script that performs all the actions in the background without user input. Open the console of your Alpine Linux and run the command below. We also push option include `--flannel-backend=wireguard`, `--disable-cloud-controller`, and `--no-deploy traefik` (use ingress-nginx as alternative).
+** Install for `master` node using command as below. If the worker button is set, skip and scroll down** K3s is installed through a bash script that performs all the actions in the background without user input. Open the console of your Alpine Linux and run the command below. We also push option include `--flannel-backend=wireguard`, `--disable-cloud-controller`, and `--no-deploy traefik` (use ingress-nginx as alternative).
 
 ```sh
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--no-deploy traefik --flannel-backend=wireguard --node-taint CriticalAddonsOnly=true:NoExecute --disable-cloud-controller" sh -s -
@@ -126,7 +126,7 @@ Check Cluster nodes status:
 $ sudo kubectl get nodes
 ```
 
-**Note:** `worker` node need token from `master token`.
+**Install for `worker` need token from `master token`.**
 
 ```sh
 # ssh to master-0 and get token by command below
