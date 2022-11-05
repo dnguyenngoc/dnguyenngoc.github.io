@@ -20,16 +20,16 @@ googleAnalytics = ''
 [menu]
 [[menu.main]]
   identifier = 'home'
-  name = 'Home/'
+  name = 'Home/ '
   url = '/'
   weight = -110
 [[menu.main]]
   identifier = 'cv'
-  name = 'Cv/'
+  name = 'Cv/ '
   url = '/cv/'
   weight = -100
 [[menu.main]]
   identifier = 'posts'
-  name = 'Posts/'
+  name = 'Posts/ '
   url = '/posts/'
   weight = -100
