@@ -258,12 +258,10 @@ Researching and building system consisting of hardware and software to achieve a
   </div>
   <div style='padding-left: 40px; display:block;'>
     <div style='display:inline-flex;'><li></li>
-      <li style='list-style-type: none;'>Analyze requirements and provide technical solutions.
-      </li>
+      <li style='list-style-type: none;'>Analyze requirements and provide technical solutions.</li>
     </div>
     <div style='display:inline-flex;'><li></li>
-      <li style='list-style-type: none;'>Design Object Detection Model.
-      </li>
+      <li style='list-style-type: none;'>Design Object Detection Model base on Deep Learning.</li>
     </div>
     <div style='display:inline-flex;'><li></li>
       <li style='list-style-type: none;'>Preprocessing data and training model.
