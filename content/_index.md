@@ -3,14 +3,22 @@ title: "Hi, I'm Duy 👋"
 ---
 
 <div>
-    <div style='display: inline-flex; list-style-type: none; padding-top: 15px;'>
+    <div style='display: inline-flex; list-style-type: none; padding-top: 15px; font-family: "Helvetica Neue", sans-serif;'>
         <li>
             <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io&left_text=Visitors'/>
         </li>
+         <li style='background: #955251; width:60px; height:20px;text-align:center; margin-left:4px;'>
+           <p style='font-size: 13px; margin-top:-1px; float:left;padding-left:10px;color:white'>Posts</p>
+        </li>
+        <li style='background: #f7cac9; width:20px; height:20px;'><p style='font-size: 13px; margin-top:-1px; float:left;padding-left:4px;'>
+        7
+        </p></li>
     </div>
 </div>
 
+
 Hi there, my name is Duy Senior Data Engineer at [DIGI-TEXX](https://digi-texx.com/).
+
 <div style='display:inline-flex'>
   <div style='display: block; padding-left:25px'>
     <div style='display:inline-flex;'>
