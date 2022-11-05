@@ -11,10 +11,25 @@ title: "Hi, I'm Duy 👋"
 </div>
 
 Hi there, my name is Duy Senior Data Engineer at [DIGI-TEXX](https://digi-texx.com/).
+<div style='display:inline-flex'>
+  <div style='display: block; padding-left:25px'>
+    <div style='display:inline-flex;'>
+      <li></li>
+      <li style='list-style-type: none;'>👀 I’m interested in AI Technology.</li>
+    </div>
+    <div style='display:inline-flex;'>
+      <li></li>
+      <li style='list-style-type: none;'>🌱 I’m currently interested in data visualization, data processing, digital transformation, big-data system and AI.</li>
+    </div>
+    <div style='display:inline-flex;'>
+      <li></li>
+      <li style='list-style-type: none;'>💞️ I’m looking to collaborate on Software develop.</li>
+    </div>
+  </div>
+  <div style='float:right; padding-right:200px; width:500px; margin-top:-40px'><img src='dog.gif'></img></div>
+</div>
 
-- 👀 I’m interested in AI Technology
-- 🌱 I’m currently interested in data visualization, data processing, digital transformation, big-data system and AI.
-- 💞️ I’m looking to collaborate on Software develop
+
 
 My Curriculum Vitae: ~~PDF~~ · [HTML](cv.html)
 
