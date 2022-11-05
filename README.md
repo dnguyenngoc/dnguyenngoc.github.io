@@ -1,5 +1,5 @@
 # dnguyenngoc.github.io
-Personal website build with hugo.
+Personal website build by hugo.
 
 ![](/docs/introdution.gif)
 
