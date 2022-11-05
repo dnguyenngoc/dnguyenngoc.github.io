@@ -16,6 +16,8 @@ Hi there, my name is Duy Senior Data Engineer at [DIGI-TEXX](https://digi-texx.c
 - 🌱 I’m currently interested in data visualization, data processing, digital transformation, big-data system and AI.
 - 💞️ I’m looking to collaborate on Software develop
 
+My Curriculum Vitae: ~~PDF~~ · [HTML](cv.html)
+
 You can reach me at:
 
 - [duynguyenngoc@hotmail.com](mailto:duynguyenngoc@hotmail.com)
