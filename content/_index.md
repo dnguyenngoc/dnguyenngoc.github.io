@@ -11,7 +11,7 @@ title: "Hi, I'm Duy 👋"
            <p style='font-size: 13px; margin-top:-1px; float:left;padding-left:10px;color:white'>Posts</p>
         </li>
         <li style='background: #f7cac9; width:20px; height:20px;'><p style='font-size: 13px; margin-top:-1px; float:left;padding-left:4px;'>
-        7
+        6
         </p></li>
     </div>
 </div>

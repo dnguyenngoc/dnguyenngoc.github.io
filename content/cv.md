@@ -20,7 +20,7 @@ aliases:
 |---|---|
 |Date of birth | Oct 06, 1994 |
 |Email | [duynguyenngoc@hotmail.com](duynguyenngoc@hotmail.com) |
-|Website | [dnguyenngoc.github.io](https://dnguyenngoc.github.io) |
+|Website | [duynguyenngoc.com](https://duynguyenngoc.com/) |
 |LinkedIn | [/in/dnguyenngoc/](https://www.linkedin.com/in/dnguyenngoc/) |
 |Revised | Nov 05, 2022 |
 
