@@ -51,7 +51,9 @@ You can reach me at:
 
 :rice: projects
 
-- [Restore Iphone](https://github.com/dnguyenngoc/envios) - Restore Iphone Via USB.
+- [ml-models-in-production](https://github.com/apot-group/ml-models-in-production) - Serving ML models in production.
+- [real-time-analytic](https://github.com/apot-group/real-time-analytic) - Realtime Analytic.
+
 
 :fire: blogs
 - [[Vie]](https://viblo.asia/p/real-time-analytics-airflow-kafka-druid-superset-1Je5EAYj5nL)/[[Eng]](/posts/real-time-analytics-airflow-kafka-druid-superset) - Real time analytics: Airflow + Kafka + Druid + Superset
