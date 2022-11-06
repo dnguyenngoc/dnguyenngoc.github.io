@@ -1,4 +1,4 @@
-baseURL = "https://dnguyenngoc.github.io/"
+baseURL = "https://duynguyenngoc.com/"
 title = "Duy Nguyen"
 theme = "wisdom"
 languageCode = "en-us"
@@ -12,7 +12,7 @@ googleAnalytics = ''
   latestPostsLimit = 10
   hideReadingTime = true
   hideAuthor = true
-  keywords = [ "technology", "programming" ]
+  keywords = [ "technology", "programming", "blog", "data" ]
 
 [markup.goldmark.renderer]
   unsafe = true
