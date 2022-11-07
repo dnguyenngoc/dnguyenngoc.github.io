@@ -47,7 +47,7 @@ You can reach me at:
 - [@dnguyenngoc](https://github.com/dnguyenngoc/) on GitHub
 - [LinkedIn](https://www.linkedin.com/in/dnguyenngoc/) on LinkedIn
 
-## Thinks I do.
+## Things I do.
 
 :rice: projects
 
