@@ -11,9 +11,12 @@ aliases:
         <li>
             <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io-cv&left_text=Visitors'/>
         </li>
+        <div style='margin-left: 10px'>
+          <a style='box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px; padding: 1px 10px;' class="pdf-source" id="pdf-source-009c911a" href="/pdf-cv/duynguyen-cv.pdf">Download - pdf</a>
+        </div>
     </div>
     <div style='float:right; padding-right:10px; width:200px; margin-top:-20px'><img src='/avatar.jpeg'></img></div>
-
+    
 </div>
 
 |||
@@ -24,12 +27,13 @@ aliases:
 |LinkedIn | [/in/dnguyenngoc/](https://www.linkedin.com/in/dnguyenngoc/) |
 |Revised | Nov 05, 2022 |
 
-## Profile
+## Profile 
 
-I'm a Senior Data Engineer with a strong background on Software Engineering.
-I have solid knowledge in Automation, Backend, Artificial Intelligence, Data Processing & Visualization.
-I love a job that requires a lot of analysis and logic. 
-I am looking for a new challenge in the field of Data Processing & AI to use my knowledge and creativity to create interesting things in life.
+As a seasoned Senior Data Engineer with a robust background in
+Software Engineering, I possess a wealth of expertise in Automation,
+Backend Development, Artificial Intelligence, and Data Processing &
+Visualization. I am passionate about leveraging my skills to solve complex
+problems and drive innovation in the field of data.
 
 ## Education
 __Bachelor's degree of Electrical (Telecommunication)__\

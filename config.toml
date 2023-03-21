@@ -33,3 +33,8 @@ googleAnalytics = ''
   name = 'Cv/'
   url = '/cv/'
   weight = 3
+[[menu.main]]
+  identifier = 'pdf-cv'
+  name = 'Pdf-CV/'
+  url = '/pdf-cv/duynguyen-cv.pdf'
+  weight = 4

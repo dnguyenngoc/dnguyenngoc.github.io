@@ -39,7 +39,9 @@ Hi there, my name is Duy Senior Data Engineer at [DIGI-TEXX](https://digi-texx.c
 
 
 
-My Curriculum Vitae: ~~PDF~~ · [HTML](cv.html)
+<embed-pdf url="./pdf-cv/duynguyen-cv.pdf" hidePaginator="true" />
+
+My Curriculum Vitae: <a style='box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px; padding: 5px 5px;' class="pdf-source" id="pdf-source-009c911a" href="/pdf-cv/duynguyen-cv.pdf">PDF</a> · [HTML](cv.html)
 
 You can reach me at:
 
