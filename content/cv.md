@@ -119,11 +119,11 @@ I am working in Data Solutions team as Senior Data Engineer and Research Team Le
 <div style='padding-bottom: 10px'>
   <div style='display: flex;'>
     <span class="fa fa-star checked" style='padding-top: 18px;padding-left: 15px;padding-right: 10px;color:gray;'></span>
-    <p style="color:#343434; box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;">Senior Data Engineer</p>
+    <p style="color:#343434; box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;">Senior Data Engineer (Sep 2022 - Now)</p>
   </div>
   <div style='padding-left: 40px; display:block;'>
     <div style='display:inline-flex;'><li></li>
-      <li style='list-style-type: none;'>Design and Build Data warehouse system including but not limited to: Hbase, Hadoop, Hive, Superset, Airflow.
+      <li style='list-style-type: none;'>Design and build a scalable data pipeline that can handle 1TB imagesper day, including a data warehouse and data lake based on S3, Hbase,Hadoop, Hive, Superset, and Airflow.
       </li>
     </div>
     <div style='display:inline-flex;'><li></li>
@@ -131,11 +131,11 @@ I am working in Data Solutions team as Senior Data Engineer and Research Team Le
       </li>
     </div>
     <div style='display:inline-flex;'><li></li>
-      <li style='list-style-type: none;'>Implement backend service in AI system with effective, scalable code.
+      <li style='list-style-type: none;'>Implement microservices in AI systems with scalable, efficient code to  reduce 70% operational costs.
       </li>
     </div>
     <div style='display:inline-flex;'><li></li>
-      <li style='list-style-type: none;'>Implement classify, denoising, field detection and ocr model with AI techniques.
+      <li style='list-style-type: none;'>Implement Image Classification, Image Denoising, Field Detection andOptical Character Recognition models using AI techniques.
       </li>
     </div>
      <div style='display:inline-flex;'><li></li>
@@ -144,6 +144,32 @@ I am working in Data Solutions team as Senior Data Engineer and Research Team Le
     </div>
   </div>
 </div>
+
+<div style='padding-bottom: 10px'>
+  <div style='display: flex;'>
+    <span class="fa fa-star checked" style='padding-top: 18px;padding-left: 15px;padding-right: 10px;color:gray;'></span>
+    <p style="color:#343434; box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;">Data Engineer (Sep 2020 - Sep 2022)</p>
+  </div>
+  <div style='padding-left: 40px; display:block;'>
+    <div style='display:inline-flex;'><li></li>
+      <li style='list-style-type: none;'>Developed an ETL/ELT system collect more than 100 data sources toreplace an existing data pipeline.
+      </li>
+    </div>
+    <div style='display:inline-flex;'><li></li>
+      <li style='list-style-type: none;'>Collaborated with data scientists and product engineers to developand deploy solutions to customer problems.
+      </li>
+    </div>
+    <div style='display:inline-flex;'><li></li>
+      <li style='list-style-type: none;'>Analytic Data Modeling (Star Schema, SCD’s, and Lookups)
+      </li>
+    </div>
+    <div style='display:inline-flex;'><li></li>
+      <li style='list-style-type: none;'>Increased the efficiency of the data fetching by approximately 30%using query optimization, indexing and partition.
+      </li>
+    </div>
+  </div>
+</div>
+
 
 __Backend Developer / AI Engineer__\
 Amaris - www.amaris.com (_December 2019 - September 2020_)
