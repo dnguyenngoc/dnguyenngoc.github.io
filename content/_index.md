@@ -5,7 +5,7 @@ title: "Hi, I'm Duy 👋"
 <div>
     <div style='display: inline-flex; list-style-type: none; padding-top: 15px; font-family: "Helvetica Neue", sans-serif;'>
         <li>
-            <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io&left_text=Visitors'/>
+            <img src='https://visitor-badge.laobi.icu/badge?page_id=dnguyenngoc.github.io&left_text=Visitors'/>
         </li>
          <li style='background: #955251; width:60px; height:20px;text-align:center; margin-left:4px;'>
            <p style='font-size: 13px; margin-top:-1px; float:left;padding-left:10px;color:white'>Posts</p>
@@ -17,7 +17,7 @@ title: "Hi, I'm Duy 👋"
 </div>
 
 
-Hi there, my name is Duy Senior Data Engineer at [DIGI-TEXX](https://digi-texx.com/).
+Hi there, my name is Duy Senior Data Engineer at [VieON](https://vieon.vn/).
 
 <div style='display:inline-flex'>
   <div style='display: block; padding-left:25px'>
@@ -41,7 +41,7 @@ Hi there, my name is Duy Senior Data Engineer at [DIGI-TEXX](https://digi-texx.c
 
 <embed-pdf url="./pdf-cv/duynguyen-cv.pdf" hidePaginator="true" />
 
-My Curriculum Vitae: <a style='box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px; padding: 5px 5px;' class="pdf-source" id="pdf-source-009c911a" href="/pdf-cv/duynguyen-cv.pdf">PDF</a> · [HTML](cv.html)
+My Curriculum Vitae: <a style='box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px; padding: 5px 5px;' class="pdf-source" id="pdf-source-009c911a" href="/pdf-cv/duynguyen-cv.pdf">PDF</a>
 
 You can reach me at:
 
