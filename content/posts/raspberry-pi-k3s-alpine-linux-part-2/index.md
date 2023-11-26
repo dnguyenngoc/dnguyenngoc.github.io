@@ -9,7 +9,7 @@ aliases:
 <div>
     <div style='display: inline-flex; list-style-type: none; padding-top: 15px;'>
         <li>
-            <img src='https://visitor-badge.glitch.me/badge?page_id=dnguyenngoc.github.io-posts-raspberry-pi-k3s-alpine-linux-part-2&left_text=Visitors'/>
+            <img src='https://visitor-badge.laobi.icu/badge?page_id=dnguyenngoc.github.io-posts-raspberry-pi-k3s-alpine-linux-part-2&left_text=Visitors'/>
         </li>
     </div>
 </div>

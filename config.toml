@@ -12,7 +12,7 @@ googleAnalytics = ''
   latestPostsLimit = 10
   hideReadingTime = true
   hideAuthor = true
-  keywords = [ "technology", "programming", "blog", "data" ]
+  keywords = [ "technology", "programming", "blog", "bigdata" ]
 
 [markup.goldmark.renderer]
   unsafe = true
@@ -31,10 +31,5 @@ googleAnalytics = ''
 [[menu.main]]
   identifier = 'cv'
   name = 'Cv/'
-  url = '/cv/'
-  weight = 3
-[[menu.main]]
-  identifier = 'pdf-cv'
-  name = 'Pdf-CV/'
   url = '/pdf-cv/duynguyen-cv.pdf'
-  weight = 4
+  weight = 3
