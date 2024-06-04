@@ -19,7 +19,7 @@ title: "Hi, I'm Duy 👋"
 
 Hi there, my name is Duy Senior Data Engineer at [VieON](https://vieon.vn/).
 
-<div style='display:inline-flex'>
+<div style='display:inline-flex; max-width: 900px;'>
   <div style='display: block; padding-left:25px'>
     <div style='display:inline-flex;'>
       <li></li>
@@ -27,7 +27,7 @@ Hi there, my name is Duy Senior Data Engineer at [VieON](https://vieon.vn/).
     </div>
     <div style='display:inline-flex;'>
       <li></li>
-      <li style='list-style-type: none;'>🌱 I’m currently interested in data visualization, data processing, digital transformation, big-data system and AI.</li>
+      <li style='list-style-type: none;'>🌱 I’m currently interested in data visualization, data processing, digital transformation, big-data and AI.</li>
     </div>
     <div style='display:inline-flex;'>
       <li></li>
@@ -50,6 +50,14 @@ You can reach me at:
 - [LinkedIn](https://www.linkedin.com/in/dnguyenngoc/) on LinkedIn
 
 ## Things I do.
+
+:tada: data-engineer (<span style="color:red">In development, please wait everyone ...</span>)
+- [design-bigdata-system](/de/design-bigdata-system) - Introduction and How to Design Big Data Systems
+- [minio-operator-on-k8s](/de/minio-operator-on-k8s) - MinIO Operator on Kubernetes (Storage Layer)
+- [spark-operator-on-k8s](/de/spark-operator-on-k8s) - Spark Operator on Kubernetes (Computing Layer)
+- [trino-operator-on-k8s](/de/trino-operator-on-k8s) - Trino Operator on Kubernetes (High Query Engine)
+- [jupyterlab-on-k8s](/de/jupyterlab-on-k8s) - JupyterLab on Kubernetes (Analysis Layer)
+- [superset-on-k8s](/de/superset-on-k8s) - Superset on Kubernetes (Visualization Layer)
 
 :rice: projects
 
