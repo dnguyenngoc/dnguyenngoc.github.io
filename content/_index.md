@@ -51,13 +51,13 @@ You can reach me at:
 
 ## Things I do.
 
-:tada: data-engineer (<span style="color:red">In development, please wait everyone ...</span>)
-- [design-bigdata-system](/de/design-bigdata-system) - Introduction and How to Design Big Data Systems
-- [minio-operator-on-k8s](/de/minio-operator-on-k8s) - MinIO Operator on Kubernetes (Storage Layer)
+:tada: data-engineer
+<!-- - [design-bigdata-system](/de/design-bigdata-system) - Introduction and How to Design Big Data Systems -->
+<!-- - [minio-operator-on-k8s](/de/minio-operator-on-k8s) - MinIO Operator on Kubernetes (Storage Layer) -->
 - [spark-operator-on-k8s](/de/spark-operator-on-k8s) - Spark Operator on Kubernetes (Computing Layer)
-- [trino-operator-on-k8s](/de/trino-operator-on-k8s) - Trino Operator on Kubernetes (High Query Engine)
-- [jupyterlab-on-k8s](/de/jupyterlab-on-k8s) - JupyterLab on Kubernetes (Analysis Layer)
-- [superset-on-k8s](/de/superset-on-k8s) - Superset on Kubernetes (Visualization Layer)
+<!-- - [trino-operator-on-k8s](/de/trino-operator-on-k8s) - Trino Operator on Kubernetes (High Query Engine) -->
+<!-- - [jupyterlab-on-k8s](/de/jupyterlab-on-k8s) - JupyterLab on Kubernetes (Analysis Layer) -->
+<!-- - [superset-on-k8s](/de/superset-on-k8s) - Superset on Kubernetes (Visualization Layer) -->
 
 :rice: projects
 
