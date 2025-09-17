@@ -1,7 +1,10 @@
 ---
-title: Raspberry Pi K3s Alpine Linux Part 2
+title: "Raspberry Pi K3s Alpine Linux Part 2"
 date: 2022-10-25
 draft: false
+description: "Deploying applications on Raspberry Pi Kubernetes cluster with K3s and Alpine Linux - Part 2"
+tags: ["raspberry-pi", "kubernetes", "k3s", "alpine-linux", "iot", "edge-computing", "deployment", "nginx"]
+featured_image: "/posts/raspberry-pi-k3s-alpine-linux-part-2/img/k8s-rpi-k3s.jpeg"
 aliases:
     - /notes/raspberry-pi-k3s-alpine-linux-part-2.html
 ---

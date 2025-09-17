@@ -1,21 +1,52 @@
 baseURL = "https://duynguyenngoc.com/"
-title = "Duy Nguyen"
+title = "Duy Nguyen - Senior Data Engineer"
 theme = "wisdom"
 languageCode = "en-us"
 enableRobotsTXT = true
 encoding = "UTF-8"
 googleAnalytics = ''
+enableGitInfo = true
+enableEmoji = true
+enableInlineShortcodes = true
 
 [params]
   author = "Duy Nguyen"
-  description =  "A blog by Duy Nguyen on technology and life."
+  description = "Senior Data Engineer at VieON. Blog about data engineering, AI, big data, and technology."
   latestPostsLimit = 10
-  hideReadingTime = true
-  hideAuthor = true
-  keywords = [ "technology", "programming", "blog", "bigdata" ]
+  hideReadingTime = false
+  hideAuthor = false
+  keywords = [ "data engineering", "AI", "big data", "technology", "programming", "machine learning", "apache spark", "kubernetes" ]
+  
+  # Social links
+  github = "https://github.com/dnguyenngoc"
+  linkedin = "https://www.linkedin.com/in/dnguyenngoc/"
+  email = "duynguyenngoc@hotmail.com"
+  
+  # SEO
+  twitter = "@dnguyenngoc"
+  og_image = "/avatar.jpeg"
 
 [markup.goldmark.renderer]
   unsafe = true
+
+[markup.goldmark.extensions]
+  definitionList = true
+  footnote = true
+  linkify = true
+  strikethrough = true
+  table = true
+  taskList = true
+  typographer = true
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[outputFormats]
+  [outputFormats.JSON]
+    baseName = "index"
+    isPlainText = true
+    mediaType = "application/json"
+    notAlternative = true
 
 [menu]
 [[menu.main]]

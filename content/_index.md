@@ -1,73 +1,63 @@
 ---
-title: "Hi, I'm Duy 👋"
+title: "Welcome to My Digital Space"
+description: "Senior Data Engineer crafting intelligent solutions at the intersection of AI, big data, and scalable systems"
 ---
 
-<div>
-    <div style='display: inline-flex; list-style-type: none; padding-top: 15px; font-family: "Helvetica Neue", sans-serif;'>
-        <li>
-            <img src='https://visitor-badge.laobi.icu/badge?page_id=dnguyenngoc.github.io&left_text=Visitors'/>
-        </li>
-         <li style='background: #955251; width:60px; height:20px;text-align:center; margin-left:4px;'>
-           <p style='font-size: 13px; margin-top:-1px; float:left;padding-left:10px;color:white'>Posts</p>
-        </li>
-        <li style='background: #f7cac9; width:20px; height:20px;'><p style='font-size: 13px; margin-top:-1px; float:left;padding-left:4px;'>
-        6
-        </p></li>
+## Hello, I'm Duy! 👋
+
+Welcome to my corner of the internet! I'm a **Senior Data Engineer** at [VieON](https://vieon.vn/), where I architect and build robust data infrastructure that powers intelligent decision-making. With a passion for transforming raw data into actionable insights, I specialize in creating scalable systems that handle massive datasets with precision and efficiency.
+
+### My Journey in Data & AI
+
+I'm deeply fascinated by the transformative power of artificial intelligence and machine learning. My work revolves around building the foundational infrastructure that enables organizations to harness the full potential of their data assets. From real-time streaming analytics to distributed machine learning pipelines, I'm constantly exploring innovative approaches to solve complex data challenges.
+
+<div class="profile-section">
+    <div class="profile-content">
+        <div class="interests">
+            <h3>Core Expertise</h3>
+            <ul>
+                <li><strong>Data Engineering</strong> - Building scalable ETL pipelines and data warehouses</li>
+                <li><strong>Machine Learning</strong> - Developing and deploying ML models in production</li>
+                <li><strong>Cloud Infrastructure</strong> - Apache Spark, Kubernetes, and distributed computing</li>
+                <li><strong>Real-time Analytics</strong> - Streaming data processing and real-time insights</li>
+            </ul>
+        </div>
+        <div class="profile-image">
+            <img src='/dog.gif' alt='Profile animation' class="profile-gif"/>
+        </div>
     </div>
 </div>
 
 
-Hi there, my name is Duy Senior Data Engineer at [VieON](https://vieon.vn/).
 
-<div style='display:inline-flex; max-width: 900px;'>
-  <div style='display: block; padding-left:25px'>
-    <div style='display:inline-flex;'>
-      <li></li>
-      <li style='list-style-type: none;'>👀 I’m interested in AI Technology.</li>
-    </div>
-    <div style='display:inline-flex;'>
-      <li></li>
-      <li style='list-style-type: none;'>🌱 I’m currently interested in data visualization, data processing, digital transformation, big-data and AI.</li>
-    </div>
-    <div style='display:inline-flex;'>
-      <li></li>
-      <li style='list-style-type: none;'>💞️ I’m looking to collaborate on Software develop.</li>
-    </div>
-  </div>
-  <div style='float:right; padding-right:200px; width:500px; margin-top:-40px'><img src='dog.gif'></img></div>
-</div>
-
-
+## Professional Profile
 
 <embed-pdf url="./pdf-cv/duynguyen-cv.pdf" hidePaginator="true" />
 
-My Curriculum Vitae: <a style='box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px; padding: 5px 5px;' class="pdf-source" id="pdf-source-009c911a" href="/pdf-cv/duynguyen-cv.pdf">PDF</a>
+**Download my comprehensive CV**: [PDF Version](/pdf-cv/duynguyen-cv.pdf)
 
-You can reach me at:
+## Let's Connect
+
+I'm always excited to connect with fellow data enthusiasts, potential collaborators, and industry professionals. Whether you're interested in discussing data engineering challenges, exploring new technologies, or simply want to share insights about the evolving landscape of AI and big data, I'd love to hear from you.
 
 - [duynguyenngoc@hotmail.com](mailto:duynguyenngoc@hotmail.com)
-- [@dnguyenngoc](https://github.com/dnguyenngoc/) on GitHub
-- [LinkedIn](https://www.linkedin.com/in/dnguyenngoc/) on LinkedIn
+- [LinkedIn](https://www.linkedin.com/in/dnguyenngoc/)
+- [GitHub](https://github.com/dnguyenngoc/)
 
-## Things I do.
+---
 
-:tada: data-engineer
-<!-- - [design-bigdata-system](/de/design-bigdata-system) - Introduction and How to Design Big Data Systems -->
-<!-- - [minio-operator-on-k8s](/de/minio-operator-on-k8s) - MinIO Operator on Kubernetes (Storage Layer) -->
-- [spark-operator-on-k8s](/de/spark-operator-on-k8s) - Spark Operator on Kubernetes (Computing Layer)
-<!-- - [trino-operator-on-k8s](/de/trino-operator-on-k8s) - Trino Operator on Kubernetes (High Query Engine) -->
-<!-- - [jupyterlab-on-k8s](/de/jupyterlab-on-k8s) - JupyterLab on Kubernetes (Analysis Layer) -->
-<!-- - [superset-on-k8s](/de/superset-on-k8s) - Superset on Kubernetes (Visualization Layer) -->
+## Featured Work & Insights
 
-:rice: projects
+### 🚀 Engineering Projects
 
-- [ml-models-in-production](https://github.com/apot-group/ml-models-in-production) - Serving ML models in production.
-- [real-time-analytic](https://github.com/apot-group/real-time-analytic) - Realtime Analytic.
+- **[Spark Operator on Kubernetes](/de/spark-operator-on-k8s)** - Orchestrating distributed computing for big data workloads
+- **[ML Models in Production](https://github.com/apot-group/ml-models-in-production)** - End-to-end machine learning model serving infrastructure
+- **[Real-time Analytics Platform](https://github.com/apot-group/real-time-analytic)** - High-performance streaming data processing pipeline
 
+### 📚 Technical Articles & Tutorials
 
-:fire: blogs
-- [[Vie]](https://viblo.asia/p/real-time-analytics-airflow-kafka-druid-superset-1Je5EAYj5nL)/[[Eng]](/posts/real-time-analytics-airflow-kafka-druid-superset) - Real time analytics: Airflow + Kafka + Druid + Superset
-- [[Vie]](https://viblo.asia/p/cats-vs-dogs-classification-using-cnn-keras-1Je5EAx15nL)/[[Eng]](/posts/cats-vs-dogs-classification-using-cnn-keras) - Cats vs Dogs Classification using CNN Keras
-- [[Vie]](https://viblo.asia/p/spark-distributed-ml-model-with-pandas-udfs-maGK7rWe5j2)/[[Eng]](/posts/spark-distributed-ml-model-with-pandas-udfs) - Spark Distributed ML model with Pandas UDFs
-- [[Vie]](https://viblo.asia/p/serving-ml-models-in-production-with-fastapi-and-celery-924lJROmlPM)/[[Eng]](/posts/serving-ml-models-in-production-with-fastapi-and-celery) - Serving ML Models in Production with FastAPI and Celery
+- **[Real-time Analytics: Airflow + Kafka + Druid + Superset](/posts/real-time-analytics-airflow-kafka-druid-superset)** - A comprehensive guide to building modern streaming analytics architecture
+- **[Cats vs Dogs Classification using CNN Keras](/posts/cats-vs-dogs-classification-using-cnn-keras)** - Deep learning computer vision from concept to deployment
+- **[Spark Distributed ML with Pandas UDFs](/posts/spark-distributed-ml-model-with-pandas-udfs)** - Scaling machine learning workflows across distributed systems
+- **[Serving ML Models with FastAPI and Celery](/posts/serving-ml-models-in-production-with-fastapi-and-celery)** - Production-ready machine learning model serving with modern Python frameworks
 

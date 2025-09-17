@@ -1,7 +1,10 @@
 ---
-title: "Serving ML Models in Production with FastAPI and Celery - [Eng]"
+title: "Serving ML Models in Production with FastAPI and Celery"
 date: 2022-10-10 18:00:00
 draft: false
+description: "Production-ready machine learning model serving with FastAPI and Celery for scalable ML inference"
+tags: ["machine-learning", "mlops", "fastapi", "celery", "production", "model-serving", "python", "asynchronous"]
+featured_image: "https://images.viblo.asia/80181253-1bb4-4f9a-8767-bb8cac951f94.png"
 aliases:
     - /notes/serving-ml-models-in-production-with-fastapi-and-celery.html
 ---

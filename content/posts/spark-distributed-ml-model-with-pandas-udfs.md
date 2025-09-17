@@ -1,7 +1,10 @@
 ---
-title: "Spark Distributed ML model with Pandas UDFs - [Eng]"
+title: "Spark Distributed ML model with Pandas UDFs"
 date: 2022-10-08 16:00:00
 draft: false
+description: "Scaling machine learning workflows across distributed systems using Apache Spark and Pandas UDFs"
+tags: ["apache-spark", "machine-learning", "distributed-systems", "pandas", "udf", "big-data", "data-engineering"]
+featured_image: "https://images.viblo.asia/80181253-1bb4-4f9a-8767-bb8cac951f94.png"
 aliases:
     - /notes/spark-distributed-ml-model-with-pandas-udfs.html
 ---

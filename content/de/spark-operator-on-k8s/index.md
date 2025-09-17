@@ -2,6 +2,9 @@
 title: "Spark Operator on Kubernetes (Computing Layer)"
 date: 2024-06-07 13:48:00
 draft: false
+description: "Learn how to deploy and manage Apache Spark applications on Kubernetes using the Spark Operator for scalable big data processing"
+tags: ["spark", "kubernetes", "big-data", "data-engineering", "computing-layer", "distributed-systems"]
+featured_image: "/de/spark-operator-on-k8s/img/spark-operator.png"
 aliases:
     - /notes/spark-operator-on-k8s.html
 ---

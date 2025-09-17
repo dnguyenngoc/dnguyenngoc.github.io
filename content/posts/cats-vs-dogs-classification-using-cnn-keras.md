@@ -1,7 +1,10 @@
 ---
-title: "Cats vs Dogs Classification using CNN Keras - [Eng]"
+title: "Cats vs Dogs Classification using CNN Keras"
 date: 2022-10-09 10:00:00
 draft: false
+description: "Deep learning computer vision project using CNN with Keras for cats vs dogs classification"
+tags: ["deep-learning", "computer-vision", "cnn", "keras", "tensorflow", "machine-learning", "image-classification"]
+featured_image: "https://images.viblo.asia/80181253-1bb4-4f9a-8767-bb8cac951f94.png"
 aliases:
     - /notes/cats-vs-dogs-classification-using-cnn-keras.html
 ---
