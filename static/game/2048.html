@@ -15,6 +15,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            touch-action: pan-y;
+            overflow-x: hidden;
         }
         
         .container {
@@ -45,6 +47,7 @@
             position: relative;
             width: 340px;
             height: 340px;
+            touch-action: none;
         }
         
         .grid-container {
@@ -195,9 +198,37 @@
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s ease;
+            z-index: 1000;
         }
         
         .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .game-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #8f7a66;
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .nav-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
@@ -239,11 +270,34 @@
             .tile-2048 {
                 font-size: 18px;
             }
+
+            .back-link {
+                top: 10px;
+                left: 10px;
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+
+            .game-nav {
+                top: 10px;
+                right: 10px;
+                gap: 5px;
+            }
+
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 0.8em;
+            }
         }
     </style>
 </head>
 <body>
     <a href="/" class="back-link">← Back to Home</a>
+    
+    <div class="game-nav">
+        <a href="/game/" class="nav-btn">🎮 Games</a>
+        <button class="nav-btn" onclick="game.restart()">🔄 New Game</button>
+    </div>
     
     <div class="container">
         <h1>🎮 2048</h1>
@@ -350,14 +404,39 @@
                 // Touch events for mobile
                 let startX = 0;
                 let startY = 0;
+                let isGameArea = false;
                 
                 document.addEventListener('touchstart', (e) => {
-                    startX = e.touches[0].clientX;
-                    startY = e.touches[0].clientY;
-                });
+                    const gameContainer = document.querySelector('.game-container');
+                    const rect = gameContainer.getBoundingClientRect();
+                    const touch = e.touches[0];
+                    
+                    // Check if touch is within game area
+                    isGameArea = touch.clientX >= rect.left && touch.clientX <= rect.right &&
+                                 touch.clientY >= rect.top && touch.clientY <= rect.bottom;
+                    
+                    if (isGameArea) {
+                        e.preventDefault();
+                        startX = touch.clientX;
+                        startY = touch.clientY;
+                    }
+                }, { passive: false });
+                
+                document.addEventListener('touchmove', (e) => {
+                    if (isGameArea) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
                 
                 document.addEventListener('touchend', (e) => {
-                    if (!startX || !startY) return;
+                    if (!isGameArea || !startX || !startY) {
+                        startX = 0;
+                        startY = 0;
+                        isGameArea = false;
+                        return;
+                    }
+                    
+                    e.preventDefault();
                     
                     let endX = e.changedTouches[0].clientX;
                     let endY = e.changedTouches[0].clientY;
@@ -375,7 +454,8 @@
                     
                     startX = 0;
                     startY = 0;
-                });
+                    isGameArea = false;
+                }, { passive: false });
             }
             
             handleKeyPress(e) {
@@ -489,17 +569,16 @@
                 } else if (direction === 'down') {
                     for (let j = 0; j < this.size; j++) {
                         let column = [];
-                        for (let i = 0; i < this.size; i++) {
+                        for (let i = this.size - 1; i >= 0; i--) {
                             if (this.grid[i][j] !== 0) {
                                 column.push(this.grid[i][j]);
                             }
                         }
-                        for (let i = column.length - 1; i > 0; i--) {
-                            if (column[i] === column[i - 1]) {
+                        for (let i = 0; i < column.length - 1; i++) {
+                            if (column[i] === column[i + 1]) {
                                 column[i] *= 2;
                                 this.score += column[i];
-                                column.splice(i - 1, 1);
-                                i--;
+                                column.splice(i + 1, 1);
                             }
                         }
                         let oldColumn = [];

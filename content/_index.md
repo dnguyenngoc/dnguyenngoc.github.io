@@ -49,16 +49,19 @@ I'm always excited to connect with fellow data enthusiasts, potential collaborat
 Take a break from coding and challenge yourself with our collection of interactive games!
 
 <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); border-radius: 12px; padding: 20px; margin: 15px 0; text-align: center; box-shadow: 0 4px 15px rgba(255, 154, 158, 0.3);">
-  <h4 style="margin: 0 0 10px 0; color: white; font-size: 1.2em;">🎯 Brain Training Games</h4>
-  <p style="margin: 0 0 15px 0; color: rgba(255,255,255,0.9); font-size: 0.95em;">Sharpen your mind with classic puzzle and strategy games</p>
+  <h4 style="margin: 0 0 10px 0; color: white; font-size: 1.2em;">🎯 Interactive Games Collection</h4>
+  <p style="margin: 0 0 15px 0; color: rgba(255,255,255,0.9); font-size: 0.95em;">From brain training puzzles to action-packed adventures - something for everyone!</p>
   <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 15px 0;">
     <span style="background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 15px; color: white; font-size: 0.8em;">⭕ Tic-Tac-Toe vs AI</span>
     <span style="background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 15px; color: white; font-size: 0.8em;">🔢 2048 Puzzle</span>
+    <span style="background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 15px; color: white; font-size: 0.8em;">🐦 Flappy Bird</span>
+    <span style="background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 15px; color: white; font-size: 0.8em;">🚀 Space Defender</span>
+    <span style="background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 15px; color: white; font-size: 0.8em;">🏰 Castle Defense</span>
   </div>
   <a href="/game/" style="display: inline-block; background: white; color: #ff9a9e; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
     🎮 Play Now
   </a>
-  <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.8); font-size: 0.8em;">Perfect for breaks between coding sessions!</p>
+  <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.8); font-size: 0.8em;">5 exciting games to challenge your skills and relax your mind!</p>
 </div>
 
 ## ☕ Support My Work
