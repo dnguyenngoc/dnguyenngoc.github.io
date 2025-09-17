@@ -1,0 +1,20 @@
+<header role="main">
+    <div class="header-content">
+        <h1>{{ .Site.Title }}</h1>
+    </div>
+    {{ with.Site.Menus.main }}
+    <nav class="header-nav">
+        <ul>
+            {{ range . }}
+            <li>
+                <a href="{{ .URL | absLangURL }}">{{ .Name }}</a>
+            </li>
+            {{ end }}
+        </ul>
+    </nav>
+    {{ end }}
+    <div class="header-stats">
+        <img src='https://visitor-badge.laobi.icu/badge?page_id=dnguyenngoc.github.io&left_text=Visitors' alt="Visitor count"/>
+        <span class="post-count">Posts: {{ len (where .Site.RegularPages "Section" "posts") }}</span>
+    </div>
+</header>

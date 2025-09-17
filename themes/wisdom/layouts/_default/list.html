@@ -1,0 +1,15 @@
+{{ define "main" }}
+<main>
+    {{ if or .Title .Content }}
+        {{ with .Title }}<h1>{{ . }}</h1>{{ end }}
+        {{ with .Content }}<div>{{ . }}</div>{{ end }}
+    {{ end }}
+
+    <ul>
+    {{ range .Paginator.Pages }}
+    {{ partial "entry_item.html" . }}
+    {{ end }}
+    </ul>
+    {{ partial "pagination.html" . }}
+</main>
+{{ end }}

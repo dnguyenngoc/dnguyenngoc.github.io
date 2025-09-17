@@ -1,0 +1,19 @@
+{{ define "main" }}
+<main>
+<article class="entry">
+    <h1>{{ .Title }}</h1>
+    <div class="meta">
+        {{ partial "entry_meta" . }}
+        {{ partial "entry_meta_extra" . }}
+    </div>
+    <div>
+        {{ .Content | emojify }}
+    </div>
+    {{ with .Site.Params.disqusShortname }}
+    <div>
+        {{ template "_internal/disqus.html" . }}
+    </div>
+    {{ end }}
+</article>
+</main>
+{{ end }}

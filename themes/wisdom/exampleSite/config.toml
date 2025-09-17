@@ -1,0 +1,50 @@
+baseURL = "https://www.maxrodrigo.com/hugo-theme-wisdom/"
+title = "Wisdom Theme DemoSite"
+theme = "wisdom"
+
+languageCode = "en-us"
+enableRobotsTXT = true
+enableEmoji = true
+
+googleAnalytics = ''
+
+[params]
+  author = "Wisdom"
+  description =  "Theme Hugo Wisdom"
+  keywords = ["hugo-theme", 'gohugo', "minimal", "monospaced"]
+
+  latestPostsLimit = 3 # Homepage posts list.
+  hideReadingTime = false
+  hideAuthor = false
+
+[menu]
+[[menu.main]]
+  identifier = 'home'
+  name = 'home'
+  url = '/'
+  weight = -110
+[[menu.main]]
+  identifier = 'posts'
+  name = 'posts'
+  url = '/posts/'
+  weight = -100
+[[menu.main]]
+  identifier = 'categories'
+  name = 'categories'
+  url = '/categories/'
+  weight = -90
+[[menu.main]]
+  identifier = 'tags'
+  name = 'tags'
+  url = '/tags/'
+  weight = -80
+[[menu.main]]
+  identifier = 'rss'
+  name = 'rss'
+  url = '/index.xml'
+  weight = -70
+
+[taxonomies]
+  series = 'series' # Needed for OpenGraph
+  category = 'categories'
+  tag = 'tags'

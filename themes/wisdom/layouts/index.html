@@ -1,0 +1,21 @@
+{{ define "main" }}
+{{ $postsLimit := .Site.Params.latestPostsLimit | default 5 }}
+<main>
+    {{ with .Content }} {{ . | emojify }} {{ end }}
+
+    {{ $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections}}
+    {{- if $posts}}
+    <h2>{{ i18n "latest_posts" }}</h2>
+    <ul>
+    {{ range first $postsLimit $posts }}
+        {{ partial "entry_item.html" . }}
+    {{ end }}
+    {{ if gt (len $posts) $postsLimit }}
+        <li class="item-more">
+            <a href="/posts/">{{ i18n "more" }}</a>
+        </li>
+    {{ end }}
+    </ul>
+    {{- end}}
+</main>
+{{ end }}
