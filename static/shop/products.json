@@ -1,0 +1,98 @@
+{
+  "categories": [
+    {
+      "id": "luxury-watches",
+      "name": "Luxury Watches",
+      "icon": "⌚",
+      "description": "High-quality mechanical watches with elegant design and premium materials",
+      "products": [
+        {
+          "id": "olevs-6607",
+          "name": "Olevs 6607 Men's Mechanical Watch",
+          "description": "Mechanical watch for men, 41mm size, elegant design with luminous hands, water resistant 3ATM. Perfect for formal occasions and daily wear.",
+          "image": "/shop/images/6607.jpeg",
+          "tiktokLink": "https://www.tiktok.com/@dongholuxury2502/video/7504866082600045831?is_from_webapp=1&sender_device=pc&web_id=7529760611539404306",
+          "price": "$41,70",
+          "rating": 4.8,
+          "tags": ["olevs", "mechanical", "men", "water-resistant", "luminous"]
+        },
+        {
+          "id": "olevs-6617",
+          "name": "Olevs 6617 Luxury Water Resistant Watch",
+          "description": "Luxury ophthalmic watch for men, 41mm size with elegant design. Water resistant and perfect for both formal and casual occasions.",
+          "image": "/shop/images/6617.jpeg",
+          "tiktokLink": "https://www.tiktok.com/@dongholuxury2502/video/7487179623256640773?is_from_webapp=1&sender_device=pc&web_id=7529760611539404306",
+          "price": "$37.00",
+          "rating": 4.8,
+          "tags": ["olevs", "luxury", "ophthalmic", "water-resistant", "men"]
+        },
+        {
+          "id": "olevs-leather-strap",
+          "name": "Olevs Men's Mechanical Watch with Leather Strap",
+          "description": "Mechanical watch for men with premium leather strap, water resistant with luminous hands. Perfect for both formal and casual wear with elegant design.",
+          "image": "/shop/images/leather-strap.jpeg",
+          "tiktokLink": "https://www.tiktok.com/@dongholuxury2502/video/7489659855729413382?is_from_webapp=1&sender_device=pc&web_id=7529760611539404306",
+          "price": "$45.00",
+          "rating": 4.9,
+          "tags": ["olevs", "mechanical", "leather-strap", "water-resistant", "luminous", "men"]
+        }
+      ]
+    },
+    {
+      "id": "classic-watches",
+      "name": "Classic Watches",
+      "icon": "🕐",
+      "description": "Timeless classic designs for every occasion",
+      "products": [
+        {
+          "id": "olevs-2876-1",
+          "name": "Olevs 2876 Men's Water Resistant Luminous Leather Watch",
+          "description": "Classic men's watch with water resistance and luminous hands. Features premium leather strap and elegant design perfect for both formal and casual occasions.",
+          "image": "/shop/images/2876.jpeg",
+          "tiktokLink": "https://www.tiktok.com/@dongholuxury2502/video/7491256410643139848?is_from_webapp=1&sender_device=pc&web_id=7529760611539404306",
+          "price": "$32.00",
+          "rating": 4.9,
+          "tags": ["olevs", "olevswatch", "donghoolevs", "donghodep", "donghochinhhang", "donghonam", "donghochongnuoc", "donghodeotay", "phukienthoitrang", "xuhuong", "capcut"]
+        },
+        {
+          "id": "olevs-2876-2",
+          "name": "Olevs 2876 Men's Water Resistant Luminous Leather Watch",
+          "description": "Classic men's watch with water resistance and luminous hands. Features premium leather strap and elegant design perfect for both formal and casual occasions.",
+          "image": "/shop/images/2876.jpeg",
+          "tiktokLink": "https://www.tiktok.com/@dongholuxury2502/video/7491256410643139848?is_from_webapp=1&sender_device=pc&web_id=7529760611539404306",
+          "price": "$32.00",
+          "rating": 4.9,
+          "tags": ["olevs", "olevswatch", "donghoolevs", "donghodep", "donghochinhhang", "donghonam", "donghochongnuoc", "donghodeotay", "phukienthoitrang", "xuhuong", "capcut"]
+        },
+        {
+          "id": "olevs-2876-3",
+          "name": "Olevs 2876 Men's Water Resistant Luminous Leather Watch",
+          "description": "Classic men's watch with water resistance and luminous hands. Features premium leather strap and elegant design perfect for both formal and casual occasions.",
+          "image": "/shop/images/2876.jpeg",
+          "tiktokLink": "https://www.tiktok.com/@dongholuxury2502/video/7491256410643139848?is_from_webapp=1&sender_device=pc&web_id=7529760611539404306",
+          "price": "$32.00",
+          "rating": 4.9,
+          "tags": ["olevs", "olevswatch", "donghoolevs", "donghodep", "donghochinhhang", "donghonam", "donghochongnuoc", "donghodeotay", "phukienthoitrang", "xuhuong", "capcut"]
+        }
+      ]
+    }
+  ],
+  "hotDeals": [
+    {
+      "id": "deal-1",
+      "title": "⌚ Olevs 6607 Mechanical Watch",
+      "description": "Premium mechanical watch with elegant design and luminous hands",
+      "image": "/shop/images/6607.jpeg",
+      "tiktokLink": "https://www.tiktok.com/@dongholuxury2502/video/7504866082600045831?is_from_webapp=1&sender_device=pc&web_id=7529760611539404306",
+      "expires": "2025-12-31"
+    },
+    {
+      "id": "deal-2", 
+      "title": "⌚ Olevs 6617 Luxury Watch",
+      "description": "Luxury ophthalmic watch with water resistance and elegant design",
+      "image": "/shop/images/6617.jpeg",
+      "tiktokLink": "https://www.tiktok.com/@dongholuxury2502/video/7487179623256640773?is_from_webapp=1&sender_device=pc&web_id=7529760611539404306",
+      "expires": "2025-12-31"
+    }
+  ]
+}

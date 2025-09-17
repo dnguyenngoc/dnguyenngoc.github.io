@@ -69,3 +69,13 @@ enableInlineShortcodes = true
   name = 'De/'
   url = '/de/'
   weight = 4
+[[menu.main]]
+  identifier = 'shop'
+  name = 'Shop/'
+  url = '/shop/'
+  weight = 5
+[[menu.main]]
+  identifier = 'games'
+  name = 'Games/'
+  url = '/game/'
+  weight = 6

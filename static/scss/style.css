@@ -194,6 +194,24 @@ header[role="main"] {
   }
 }
 
+/* Shop CTA Button */
+.shop-cta-button:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important;
+  background: #f8f9fa !important;
+  color: #667eea !important;
+  text-decoration: none !important;
+}
+
+/* Game CTA Button */
+a[href="/game/"]:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important;
+  background: #f8f9fa !important;
+  color: #ff9a9e !important;
+  text-decoration: none !important;
+}
+
 /* Homepage specific styles */
 .profile-section {
   margin: 2rem 0;
