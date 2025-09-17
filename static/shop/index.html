@@ -208,6 +208,76 @@
             color: #2c3e50;
         }
 
+        .tiktok-follow-notice {
+            background: linear-gradient(135deg, #ff0050 0%, #ff4081 50%, #ff6b9d 100%);
+            border: 2px solid #ff0050;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 0 20px 40px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(255, 0, 80, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUpFadeIn 1.2s ease-out 1.5s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tiktok-follow-notice::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .tiktok-follow-notice h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tiktok-follow-notice p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .tiktok-follow-button {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 2;
+        }
+
+        .tiktok-follow-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            color: white;
+            text-decoration: none;
+        }
+
         .categories-section {
             margin-bottom: 80px;
             padding: 0;
@@ -705,6 +775,24 @@
                 padding: 20px;
             }
 
+            .tiktok-follow-notice {
+                margin: 0 15px 25px;
+                padding: 25px 20px;
+            }
+
+            .tiktok-follow-notice h3 {
+                font-size: 1.5em;
+            }
+
+            .tiktok-follow-notice p {
+                font-size: 1em;
+            }
+
+            .tiktok-follow-button {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+
             .categories-section {
                 padding: 0;
             }
@@ -758,6 +846,14 @@
 
             <div class="affiliate-notice">
                 <strong>💡 Note:</strong> These are affiliate links. I earn a small commission when you purchase through these links, but it doesn't cost you anything extra. Thank you for supporting my work!
+            </div>
+
+            <div class="tiktok-follow-notice">
+                <h3>🎵 Follow My TikTok for More!</h3>
+                <p>Support my content creation by following my TikTok account! Get the latest watch reviews, unboxing videos, and exclusive deals. Your follow means the world to me! ❤️</p>
+                <a href="https://www.tiktok.com/@dongholuxury2502" target="_blank" class="tiktok-follow-button">
+                    📱 Follow @dongholuxury2502
+                </a>
             </div>
 
         <div id="loading" class="loading">
