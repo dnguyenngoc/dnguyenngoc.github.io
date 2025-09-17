@@ -44,6 +44,140 @@ I'm always excited to connect with fellow data enthusiasts, potential collaborat
 - [LinkedIn](https://www.linkedin.com/in/dnguyenngoc/)
 - [GitHub](https://github.com/dnguyenngoc/)
 
+## ☕ Support My Work
+
+If you find my content helpful and would like to support my work, you can donate via TRC20:
+
+**TRC20 Address:** `TM8XN2F8pAf4DPd7aPk7LSV5MneUrfHKuy`
+
+<div id="donate-box" style="background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; margin: 20px 0; text-align: center; cursor: pointer; transition: all 0.3s ease;" title="Click to copy">
+  <p id="address-text" style="margin: 0; font-family: monospace; font-size: 0.9em; word-break: break-all; color: #495057;">
+    TM8XN2F8pAf4DPd7aPk7LSV5MneUrfHKuy
+  </p>
+  <p id="copy-text" style="margin: 5px 0 0 0; font-size: 0.8em; color: #6c757d;">
+    Click to copy address
+  </p>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const donateBox = document.getElementById('donate-box');
+  const addressText = document.getElementById('address-text');
+  const copyText = document.getElementById('copy-text');
+  const originalText = copyText.textContent;
+  
+  donateBox.addEventListener('click', function() {
+    const textToCopy = 'TM8XN2F8pAf4DPd7aPk7LSV5MneUrfHKuy';
+    
+    // Try modern clipboard API first
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(textToCopy).then(function() {
+        showSuccess();
+      }).catch(function() {
+        fallbackCopy();
+      });
+    } else {
+      fallbackCopy();
+    }
+  });
+  
+  function showSuccess() {
+    // Change text
+    copyText.innerHTML = '✅ Copied to clipboard!';
+    
+    // Visual feedback
+    donateBox.style.backgroundColor = '#d4edda';
+    donateBox.style.borderColor = '#28a745';
+    donateBox.style.borderWidth = '2px';
+    donateBox.style.transform = 'scale(1.05)';
+    donateBox.style.boxShadow = '0 4px 12px rgba(40, 167, 69, 0.4)';
+    
+    // Address text effect
+    addressText.style.color = '#28a745';
+    addressText.style.fontWeight = 'bold';
+    
+    // Show toast notification
+    showToast('🎉 Address copied successfully!');
+    
+    // Reset after 2 seconds
+    setTimeout(function() {
+      copyText.textContent = originalText;
+      donateBox.style.backgroundColor = '#f8f9fa';
+      donateBox.style.borderColor = '#e9ecef';
+      donateBox.style.borderWidth = '1px';
+      donateBox.style.transform = 'scale(1)';
+      donateBox.style.boxShadow = 'none';
+      addressText.style.color = '#495057';
+      addressText.style.fontWeight = 'normal';
+    }, 2000);
+  }
+  
+  function fallbackCopy() {
+    // Fallback for older browsers
+    const textArea = document.createElement('textarea');
+    textArea.value = 'TM8XN2F8pAf4DPd7aPk7LSV5MneUrfHKuy';
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      document.execCommand('copy');
+      showSuccess();
+    } catch (err) {
+      copyText.innerHTML = '❌ Copy failed - please select and copy manually';
+      donateBox.style.backgroundColor = '#f8d7da';
+      donateBox.style.borderColor = '#dc3545';
+    }
+    
+    document.body.removeChild(textArea);
+  }
+  
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.innerHTML = message;
+    toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      z-index: 10000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      animation: slideInRight 0.3s ease;
+    `;
+    
+    // Add animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideInRight {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(function() {
+      toast.remove();
+      style.remove();
+    }, 3000);
+  }
+});
+</script>
+
 ---
 
 ## Featured Work & Insights
