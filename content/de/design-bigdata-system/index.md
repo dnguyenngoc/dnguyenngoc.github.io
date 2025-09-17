@@ -19,8 +19,10 @@ In today's data-driven world, organizations are generating and collecting massiv
 
 Designing effective big data systems is both an art and a science, requiring deep understanding of distributed computing principles, data processing patterns, and the unique challenges that come with scale. This comprehensive guide will walk you through the fundamental concepts, architectural patterns, and best practices needed to build robust, scalable big data solutions.
 
-![Big Data Architecture Overview](/de/design-bigdata-system/img/DataArchitecture.png)
-*Figure 1: Overview of Big Data System Architecture*
+<div style="text-align: center; margin: 20px 0; padding: 15px; border: 2px solid #ddd; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+  <img src="/de/design-bigdata-system/img/DataArchitecture.png" alt="Big Data Architecture Overview" style="max-width: 100%; height: auto; border-radius: 4px;">
+  <p style="margin-top: 10px; font-style: italic; color: #666; font-size: 0.9em;">Figure 1: Overview of Big Data System Architecture</p>
+</div>
 
 ## What is Big Data?
 
