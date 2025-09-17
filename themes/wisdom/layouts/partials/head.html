@@ -94,8 +94,7 @@
 {{ end -}}
 
 {{- /* CSS */}}
-{{ $style := resources.Get "scss/style.scss"  | css.Sass (dict "outputStyle" "compressed") | resources.Minify | fingerprint }}
-<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+<link rel="stylesheet" href="{{ "/scss/style.css" | relURL }}">
 
 {{- /* Customizations */}}
 {{ range .Site.Params.css -}}
