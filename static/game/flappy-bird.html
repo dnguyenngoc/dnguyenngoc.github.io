@@ -18,6 +18,9 @@
             color: #ffffff;
             overflow: hidden;
             touch-action: pan-y;
+            position: fixed;
+            width: 100%;
+            height: 100%;
         }
 
         .container {
@@ -341,6 +344,10 @@
                 font-size: 2em;
             }
             
+            .header p {
+                font-size: 1em;
+            }
+            
             .score-display {
                 font-size: 2.5em;
                 top: 60px;
@@ -354,14 +361,95 @@
             .game-over-screen {
                 padding: 30px 20px;
                 margin: 0 20px;
+                max-width: 90vw;
             }
             
             .game-over-screen h2 {
                 font-size: 2em;
             }
             
+            .game-over-screen p {
+                font-size: 1.1em;
+            }
+            
+            .final-score {
+                font-size: 1.5em;
+            }
+            
+            .restart-btn {
+                padding: 12px 25px;
+                font-size: 1.1em;
+                min-width: 120px;
+            }
+            
             .start-screen h2 {
                 font-size: 2.5em;
+            }
+            
+            .start-screen p {
+                font-size: 1.1em;
+            }
+            
+            .start-btn {
+                padding: 18px 35px;
+                font-size: 1.3em;
+                min-width: 150px;
+            }
+            
+            .instructions {
+                font-size: 1em;
+                bottom: 15px;
+                position: fixed;
+                z-index: 10;
+            }
+            
+            .back-link {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+            
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 0.8em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .score-display {
+                font-size: 2.2em;
+                top: 50px;
+            }
+            
+            .high-score {
+                font-size: 0.9em;
+                top: 85px;
+            }
+            
+            .game-over-screen {
+                padding: 25px 15px;
+                margin: 0 15px;
+            }
+            
+            .game-over-screen h2 {
+                font-size: 1.8em;
+            }
+            
+            .start-screen h2 {
+                font-size: 2.2em;
+            }
+            
+            .start-btn {
+                padding: 15px 30px;
+                font-size: 1.2em;
+            }
+            
+            .restart-btn {
+                padding: 10px 20px;
+                font-size: 1em;
             }
         }
     </style>
@@ -409,7 +497,7 @@
             </div>
             
             <div class="instructions">
-                <p>🖱️ Click or 📱 Tap to flap your wings!</p>
+                <p>📱 Tap anywhere to flap your wings!</p>
             </div>
         </div>
     </div>
@@ -434,6 +522,8 @@
                     color: '#FFD700'
                 };
                 
+                this.touchFeedback = [];
+                
                 this.pipes = [];
                 this.pipeWidth = 60;
                 this.pipeGap = 150;
@@ -453,13 +543,25 @@
             }
             
             setupCanvas() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
+                this.updateCanvasSize();
                 
                 window.addEventListener('resize', () => {
+                    this.updateCanvasSize();
+                });
+            }
+            
+            updateCanvasSize() {
+                const isMobile = window.innerWidth <= 768;
+                const isPortrait = window.innerHeight > window.innerWidth;
+                
+                if (isMobile && isPortrait) {
+                    // On mobile portrait, leave space for UI elements
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight - 80; // Leave space for header and instructions
+                } else {
                     this.canvas.width = window.innerWidth;
                     this.canvas.height = window.innerHeight;
-                });
+                }
             }
             
             setupEventListeners() {
@@ -469,10 +571,17 @@
                     this.handleInput();
                 });
                 
-                // Touch events
+                // Touch events - improved for mobile
                 this.canvas.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     this.handleInput();
+                    // Add visual feedback for touch
+                    this.showTouchFeedback(e.touches[0].clientX, e.touches[0].clientY);
+                });
+                
+                // Prevent scrolling on touch
+                this.canvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
                 });
                 
                 // Keyboard events
@@ -554,6 +663,15 @@
                 
                 // Check collisions
                 this.checkCollisions();
+                
+                // Update touch feedback
+                this.touchFeedback.forEach((feedback, index) => {
+                    feedback.radius += 1.5;
+                    feedback.life--;
+                    if (feedback.life <= 0) {
+                        this.touchFeedback.splice(index, 1);
+                    }
+                });
             }
             
             spawnPipe() {
@@ -621,6 +739,11 @@
                 
                 // Draw ground
                 this.drawGround();
+                
+                // Draw touch feedback
+                this.touchFeedback.forEach(feedback => {
+                    this.drawTouchFeedback(feedback);
+                });
             }
             
             drawBackground() {
@@ -693,12 +816,35 @@
                 }
             }
             
+            drawTouchFeedback(feedback) {
+                const alpha = feedback.life / 20;
+                this.ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                this.ctx.lineWidth = 3;
+                this.ctx.beginPath();
+                this.ctx.arc(feedback.x, feedback.y, feedback.radius, 0, 2 * Math.PI);
+                this.ctx.stroke();
+            }
+            
             updateScoreDisplay() {
                 document.getElementById('scoreDisplay').textContent = this.score;
             }
             
             updateHighScoreDisplay() {
                 document.getElementById('highScore').textContent = `High Score: ${this.highScore}`;
+            }
+            
+            showTouchFeedback(x, y) {
+                const rect = this.canvas.getBoundingClientRect();
+                const canvasX = x - rect.left;
+                const canvasY = y - rect.top;
+                
+                this.touchFeedback.push({
+                    x: canvasX,
+                    y: canvasY,
+                    radius: 0,
+                    maxRadius: 30,
+                    life: 20
+                });
             }
             
             gameLoop() {

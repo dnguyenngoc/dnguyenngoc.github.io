@@ -18,6 +18,9 @@
             color: #ffffff;
             overflow: hidden;
             touch-action: pan-y;
+            position: fixed;
+            width: 100%;
+            height: 100%;
         }
 
         .container {
@@ -368,28 +371,145 @@
                 font-size: 2em;
             }
             
+            .header p {
+                font-size: 1em;
+            }
+            
             .hud {
                 top: 60px;
                 left: 10px;
                 right: 10px;
+                position: fixed;
+                z-index: 15;
             }
             
             .hud-item {
-                padding: 6px 12px;
-                font-size: 0.9em;
+                padding: 8px 12px;
+                font-size: 1em;
+                margin-bottom: 5px;
+            }
+            
+            .score {
+                font-size: 1.3em;
+            }
+            
+            .health {
+                font-size: 1.1em;
+            }
+            
+            .wave, .level {
+                font-size: 1.1em;
+            }
+            
+            .weapon, .shield {
+                font-size: 0.8em;
             }
             
             .game-over-screen {
                 padding: 30px 20px;
                 margin: 0 20px;
+                max-width: 90vw;
             }
             
             .game-over-screen h2 {
                 font-size: 2em;
             }
             
+            .game-over-screen p {
+                font-size: 1.1em;
+            }
+            
+            .final-score {
+                font-size: 1.5em;
+            }
+            
+            .restart-btn {
+                padding: 12px 25px;
+                font-size: 1.1em;
+                min-width: 120px;
+            }
+            
             .start-screen h2 {
                 font-size: 2.5em;
+            }
+            
+            .start-screen p {
+                font-size: 1.1em;
+            }
+            
+            .start-btn {
+                padding: 18px 35px;
+                font-size: 1.3em;
+                min-width: 150px;
+            }
+            
+            .instructions {
+                font-size: 1em;
+                bottom: 15px;
+                position: fixed;
+                z-index: 10;
+            }
+            
+            .back-link {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+            
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 0.8em;
+            }
+            
+            .powerup-indicator {
+                bottom: 60px;
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .hud {
+                top: 50px;
+                left: 8px;
+                right: 8px;
+                position: fixed;
+                z-index: 15;
+            }
+            
+            .hud-item {
+                padding: 6px 10px;
+                font-size: 0.9em;
+            }
+            
+            .score {
+                font-size: 1.2em;
+            }
+            
+            .game-over-screen {
+                padding: 25px 15px;
+                margin: 0 15px;
+            }
+            
+            .game-over-screen h2 {
+                font-size: 1.8em;
+            }
+            
+            .start-screen h2 {
+                font-size: 2.2em;
+            }
+            
+            .start-btn {
+                padding: 15px 30px;
+                font-size: 1.2em;
+            }
+            
+            .restart-btn {
+                padding: 10px 20px;
+                font-size: 1em;
             }
         }
     </style>
@@ -446,7 +566,7 @@
             </div>
             
             <div class="instructions">
-                <p>🖱️ Move mouse or 📱 Touch to aim • Click/Tap to shoot</p>
+                <p>📱 Touch to move • Tap to shoot</p>
             </div>
         </div>
     </div>
@@ -496,6 +616,8 @@
                 this.powerupType = '';
                 this.powerupTimer = 0;
                 
+                this.touchFeedback = [];
+                
                 this.setupCanvas();
                 this.setupEventListeners();
                 this.createStars();
@@ -503,13 +625,25 @@
             }
             
             setupCanvas() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
+                this.updateCanvasSize();
                 
                 window.addEventListener('resize', () => {
+                    this.updateCanvasSize();
+                });
+            }
+            
+            updateCanvasSize() {
+                const isMobile = window.innerWidth <= 768;
+                const isPortrait = window.innerHeight > window.innerWidth;
+                
+                if (isMobile && isPortrait) {
+                    // On mobile portrait, leave space for UI elements
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight - 100; // Leave space for HUD and instructions
+                } else {
                     this.canvas.width = window.innerWidth;
                     this.canvas.height = window.innerHeight;
-                });
+                }
             }
             
             setupEventListeners() {
@@ -527,7 +661,7 @@
                     this.handleInput();
                 });
                 
-                // Touch events
+                // Touch events - improved for mobile
                 this.canvas.addEventListener('touchmove', (e) => {
                     e.preventDefault();
                     if (this.gameState === 'playing' && e.touches.length > 0) {
@@ -535,12 +669,20 @@
                         const touch = e.touches[0];
                         this.player.x = touch.clientX - rect.left - this.player.width / 2;
                         this.player.y = touch.clientY - rect.top - this.player.height / 2;
+                        
+                        // Keep player within bounds
+                        this.player.x = Math.max(0, Math.min(this.canvas.width - this.player.width, this.player.x));
+                        this.player.y = Math.max(0, Math.min(this.canvas.height - this.player.height, this.player.y));
                     }
                 });
                 
                 this.canvas.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     this.handleInput();
+                    // Add visual feedback for touch
+                    if (e.touches.length > 0) {
+                        this.showTouchFeedback(e.touches[0].clientX, e.touches[0].clientY);
+                    }
                 });
                 
                 // Keyboard events
@@ -839,6 +981,15 @@
                     }
                 }
                 
+                // Update touch feedback
+                this.touchFeedback.forEach((feedback, index) => {
+                    feedback.radius += 1.5;
+                    feedback.life--;
+                    if (feedback.life <= 0) {
+                        this.touchFeedback.splice(index, 1);
+                    }
+                });
+                
                 // Check game over
                 if (this.player.health <= 0) {
                     this.gameOver();
@@ -1051,6 +1202,11 @@
                     this.ctx.fillRect(particle.x, particle.y, 2, 2);
                     this.ctx.globalAlpha = 1;
                 });
+                
+                // Draw touch feedback
+                this.touchFeedback.forEach(feedback => {
+                    this.drawTouchFeedback(feedback);
+                });
             }
             
             drawPlayer() {
@@ -1178,6 +1334,29 @@
                 if (shieldInfo) {
                     shieldInfo.textContent = `🛡️ Shield: ${this.player.shield}/${this.player.maxShield}`;
                 }
+            }
+            
+            showTouchFeedback(x, y) {
+                const rect = this.canvas.getBoundingClientRect();
+                const canvasX = x - rect.left;
+                const canvasY = y - rect.top;
+                
+                this.touchFeedback.push({
+                    x: canvasX,
+                    y: canvasY,
+                    radius: 0,
+                    maxRadius: 30,
+                    life: 20
+                });
+            }
+            
+            drawTouchFeedback(feedback) {
+                const alpha = feedback.life / 20;
+                this.ctx.strokeStyle = `rgba(78, 205, 196, ${alpha})`;
+                this.ctx.lineWidth = 3;
+                this.ctx.beginPath();
+                this.ctx.arc(feedback.x, feedback.y, feedback.radius, 0, 2 * Math.PI);
+                this.ctx.stroke();
             }
             
             gameLoop() {
