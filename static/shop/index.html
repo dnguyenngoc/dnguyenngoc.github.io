@@ -457,6 +457,7 @@
             z-index: 2;
             position: relative;
             min-height: 0;
+            overflow: hidden;
         }
 
         .product-name {
@@ -759,15 +760,51 @@
             .product-card {
                 margin-bottom: 15px;
                 max-width: 100%;
-                height: 450px;
+                height: 500px;
+                min-height: 500px;
             }
             
             .product-image-container {
-                height: 250px;
+                height: 200px;
+                flex-shrink: 0;
             }
             
             .product-content {
                 padding: 15px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                min-height: 0;
+                flex-grow: 1;
+            }
+            
+            .product-name {
+                font-size: 1.1em;
+                margin-bottom: 6px;
+                -webkit-line-clamp: 2;
+            }
+            
+            .product-description {
+                font-size: 0.85em;
+                margin-bottom: 10px;
+                -webkit-line-clamp: 2;
+                flex-grow: 1;
+            }
+            
+            .product-meta {
+                margin-bottom: 8px;
+            }
+            
+            .product-tags {
+                margin-bottom: 10px;
+                flex-shrink: 0;
+            }
+            
+            .shop-button {
+                margin-top: auto;
+                padding: 12px 16px;
+                font-size: 0.85em;
+                flex-shrink: 0;
             }
 
             .affiliate-notice {
@@ -820,6 +857,75 @@
             .deals-grid {
                 padding: 0 10px;
                 gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-card {
+                height: 480px;
+                min-height: 480px;
+            }
+            
+            .product-image-container {
+                height: 180px;
+            }
+            
+            .product-content {
+                padding: 12px;
+            }
+            
+            .product-name {
+                font-size: 1em;
+                margin-bottom: 5px;
+            }
+            
+            .product-description {
+                font-size: 0.8em;
+                margin-bottom: 8px;
+                -webkit-line-clamp: 2;
+            }
+            
+            .product-meta {
+                margin-bottom: 6px;
+            }
+            
+            .product-price {
+                font-size: 1.1em;
+            }
+            
+            .product-rating {
+                font-size: 0.8em;
+            }
+            
+            .product-tags {
+                margin-bottom: 8px;
+            }
+            
+            .tag {
+                font-size: 0.65em;
+                padding: 2px 6px;
+            }
+            
+            .shop-button {
+                padding: 10px 14px;
+                font-size: 0.8em;
+            }
+            
+            .tiktok-follow-notice {
+                padding: 20px 15px;
+            }
+            
+            .tiktok-follow-notice h3 {
+                font-size: 1.3em;
+            }
+            
+            .tiktok-follow-notice p {
+                font-size: 0.9em;
+            }
+            
+            .tiktok-follow-button {
+                padding: 10px 20px;
+                font-size: 0.9em;
             }
         }
     </style>
