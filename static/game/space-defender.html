@@ -444,6 +444,41 @@
             z-index: 20;
         }
 
+        .mobile-shoot-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 107, 107, 0.8);
+            border: 2px solid #ff6b6b;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mobile-shoot-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 107, 107, 1);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-shoot-btn {
+                display: flex;
+            }
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2em;
@@ -454,35 +489,53 @@
             }
             
             .hud {
-                top: 50px;
-                left: 8px;
-                right: 8px;
+                top: 35px;
+                left: 5px;
+                right: 5px;
                 position: fixed;
                 z-index: 15;
-                transform: scale(0.8);
-                transform-origin: top center;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .hud-left, .hud-right {
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+                flex: 1;
+            }
+            
+            .hud-right {
+                text-align: right;
             }
             
             .hud-item {
-                padding: 6px 10px;
-                font-size: 0.9em;
-                margin-bottom: 3px;
+                padding: 4px 8px;
+                font-size: 0.75em;
+                margin-bottom: 2px;
+                min-width: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             
             .score {
-                font-size: 1.2em;
+                font-size: 1em;
+                font-weight: bold;
             }
             
             .health {
-                font-size: 1em;
+                font-size: 0.9em;
             }
             
             .wave, .level {
-                font-size: 1em;
+                font-size: 0.8em;
             }
             
             .weapon, .shield {
-                font-size: 0.8em;
+                font-size: 0.7em;
             }
             
             .game-over-screen {
@@ -556,41 +609,59 @@
 
         @media (max-width: 480px) {
             .game-container {
-                height: calc(100vh - 100px);
+                height: calc(100vh - 80px);
                 min-height: 400px;
                 max-height: 700px;
             }
             
             .instructions {
-                font-size: 0.9em;
-                bottom: 10px;
-                left: 5px;
-                right: 5px;
-                padding: 8px;
+                font-size: 0.8em;
+                bottom: 8px;
+                left: 3px;
+                right: 3px;
+                padding: 6px;
             }
             
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.5em;
             }
             
             .hud {
-                top: 40px;
-                left: 5px;
-                right: 5px;
+                top: 30px;
+                left: 3px;
+                right: 3px;
                 position: fixed;
                 z-index: 15;
-                transform: scale(0.7);
-                transform-origin: top center;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 3px;
+            }
+            
+            .hud-left, .hud-right {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                flex: 1;
+            }
+            
+            .hud-right {
+                text-align: right;
             }
             
             .hud-item {
-                padding: 4px 8px;
-                font-size: 0.8em;
-                margin-bottom: 2px;
+                padding: 3px 6px;
+                font-size: 0.7em;
+                margin-bottom: 1px;
+                min-width: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             
             .score {
-                font-size: 1.1em;
+                font-size: 0.9em;
+                font-weight: bold;
             }
             
             .game-over-screen {
@@ -662,6 +733,10 @@
                 
                 <div class="powerup-indicator" id="powerupIndicator">
                     Power-up Active!
+                </div>
+                
+                <div class="mobile-shoot-btn" id="mobileShootBtn">
+                    🔥
                 </div>
                 
                 <div class="start-screen" id="startScreen">
@@ -779,24 +854,54 @@
                     this.handleInput();
                 });
                 
-                // Touch events - improved for mobile (touch-to-move)
+                // Touch events - drag-to-move for mobile
+                let isDragging = false;
+                let lastTouchX = 0;
+                let lastTouchY = 0;
+                
                 this.canvas.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     if (this.gameState === 'playing' && e.touches.length > 0) {
                         const rect = this.canvas.getBoundingClientRect();
                         const touch = e.touches[0];
-                        this.player.x = touch.clientX - rect.left - this.player.width / 2;
-                        this.player.y = touch.clientY - rect.top - this.player.height / 2;
+                        lastTouchX = touch.clientX;
+                        lastTouchY = touch.clientY;
+                        isDragging = true;
+                        
+                        // Add visual feedback for touch
+                        this.showTouchFeedback(touch.clientX, touch.clientY);
+                    } else if (this.gameState === 'start' || this.gameState === 'gameOver') {
+                        this.handleInput();
+                    }
+                });
+                
+                this.canvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    if (this.gameState === 'playing' && isDragging && e.touches.length > 0) {
+                        const rect = this.canvas.getBoundingClientRect();
+                        const touch = e.touches[0];
+                        
+                        // Calculate movement delta
+                        const deltaX = touch.clientX - lastTouchX;
+                        const deltaY = touch.clientY - lastTouchY;
+                        
+                        // Move player based on touch movement
+                        this.player.x += deltaX;
+                        this.player.y += deltaY;
                         
                         // Keep player within bounds
                         this.player.x = Math.max(0, Math.min(this.canvas.width - this.player.width, this.player.x));
                         this.player.y = Math.max(0, Math.min(this.canvas.height - this.player.height, this.player.y));
-                
-                    // Add visual feedback for touch
-                        this.showTouchFeedback(touch.clientX, touch.clientY);
-                    } else {
-                        this.handleInput();
+                        
+                        // Update last touch position
+                        lastTouchX = touch.clientX;
+                        lastTouchY = touch.clientY;
                     }
+                });
+                
+                this.canvas.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    isDragging = false;
                 });
                 
                 // Keyboard events
@@ -804,6 +909,22 @@
                     if (e.code === 'Space') {
                         e.preventDefault();
                         this.handleInput();
+                    }
+                });
+                
+                // Mobile shoot button
+                const mobileShootBtn = document.getElementById('mobileShootBtn');
+                mobileShootBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (this.gameState === 'playing') {
+                        this.shoot();
+                    }
+                });
+                
+                mobileShootBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (this.gameState === 'playing') {
+                        this.shoot();
                     }
                 });
             }
@@ -1144,28 +1265,24 @@
             
             spawnEnemy() {
                 const enemyTypes = [
-                    // Small asteroids - 1-2 hits (falling) - slower speeds
-                    { width: 15, height: 15, speed: 1.5, health: 1, color: '#ff6b6b', points: 10, shape: 'circle', fragments: 0, floating: false },
-                    { width: 18, height: 18, speed: 1.3, health: 2, color: '#ff9ff3', points: 15, shape: 'circle', fragments: 1, floating: false },
+                    // Small asteroids - 1-2 hits (falling) - faster, more agile
+                    { width: 12, height: 12, speed: 2.0, health: 1, color: '#ff6b6b', points: 10, shape: 'circle', fragments: 0, floating: false },
+                    { width: 15, height: 15, speed: 1.8, health: 2, color: '#ff9ff3', points: 15, shape: 'circle', fragments: 1, floating: false },
                     
-                    // Medium asteroids - 3-5 hits (mixed floating/falling) - slower speeds
-                    { width: 22, height: 22, speed: 1.2, health: 3, color: '#a8e6cf', points: 25, shape: 'circle', fragments: 2, floating: false },
-                    { width: 25, height: 25, speed: 1.0, health: 4, color: '#ffa726', points: 30, shape: 'square', fragments: 2, floating: true },
-                    { width: 28, height: 28, speed: 0.9, health: 5, color: '#ab47bc', points: 35, shape: 'square', fragments: 3, floating: true },
+                    // Medium asteroids - 3-5 hits (mixed floating/falling) - balanced
+                    { width: 18, height: 18, speed: 1.5, health: 3, color: '#a8e6cf', points: 25, shape: 'circle', fragments: 2, floating: false },
+                    { width: 20, height: 20, speed: 1.3, health: 4, color: '#ffa726', points: 30, shape: 'square', fragments: 2, floating: true },
+                    { width: 22, height: 22, speed: 1.2, health: 5, color: '#ab47bc', points: 35, shape: 'square', fragments: 3, floating: true },
                     
-                    // Large asteroids - 6-10 hits (mostly floating)
-                    { width: 32, height: 32, speed: 1.2, health: 6, color: '#26a69a', points: 50, shape: 'square', fragments: 3, floating: true },
-                    { width: 35, height: 35, speed: 1.0, health: 8, color: '#ef5350', points: 60, shape: 'triangle', fragments: 4, floating: true },
-                    { width: 38, height: 38, speed: 0.8, health: 10, color: '#42a5f5', points: 70, shape: 'triangle', fragments: 4, floating: true },
+                    // Large asteroids - 6-10 hits (mostly floating) - reduced size
+                    { width: 25, height: 25, speed: 1.0, health: 6, color: '#26a69a', points: 50, shape: 'square', fragments: 3, floating: true },
+                    { width: 28, height: 28, speed: 0.9, health: 8, color: '#ef5350', points: 60, shape: 'triangle', fragments: 4, floating: true },
+                    { width: 30, height: 30, speed: 0.8, health: 10, color: '#42a5f5', points: 70, shape: 'triangle', fragments: 4, floating: true },
                     
-                    // Huge asteroids - 12-20 hits (all floating)
-                    { width: 42, height: 42, speed: 0.6, health: 12, color: '#66bb6a', points: 100, shape: 'triangle', fragments: 5, floating: true },
-                    { width: 45, height: 45, speed: 0.5, health: 15, color: '#ff7043', points: 120, shape: 'diamond', fragments: 6, floating: true },
-                    { width: 48, height: 48, speed: 0.4, health: 18, color: '#8e24aa', points: 150, shape: 'diamond', fragments: 7, floating: true },
-                    
-                    // Massive asteroids - 25+ hits (all floating)
-                    { width: 55, height: 55, speed: 0.3, health: 25, color: '#26c6da', points: 200, shape: 'diamond', fragments: 8, floating: true },
-                    { width: 60, height: 60, speed: 0.2, health: 35, color: '#795548', points: 300, shape: 'circle', fragments: 10, floating: true }
+                    // Elite asteroids - 12-20 hits (all floating) - quality over quantity
+                    { width: 32, height: 32, speed: 0.7, health: 12, color: '#66bb6a', points: 100, shape: 'triangle', fragments: 5, floating: true },
+                    { width: 35, height: 35, speed: 0.6, health: 15, color: '#ff7043', points: 120, shape: 'diamond', fragments: 6, floating: true },
+                    { width: 38, height: 38, speed: 0.5, health: 18, color: '#8e24aa', points: 150, shape: 'diamond', fragments: 7, floating: true }
                 ];
                 
                 const type = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
@@ -1181,7 +1298,7 @@
                 
                 // Debug health scaling
                 if (this.frameCount % 600 === 0) { // Every 10 seconds
-                    console.log(`Wave ${this.wave} - Asteroid health scaling: Base=${type.health}, Scaled=${scaledHealth}, Multiplier=${(1 + (this.wave - 1) * 1.0).toFixed(2)}x`);
+                    // console.log(`Wave ${this.wave} - Asteroid health scaling: Base=${type.health}, Scaled=${scaledHealth}, Multiplier=${(1 + (this.wave - 1) * 1.0).toFixed(2)}x`);
                 }
                 
                 this.enemies.push({
@@ -1261,7 +1378,7 @@
                     }
                     // Debug: Log game state if not playing
                     if (this.frameCount % 300 === 0) { // Every 5 seconds
-                        console.log(`Game not playing - State: ${this.gameState}`);
+                        // console.log(`Game not playing - State: ${this.gameState}`);
                     }
                     return;
                 }
@@ -1270,13 +1387,13 @@
                 const totalObjects = this.bullets.length + this.enemies.length + this.particles.length + this.explosions.length;
                 if (totalObjects > 500 && this.frameCount % 8 === 0) {
                     if (this.frameCount % 300 === 0) { // Debug every 5 seconds
-                        console.log(`Skipping frame - Very high load: ${totalObjects} objects`);
+                        // console.log(`Skipping frame - Very high load: ${totalObjects} objects`);
                     }
                     return; // Skip frame for very high load only
                 }
                 if (totalObjects > 400 && this.frameCount % 6 === 0) {
                     if (this.frameCount % 300 === 0) { // Debug every 5 seconds
-                        console.log(`Skipping frame - High load: ${totalObjects} objects`);
+                        // console.log(`Skipping frame - High load: ${totalObjects} objects`);
                     }
                     return; // Skip frame for high load
                 }
@@ -1285,44 +1402,43 @@
                 
                 // Safety check: Force restart if game loop seems stuck
                 if (this.frameCount > 0 && this.frameCount % 1800 === 0) { // Every 30 seconds
-                    console.log(`Game loop health check - Frame: ${this.frameCount}, State: ${this.gameState}, Objects: ${totalObjects}`);
+                    // console.log(`Game loop health check - Frame: ${this.frameCount}, State: ${this.gameState}, Objects: ${totalObjects}`);
                     
                     // Debug animation state
                     const movingEnemies = this.enemies.filter(enemy => enemy.speed > 0).length;
                     const movingBullets = this.bullets.filter(bullet => bullet.speed > 0).length;
-                    console.log(`Animation debug - Moving enemies: ${movingEnemies}/${this.enemies.length}, Moving bullets: ${movingBullets}/${this.bullets.length}`);
+                    // console.log(`Animation debug - Moving enemies: ${movingEnemies}/${this.enemies.length}, Moving bullets: ${movingBullets}/${this.bullets.length}`);
                 }
                 
                 // Spawn enemies - Continuous spawning for survival challenge
                 const isBossWave = this.wave % 5 === 0;
-                if (!isBossWave && !this.isBossBreak) {
-                    const adjustedSpawnRate = Math.max(40, this.enemySpawnRate - (this.wave - 1) * 1); // Much slower spawning as waves progress
+                const hasBoss = this.enemies.some(enemy => enemy.isBoss);
+                const hasDefeatedBoss = this.enemies.some(enemy => enemy.isBoss && enemy.isDefeated);
+                
+                if (!isBossWave && !this.isBossBreak && !hasBoss) {
+                    // Regular wave - spawn enemies only when no boss is present
+                    const adjustedSpawnRate = Math.max(40, this.enemySpawnRate - (this.wave - 1) * 1);
                     if (this.frameCount % adjustedSpawnRate === 0 && 
-                        this.enemies.length < 15) { // Reduced from 20 to 15 for performance
+                        this.enemies.length < 15) {
                     this.spawnEnemy();
                 }
                 
                     // Performance: Limit total enemies
                     if (this.enemies.length > 20) {
-                        this.enemies = this.enemies.slice(-15); // Keep only last 15 enemies
+                        this.enemies = this.enemies.slice(-15);
                     }
-                } else {
+                } else if (isBossWave && !hasBoss && !hasDefeatedBoss && !this.bossSpawned) {
                     // Boss wave - only spawn boss, no regular enemies
-                    const hasBoss = this.enemies.some(enemy => enemy.isBoss);
-                    const hasDefeatedBoss = this.enemies.some(enemy => enemy.isBoss && enemy.isDefeated);
-                    
-                    if (!hasBoss && !hasDefeatedBoss && !this.bossSpawned) {
-                        this.startBossWave();
-                        console.log(`Boss wave ${this.wave} - Boss spawned!`);
-                    } else if (hasBoss && !this.bossSpawned) {
-                        // Boss exists but flag not set - fix the flag
-                        this.bossSpawned = true;
-                        console.log(`Boss wave ${this.wave} - Boss flag fixed!`);
-                    }
-                    
-                    // Boss spawn logic is handled in startBossWave() function
-                    // This check is redundant and causes confusion
-                    // Clear any remaining regular enemies in boss wave, but keep boss
+                    this.startBossWave();
+                    // console.log(`Boss wave ${this.wave} - Boss spawned!`);
+                } else if (hasBoss && !this.bossSpawned) {
+                    // Boss exists but flag not set - fix the flag
+                    this.bossSpawned = true;
+                    // console.log(`Boss wave ${this.wave} - Boss flag fixed!`);
+                }
+                
+                // Clear any remaining regular enemies in boss wave, but keep boss
+                if (isBossWave && hasBoss) {
                     this.enemies = this.enemies.filter(enemy => enemy.isBoss);
                     
                     // Safety check: ensure only one boss exists
@@ -1356,19 +1472,19 @@
                     const boss = this.enemies.find(enemy => enemy.isBoss);
                     const bossHealth = boss ? `${boss.health}/${boss.maxHealth}` : 'N/A';
                     const bossStatus = boss ? (boss.isDefeated ? 'DEFEATED' : 'ALIVE') : 'NONE';
-                    console.log(`Wave: ${this.wave}, Enemies: ${this.enemies.length}, HasBoss: ${hasBoss}, BossStatus: ${bossStatus}, BossHealth: ${bossHealth}, BossSpawned: ${this.bossSpawned}, TransitionTimer: ${this.waveTransitionTimer}, IsBossWave: ${isBossWave}, IsBossBreak: ${this.isBossBreak}, BossBreakTimer: ${this.bossBreakTimer}`);
+                    // console.log(`Wave: ${this.wave}, Enemies: ${this.enemies.length}, HasBoss: ${hasBoss}, BossStatus: ${bossStatus}, BossHealth: ${bossHealth}, BossSpawned: ${this.bossSpawned}, TransitionTimer: ${this.waveTransitionTimer}, IsBossWave: ${isBossWave}, IsBossBreak: ${this.isBossBreak}, BossBreakTimer: ${this.bossBreakTimer}`);
                 }
                 
                 // Safety check: Force wave transition if stuck
                 if (this.waveTransitionTimer !== null && this.waveTransitionTimer > 1000) {
-                    console.log(`Wave transition stuck! Force transitioning to wave ${this.wave + 1}...`);
+                    // console.log(`Wave transition stuck! Force transitioning to wave ${this.wave + 1}...`);
                     this.nextWave();
                     this.waveTransitionTimer = null;
                 }
                 
                 // Additional safety check: prevent infinite boss waves
                 if (isBossWave && this.frameCount > 18000) { // 5 minutes max for boss wave
-                    console.log(`Boss wave ${this.wave} taking too long! Force transitioning...`);
+                    // console.log(`Boss wave ${this.wave} taking too long! Force transitioning...`);
                     this.nextWave();
                     this.waveTransitionTimer = null;
                 }
@@ -1399,6 +1515,17 @@
                             this.bullets.splice(index, 1);
                             return;
                         }
+                    } else if (bullet.isHoming) {
+                        // Homing bullets - track player
+                        const dx = bullet.targetX - bullet.x;
+                        const dy = bullet.targetY - bullet.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance > 0) {
+                            const homingSpeed = bullet.speed * 0.8; // Slightly slower for balance
+                            bullet.x += (dx / distance) * homingSpeed;
+                            bullet.y += (dy / distance) * homingSpeed;
+                        }
                     } else if (bullet.vx !== undefined && bullet.vy !== undefined) {
                         // Boss bullets with vx, vy movement
                         bullet.x += bullet.vx;
@@ -1407,10 +1534,10 @@
                         // Spread shot bullets
                         bullet.x += Math.sin(bullet.angle) * 2;
                         if (typeof bullet.speed === 'number' && bullet.speed > 0) {
-                            bullet.y -= bullet.speed;
-                        } else {
+                        bullet.y -= bullet.speed;
+                    } else {
                             bullet.speed = 5.0; // Fix broken bullet speed
-                            bullet.y -= bullet.speed;
+                        bullet.y -= bullet.speed;
                         }
                     } else {
                         if (typeof bullet.speed === 'number' && bullet.speed > 0) {
@@ -1451,7 +1578,7 @@
                         } else {
                             // Falling asteroids - normal downward movement
                             if (typeof enemy.speed === 'number' && enemy.speed > 0) {
-                                enemy.y += enemy.speed;
+                    enemy.y += enemy.speed;
                             } else {
                                 // Fix broken enemy speed
                                 enemy.speed = 1.0;
@@ -1468,7 +1595,7 @@
                             this.updateBossAbilities(enemy);
                             // Debug boss position and shooting
                             if (this.frameCount % 120 === 0) { // Every 2 seconds
-                                console.log(`Boss: x=${enemy.x.toFixed(1)}, y=${enemy.y.toFixed(1)}, health=${enemy.health}/${enemy.maxHealth}, shootTimer=${enemy.shootTimer}, shootRate=${enemy.shootRate}, skillCooldown=${enemy.skillCooldown}`);
+                                // console.log(`Boss: x=${enemy.x.toFixed(1)}, y=${enemy.y.toFixed(1)}, health=${enemy.health}/${enemy.maxHealth}, shootTimer=${enemy.shootTimer}, shootRate=${enemy.shootRate}, skillCooldown=${enemy.skillCooldown}`);
                             }
                         } catch (error) {
                             console.error('Boss update error:', error);
@@ -1556,7 +1683,7 @@
                     
                     // Debug logging for boss wave
                     if (this.frameCount % 300 === 0) { // Every 5 seconds
-                        console.log(`Boss wave debug: hasBoss=${hasBoss}, hasDefeatedBoss=${hasDefeatedBoss}, waveTransitionTimer=${this.waveTransitionTimer}, bossSpawned=${this.bossSpawned}, isBossBreak=${this.isBossBreak}, bossBreakTimer=${this.bossBreakTimer}`);
+                        // console.log(`Boss wave debug: hasBoss=${hasBoss}, hasDefeatedBoss=${hasDefeatedBoss}, waveTransitionTimer=${this.waveTransitionTimer}, bossSpawned=${this.bossSpawned}, isBossBreak=${this.isBossBreak}, bossBreakTimer=${this.bossBreakTimer}`);
                     }
                     
                     // Boss defeat is now handled immediately in checkCollisions()
@@ -1569,7 +1696,7 @@
                         // Show countdown
                         if (this.bossBreakTimer % 60 === 0) { // Every second
                             const secondsLeft = Math.ceil(this.bossBreakTimer / 60);
-                            console.log(`Boss break: ${secondsLeft} seconds remaining...`);
+                            // console.log(`Boss break: ${secondsLeft} seconds remaining...`);
                             
                             // Show countdown on UI
                             document.getElementById('powerupIndicator').textContent = `BOSS DEFEATED! Next wave in ${secondsLeft} seconds...`;
@@ -1580,7 +1707,7 @@
                         
                         // Debug logging for boss break
                         if (this.bossBreakTimer % 120 === 0) { // Every 2 seconds
-                            console.log(`Boss break debug: isBossBreak=${this.isBossBreak}, bossBreakTimer=${this.bossBreakTimer}`);
+                            // console.log(`Boss break debug: isBossBreak=${this.isBossBreak}, bossBreakTimer=${this.bossBreakTimer}`);
                         }
                         
                         // Clean up memory during break time
@@ -1589,7 +1716,7 @@
                         }
                         
                         if (this.bossBreakTimer <= 0) {
-                            console.log(`Boss break finished! Transitioning to wave ${this.wave + 1}...`);
+                            // console.log(`Boss break finished! Transitioning to wave ${this.wave + 1}...`);
                             
                             // Hide countdown UI
                             document.getElementById('powerupIndicator').style.display = 'none';
@@ -1602,8 +1729,8 @@
                     
                     // Safety check: If no boss and no break timer, force transition
                     if ((!hasBoss || hasDefeatedBoss) && !this.isBossBreak && this.bossSpawned) {
-                        console.log(`Boss wave ${this.wave} - No boss found or boss defeated, force transitioning...`);
-                        console.log(`Force transition debug: hasBoss=${hasBoss}, hasDefeatedBoss=${hasDefeatedBoss}, isBossBreak=${this.isBossBreak}, bossSpawned=${this.bossSpawned}`);
+                        // console.log(`Boss wave ${this.wave} - No boss found or boss defeated, force transitioning...`);
+                        // console.log(`Force transition debug: hasBoss=${hasBoss}, hasDefeatedBoss=${hasDefeatedBoss}, isBossBreak=${this.isBossBreak}, bossSpawned=${this.bossSpawned}`);
                         this.isBossBreak = true;
                         this.bossBreakTimer = 60; // 1 second delay
                     }
@@ -1611,11 +1738,11 @@
                     // Regular wave - auto progression with 7 second pause
                     if (!this.waveTransitionTimer) {
                         this.waveTransitionTimer = 420; // 7 seconds per wave (60fps * 7)
-                        console.log(`Regular wave ${this.wave} - Starting 7 second timer...`);
+                        // console.log(`Regular wave ${this.wave} - Starting 7 second timer...`);
                     }
                     this.waveTransitionTimer--;
                     if (this.waveTransitionTimer <= 0) {
-                        console.log(`Regular wave ${this.wave} timer expired - transitioning to wave ${this.wave + 1}...`);
+                        // console.log(`Regular wave ${this.wave} timer expired - transitioning to wave ${this.wave + 1}...`);
                         this.nextWave();
                         this.waveTransitionTimer = null; // Reset
                     }
@@ -1641,7 +1768,7 @@
                             if (enemy.health <= 0) {
                                 if (enemy.isBoss) {
                                     if (!enemy.isDefeated) {
-                                        console.log(`Boss defeated! Health: ${enemy.health}, Wave: ${this.wave}`);
+                                        // console.log(`Boss defeated! Health: ${enemy.health}, Wave: ${this.wave}`);
                                         // Mark boss as defeated and remove immediately
                                         enemy.isDefeated = true;
                                         enemy.health = 0; // Ensure health is 0
@@ -1656,7 +1783,7 @@
                                         // Start boss break immediately
                                         this.isBossBreak = true;
                                         this.bossBreakTimer = 600; // 10 seconds
-                                        console.log(`Boss defeated! Starting 10-second break...`);
+                                        // console.log(`Boss defeated! Starting 10-second break...`);
                                         return; // Exit collision check early
                                     }
                                 } else {
@@ -1814,7 +1941,7 @@
                 // Don't reset enemiesKilled - keep track of total kills
                 
                 // Wave progression - just for display and difficulty scaling
-                console.log(`Starting Wave ${this.wave} - Survival Challenge!`);
+                // console.log(`Starting Wave ${this.wave} - Survival Challenge!`);
                 
                 // Increase asteroid size and difficulty
                 this.asteroidSizeMultiplier = 1 + (this.wave - 1) * 0.1; // 10% size increase per wave
@@ -1859,7 +1986,7 @@
             
             cleanupMemory() {
                 // Clean up memory during boss break time
-                console.log('Cleaning up memory...');
+                // console.log('Cleaning up memory...');
                 
                 // Clean up bullets
                 this.bullets = this.bullets.filter(bullet => {
@@ -1883,20 +2010,20 @@
                     window.gc();
                 }
                 
-                console.log(`Memory cleanup complete. Objects: Bullets: ${this.bullets.length}, Particles: ${this.particles.length}, Explosions: ${this.explosions.length}, Powerups: ${this.powerups.length}`);
+                // console.log(`Memory cleanup complete. Objects: Bullets: ${this.bullets.length}, Particles: ${this.particles.length}, Explosions: ${this.explosions.length}, Powerups: ${this.powerups.length}`);
             }
             
             startBossWave() {
                 // Prevent multiple boss spawns in same wave
                 if (this.bossSpawned) {
-                    console.log(`Boss already spawned for wave ${this.wave}, skipping...`);
+                    // console.log(`Boss already spawned for wave ${this.wave}, skipping...`);
                     return;
                 }
                 
                 // Double check - ensure no boss exists
                 const existingBoss = this.enemies.find(enemy => enemy.isBoss);
                 if (existingBoss) {
-                    console.log(`Boss already exists for wave ${this.wave}, skipping spawn...`);
+                    // console.log(`Boss already exists for wave ${this.wave}, skipping spawn...`);
                     this.bossSpawned = true; // Set flag to prevent further attempts
                     return;
                 }
@@ -1904,7 +2031,7 @@
                 // Triple check - ensure no defeated boss exists
                 const existingDefeatedBoss = this.enemies.find(enemy => enemy.isBoss && enemy.isDefeated);
                 if (existingDefeatedBoss) {
-                    console.log(`Defeated boss already exists for wave ${this.wave}, skipping spawn...`);
+                    // console.log(`Defeated boss already exists for wave ${this.wave}, skipping spawn...`);
                     this.bossSpawned = true; // Set flag to prevent further attempts
                     return;
                 }
@@ -1913,8 +2040,8 @@
                 const bossTypes = ['asteroid', 'crystal', 'mechanical', 'energy', 'void'];
                 const bossType = bossTypes[Math.floor(this.wave / 5) % bossTypes.length];
                 
-                const bossSize = 120 + (this.wave - 1) * 10; // Boss size - reasonable size
-                const bossHealth = Math.floor(5000 + (this.wave - 1) * 5000); // Boss health - 5K+ HP (integer)
+                const bossSize = 80 + (this.wave - 1) * 5; // Boss size - more reasonable size
+                const bossHealth = Math.floor(3000 + (this.wave - 1) * 3000); // Boss health - 3K+ HP (integer)
                 
                 // Boss properties based on type
                 let bossColor = '#ff0000';
@@ -1986,8 +2113,8 @@
                 // Mark boss as spawned to prevent multiple spawns
                 this.bossSpawned = true;
                 
-                console.log(`Boss created: ${bossType} boss with ${bossHealth} HP for wave ${this.wave}`);
-                console.log(`Boss spawn debug: bossSpawned=${this.bossSpawned}, enemies.length=${this.enemies.length}, hasBoss=${this.enemies.some(enemy => enemy.isBoss)}`);
+                // console.log(`Boss created: ${bossType} boss with ${bossHealth} HP for wave ${this.wave}`);
+                // console.log(`Boss spawn debug: bossSpawned=${this.bossSpawned}, enemies.length=${this.enemies.length}, hasBoss=${this.enemies.some(enemy => enemy.isBoss)}`);
                 
                 // Additional safety check
                 if (this.enemies.filter(enemy => enemy.isBoss).length > 1) {
@@ -2089,14 +2216,14 @@
                     boss.rageMode = true;
                 }
                 
-                // Calculate skill power based on wave - slower scaling
-                const skillPower = 1 + (this.wave - 1) * 0.15; // 15% increase per wave (slower)
-                const bulletCount = Math.floor(5 + (this.wave - 1) * 0.3); // Fewer bullets per wave (more dramatic)
+                // Calculate skill power based on wave - faster scaling for more intense gameplay
+                const skillPower = 1 + (this.wave - 1) * 0.25; // 25% increase per wave (faster)
+                const bulletCount = Math.floor(3 + (this.wave - 1) * 0.5); // More bullets per wave
                 
-                // Dynamic boss shooting with varied patterns
+                // Dynamic boss shooting with varied patterns - faster shooting
                 if (boss.shootTimer >= boss.shootRate && boss.skillCooldown <= 0) {
                     boss.shootTimer = 0;
-                    boss.skillCooldown = Math.max(30, 60 - (this.wave - 1) * 2); // Balanced cooldown
+                    boss.skillCooldown = Math.max(15, 30 - (this.wave - 1) * 1.5); // Much faster cooldown
                     
                     // Safety check for bullets array
                     if (!this.bullets || !Array.isArray(this.bullets)) {
@@ -2109,110 +2236,129 @@
                         return; // Don't shoot if too many bullets
                     }
                     
-                    // Different attack patterns based on phase
+                    // Different attack patterns based on phase - more intense
                     switch (boss.bossPhase) {
-                        case 1: // Normal spread shot - minimal bullets
-                            for (let i = 0; i < 1; i++) { // Only 1 bullet for stability
+                        case 1: // Normal spread shot - more bullets
+                            for (let i = 0; i < 3; i++) { // 3 bullets for more challenge
+                                const angle = (i - 1) * 0.2; // Spread pattern
                                 this.bullets.push({
                                     x: boss.x + boss.width / 2 - 3,
                                     y: boss.y + boss.height,
                                     width: 6,
                                     height: 12,
-                                    speed: 2 + skillPower * 0.2,
+                                    speed: 2.5 + skillPower * 0.3,
                                     damage: skillPower,
                                     color: '#ff4444',
                                     isEnemy: true,
-                                    vx: 0,
-                                    vy: 2 + skillPower * 0.2
+                                    vx: Math.sin(angle) * 0.5,
+                                    vy: 2.5 + skillPower * 0.3
                                 });
                             }
                             break;
                             
-                        case 2: // Wider spread - minimal bullets
-                            for (let i = 0; i < 2; i++) { // Only 2 bullets
-                                const angle = (i - 0.5) * 0.3; // Smaller spread
+                        case 2: // Wider spread - more bullets
+                            for (let i = 0; i < 5; i++) { // 5 bullets
+                                const angle = (i - 2) * 0.4; // Wider spread
                                 this.bullets.push({
                                     x: boss.x + boss.width / 2 - 3,
                                     y: boss.y + boss.height,
                                     width: 5,
                                     height: 10,
-                                    speed: 2 + skillPower * 0.2,
+                                    speed: 2.2 + skillPower * 0.3,
                                     damage: skillPower * 0.8,
                                     color: '#ff8800',
                                     isEnemy: true,
-                                    vx: Math.sin(angle) * 1,
+                                    vx: Math.sin(angle) * 1.2,
                                     vy: 2 + skillPower * 0.2
                                 });
                             }
                             break;
                             
-                        case 3: // Rapid fire - reduced bullets
-                            for (let i = 0; i < 4; i++) { // Reduced from 7 to 4
-                                const angle = (i - 1.5) * 0.3; // Adjusted spread
+                        case 3: // Rapid fire - more intense
+                            for (let i = 0; i < 6; i++) { // More bullets for rapid fire
+                                const angle = (i - 2.5) * 0.25; // Tighter spread
                                 this.bullets.push({
                                     x: boss.x + boss.width / 2 - 2,
                                     y: boss.y + boss.height,
                                     width: 4,
                                     height: 8,
-                                    speed: 4 + skillPower * 0.4,
-                                    damage: skillPower * 0.6,
+                                    speed: 3.5 + skillPower * 0.5,
+                                    damage: skillPower * 0.7,
                                     color: '#00ff44',
                                     isEnemy: true,
-                                    vx: Math.sin(angle) * 1.5,
-                                    vy: 4 + skillPower * 0.4
+                                    vx: Math.sin(angle) * 1.8,
+                                    vy: 3.5 + skillPower * 0.5
                                 });
                             }
                             break;
                             
-                        case 4: // Circular pattern - reduced bullets
-                            for (let i = 0; i < 5; i++) { // Reduced from 8 to 5
-                                const angle = (i / 5) * Math.PI * 2; // Adjusted for 5 bullets
+                        case 4: // Circular pattern - more bullets
+                            for (let i = 0; i < 8; i++) { // More bullets for circular pattern
+                                const angle = (i / 8) * Math.PI * 2;
                                 this.bullets.push({
                                     x: boss.x + boss.width / 2 - 3,
                                     y: boss.y + boss.height / 2 - 3,
                                     width: 6,
                                     height: 6,
-                                    speed: 3 + skillPower * 0.3,
-                                    damage: skillPower * 0.7,
+                                    speed: 2.8 + skillPower * 0.4,
+                                    damage: skillPower * 0.8,
                                     color: '#8844ff',
                                     isEnemy: true,
-                                    vx: Math.cos(angle) * 2,
-                                    vy: Math.sin(angle) * 2 + 1
+                                    vx: Math.cos(angle) * 2.5,
+                                    vy: Math.sin(angle) * 2.5 + 1.2
                                 });
                             }
                             break;
                             
-                        case 5: // Ultimate pattern - combination (reduced)
-                            // Spread shot - reduced
-                            for (let i = 0; i < 3; i++) { // Reduced from 5 to 3
-                                const angle = (i - 1) * 0.4;
+                        case 5: // Ultimate pattern - combination of multiple attack types
+                            // Spread shot - more bullets
+                            for (let i = 0; i < 5; i++) {
+                                const angle = (i - 2) * 0.3;
                                 this.bullets.push({
                                     x: boss.x + boss.width / 2 - 3,
                                     y: boss.y + boss.height,
                                     width: 6,
                                     height: 12,
-                                    speed: 3 + skillPower * 0.3,
-                                    damage: skillPower,
+                                    speed: 3.5 + skillPower * 0.4,
+                                    damage: skillPower * 1.2,
                                     color: '#ff0044',
                                     isEnemy: true,
-                                    vx: Math.sin(angle) * 2,
-                                    vy: 3 + skillPower * 0.3
+                                    vx: Math.sin(angle) * 2.5,
+                                    vy: 3.5 + skillPower * 0.4
                                 });
                             }
-                            // Circular shot - reduced
-                            for (let i = 0; i < 4; i++) { // Reduced from 6 to 4
-                                const angle = (i / 4) * Math.PI * 2;
+                            // Circular shot - more bullets
+                            for (let i = 0; i < 6; i++) {
+                                const angle = (i / 6) * Math.PI * 2;
                                 this.bullets.push({
                                     x: boss.x + boss.width / 2 - 3,
                                     y: boss.y + boss.height / 2 - 3,
                                     width: 5,
                                     height: 5,
-                                    speed: 2.5 + skillPower * 0.2,
-                                    damage: skillPower * 0.8,
+                                    speed: 3 + skillPower * 0.3,
+                                    damage: skillPower * 0.9,
                                     color: '#ffaa00',
                                     isEnemy: true,
-                                    vx: Math.cos(angle) * 1.5,
-                                    vy: Math.sin(angle) * 1.5 + 0.5
+                                    vx: Math.cos(angle) * 2,
+                                    vy: Math.sin(angle) * 2 + 1
+                                });
+                            }
+                            // Homing bullets - new attack type
+                            for (let i = 0; i < 3; i++) {
+                                this.bullets.push({
+                                    x: boss.x + boss.width / 2 - 4,
+                                    y: boss.y + boss.height,
+                                    width: 8,
+                                    height: 8,
+                                    speed: 2 + skillPower * 0.2,
+                                    damage: skillPower * 1.5,
+                                    color: '#ff00ff',
+                                    isEnemy: true,
+                                    vx: 0,
+                                    vy: 2 + skillPower * 0.2,
+                                    isHoming: true,
+                                    targetX: this.player.x + this.player.width / 2,
+                                    targetY: this.player.y + this.player.height / 2
                                 });
                             }
                             break;
@@ -2811,16 +2957,16 @@
                         this.frameCount = 0;
                     }
                     
-                    this.update();
-                    this.render();
+                this.update();
+                this.render();
                     
                     // Only continue game loop if game is active
                     if (this.gameState === 'playing' || this.gameState === 'start') {
-                        requestAnimationFrame(() => this.gameLoop());
+                requestAnimationFrame(() => this.gameLoop());
                     } else {
                         // Stop game loop for gameOver state to prevent memory leak
                         this.gameLoopRunning = false;
-                        console.log('Game loop stopped - State:', this.gameState);
+                        // console.log('Game loop stopped - State:', this.gameState);
                     }
                 } catch (error) {
                     console.error('Game loop error:', error);

@@ -1938,7 +1938,7 @@
                     lifePenalty: type.lifePenalty || 1
                 };
                 
-                // // console.log(`Spawned enemy: ${newEnemy.name}, health: ${newEnemy.health}, maxHealth: ${newEnemy.maxHealth}`);
+                //  // console.log(`Spawned enemy: ${newEnemy.name}, health: ${newEnemy.health}, maxHealth: ${newEnemy.maxHealth}`);
                 
                 this.enemies.push(newEnemy);
             }
@@ -2013,7 +2013,7 @@
                     lifePenalty: bossType.lifePenalty
                 };
                 
-                // // console.log(`BOSS SPAWNED: ${boss.name}, health: ${boss.health}, speed: ${boss.speed}`);
+                //  // console.log(`BOSS SPAWNED: ${boss.name}, health: ${boss.health}, speed: ${boss.speed}`);
                 this.enemies.push(boss);
             }
             
@@ -2022,20 +2022,20 @@
                 
                 // Debug: Log game state every 60 frames (1 second)
                 if (this.frameCount % 60 === 0) {
-                    // // console.log('Game State - Enemies:', this.enemies.length, 'Towers:', this.towers.length, 'Projectiles:', this.projectiles.length);
+                    //  // console.log('Game State - Enemies:', this.enemies.length, 'Towers:', this.towers.length, 'Projectiles:', this.projectiles.length);
                     
                     // Debug enemy health
                     this.enemies.forEach((enemy, index) => {
-                        // // console.log(`Enemy ${index}: ${enemy.name}, health=${enemy.health}, maxHealth=${enemy.maxHealth}, healthPercent=${(enemy.health/enemy.maxHealth*100).toFixed(1)}%`);
+                        //  // console.log(`Enemy ${index}: ${enemy.name}, health=${enemy.health}, maxHealth=${enemy.maxHealth}, healthPercent=${(enemy.health/enemy.maxHealth*100).toFixed(1)}%`);
                     });
                     
                     // Debug tower targeting for all levels
                     this.towers.forEach((tower, index) => {
                         if (tower.target) {
                             const dist = Math.sqrt((tower.target.x - tower.x) ** 2 + (tower.target.y - tower.y) ** 2);
-                            // // console.log(`Tower ${index} (${tower.type}): target=${tower.target.name}, dist=${dist.toFixed(2)}, range=${tower.range}, lastShot=${tower.lastShot}, fireRate=${tower.fireRate}, canShoot=${tower.lastShot >= tower.fireRate}`);
+                            //  // console.log(`Tower ${index} (${tower.type}): target=${tower.target.name}, dist=${dist.toFixed(2)}, range=${tower.range}, lastShot=${tower.lastShot}, fireRate=${tower.fireRate}, canShoot=${tower.lastShot >= tower.fireRate}`);
                         } else {
-                            // // console.log(`Tower ${index} (${tower.type}): no target, enemies=${this.enemies.length}`);
+                            //  // console.log(`Tower ${index} (${tower.type}): no target, enemies=${this.enemies.length}`);
                         }
                     });
                 }
@@ -2108,14 +2108,14 @@
                 }
                 
                 // Update enemies
-                // // console.log(`Updating ${this.enemies.length} enemies`);
+                //  // console.log(`Updating ${this.enemies.length} enemies`);
                 for (let i = this.enemies.length - 1; i >= 0; i--) {
                     const enemy = this.enemies[i];
-                    // // console.log(`Enemy ${i}: ${enemy.name}, health: ${enemy.health}`);
+                    //  // console.log(`Enemy ${i}: ${enemy.name}, health: ${enemy.health}`);
                     
                     // Remove dead enemies
                     if (enemy.health <= 0) {
-                        // // console.log(`Removing dead enemy: ${enemy.name}, health: ${enemy.health}`);
+                        //  // console.log(`Removing dead enemy: ${enemy.name}, health: ${enemy.health}`);
                         this.gold += enemy.reward;
                         this.score += enemy.reward;
                         this.createParticles(enemy.x, enemy.y, enemy.color);
@@ -2179,7 +2179,7 @@
                         // Enemy reached the end
                         if (enemy.isBoss) {
                             this.lives -= enemy.lifePenalty; // Boss takes 15 lives!
-                            // // console.log(`BOSS ${enemy.name} reached the end! Lost ${enemy.lifePenalty} lives!`);
+                            //  // console.log(`BOSS ${enemy.name} reached the end! Lost ${enemy.lifePenalty} lives!`);
                         } else {
                         this.lives--;
                         }
@@ -2254,7 +2254,7 @@
                     if (tower.target && tower.target.health > 0 && tower.lastShot < tower.fireRate) {
                         const dist = Math.sqrt((tower.target.x - tower.x) ** 2 + (tower.target.y - tower.y) ** 2);
                         if (dist <= tower.range) {
-                            // // console.log(`Tower ${this.towers.indexOf(tower)} waiting to shoot: lastShot=${tower.lastShot}, fireRate=${tower.fireRate}, target=${tower.target.name}, targetHealth=${tower.target.health}`);
+                            //  // console.log(`Tower ${this.towers.indexOf(tower)} waiting to shoot: lastShot=${tower.lastShot}, fireRate=${tower.fireRate}, target=${tower.target.name}, targetHealth=${tower.target.health}`);
                         }
                     }
                 });
@@ -2270,14 +2270,14 @@
                     if (projectile.target && projectile.target.health > 0 && this.enemies.includes(projectile.target)) {
                         const dist = Math.sqrt((projectile.target.x - projectile.x) ** 2 + (projectile.target.y - projectile.y) ** 2);
                         if (dist < 20) { // Increased collision radius
-                            // // console.log(`Projectile hit: ${projectile.target.name}, damage: ${projectile.damage}`);
+                            //  // console.log(`Projectile hit: ${projectile.target.name}, damage: ${projectile.damage}`);
                             this.hitEnemy(projectile.target, projectile.damage, projectile.type, projectile.special);
                             this.projectiles.splice(i, 1);
                             continue;
                         }
                     } else {
                         // Target is dead or not found, remove projectile
-                        // // console.log(`Projectile target invalid: ${projectile.target ? projectile.target.name : 'null'}, health: ${projectile.target ? projectile.target.health : 'N/A'}`);
+                        //  // console.log(`Projectile target invalid: ${projectile.target ? projectile.target.name : 'null'}, health: ${projectile.target ? projectile.target.health : 'N/A'}`);
                         this.projectiles.splice(i, 1);
                         continue;
                     }
@@ -2359,9 +2359,9 @@
                 // Calculate damage with resistances/weaknesses
                 const actualDamage = this.calculateDamage(damage, projectileType, enemy);
                 
-                // // console.log(`Hit enemy: ${enemy.name}, health before: ${enemy.health}, damage: ${damage}, actual: ${actualDamage}, maxHealth: ${enemy.maxHealth}`);
+                //  // console.log(`Hit enemy: ${enemy.name}, health before: ${enemy.health}, damage: ${damage}, actual: ${actualDamage}, maxHealth: ${enemy.maxHealth}`);
                 enemy.health -= actualDamage;
-                // // console.log(`Health after: ${enemy.health}, maxHealth: ${enemy.maxHealth}, healthPercent: ${(enemy.health/enemy.maxHealth*100).toFixed(1)}%`);
+                //  // console.log(`Health after: ${enemy.health}, maxHealth: ${enemy.maxHealth}, healthPercent: ${(enemy.health/enemy.maxHealth*100).toFixed(1)}%`);
                 
                 // Special effects
                 if (special === 'ice') {
@@ -2407,7 +2407,7 @@
                 }
                 
                 if (enemy.health <= 0) {
-                    // // console.log(`Enemy ${enemy.name} died with health: ${enemy.health}`);
+                    //  // console.log(`Enemy ${enemy.name} died with health: ${enemy.health}`);
                     this.gold += enemy.reward;
                     this.score += enemy.reward;
                     

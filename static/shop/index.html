@@ -1048,7 +1048,7 @@
                     const stars = '★'.repeat(Math.floor(product.rating)) + '☆'.repeat(5 - Math.floor(product.rating));
                     const tags = product.tags.map(tag => `<span class="tag">#${tag}</span>`).join('');
                     
-                    // console.log('Product:', product.name, 'Tags:', product.tags, 'Rendered tags:', tags);
+                    //  console.log('Product:', product.name, 'Tags:', product.tags, 'Rendered tags:', tags);
                     
                     html += `
                         <div class="product-card" style="--product-index: ${productIndex}">
