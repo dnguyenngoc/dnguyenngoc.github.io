@@ -126,7 +126,7 @@ const FontInspector = (function FontInspectorClosure() {
       logIt.textContent = "Log";
       logIt.addEventListener("click", function (event) {
         event.preventDefault();
-        console.log(fontObj);
+        // console.log(fontObj);
       });
       const select = document.createElement("input");
       select.setAttribute("type", "checkbox");

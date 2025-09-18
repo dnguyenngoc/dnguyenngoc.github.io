@@ -912,7 +912,7 @@
                 <div class="hud">
                     <div class="hud-left">
                         <div class="hud-item gold" id="goldDisplay">💰 Gold: 100</div>
-                        <div class="hud-item lives" id="livesDisplay">❤️ Lives: 20</div>
+                        <div class="hud-item lives" id="livesDisplay">❤️ Lives: 50</div>
                         <div class="hud-item level" id="levelDisplay">🏰 Level: 1</div>
                         <div class="hud-item energy" id="energyDisplay">⚡ Energy: 50</div>
                         <div class="hud-item materials" id="materialsDisplay">🔧 Materials: 30</div>
@@ -1010,7 +1010,7 @@
                 this.ctx = this.canvas.getContext('2d');
                 this.gameState = 'start'; // start, playing, gameOver
                 this.gold = 100;
-                this.lives = 20;
+                this.lives = 50;
                 this.score = 0;
                 this.wave = 1;
                 
@@ -1142,6 +1142,20 @@
                         special: 'poison',
                         icon: '☠️',
                         damageType: 'poison',
+                        synergy: 'elemental'
+                    },
+                    fire: {
+                        name: 'Fire Tower',
+                        cost: 80,
+                        damage: 25,
+                        range: 75,
+                        fireRate: 35,
+                        color: '#ff4500',
+                        upgradeCost: 160,
+                        description: 'Burn damage and slow enemies',
+                        special: 'burn',
+                        icon: '🔥',
+                        damageType: 'fire',
                         synergy: 'elemental'
                     },
                     // Advanced towers (inspired by Mindustry)
@@ -1460,7 +1474,7 @@
                     this.projectiles = [];
                     this.particles = [];
                     this.gold = 100 + (this.currentLevel - 1) * 50; // Bonus gold for new levels
-                    this.lives = 20;
+                    this.lives = 50;
                     
                     // Update objectives for new level
                     this.levelObjectives = this.getLevelObjectives(this.currentLevel);
@@ -1568,7 +1582,7 @@
                 this.projectiles = [];
                 this.particles = [];
                 this.gold = 100;
-                this.lives = 20;
+                this.lives = 50;
                 this.score = 0;
                 this.wave = 1;
                 this.currentLevel = 1;
@@ -1847,8 +1861,8 @@
                 if (this.wave >= 5) {
                     enemyTypes = [...baseEnemyTypes, ...advancedEnemyTypes];
                 }
-                if (this.wave >= 10) {
-                    // Add boss enemies (extremely dangerous!)
+                if (this.wave >= 8) {
+                    // Add boss enemies (extremely dangerous!) - Start from wave 8
                     enemyTypes.push(
                         { 
                             health: 2000, speed: 0.2, reward: 100, color: '#8b0000', name: 'Ancient Dragon',
@@ -1869,22 +1883,36 @@
                 }
                 
                 const type = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
-                // Extreme difficulty scaling (much harder!)
-                let waveMultiplier = 1 + (this.wave - 1) * 0.3; // Increased base scaling
+                // Balanced difficulty scaling
+                let waveMultiplier = 1 + (this.wave - 1) * 0.2; // Reduced base scaling
                 
-                // Dramatic health scaling from wave 5-10
+                // Gentle health scaling from wave 5-10
                 if (this.wave >= 5) {
-                    waveMultiplier *= Math.pow(1.8, this.wave - 4); // Exponential scaling
+                    waveMultiplier *= Math.pow(1.2, this.wave - 4); // Further reduced exponential scaling
                 }
-                if (this.wave >= 10) {
-                    waveMultiplier *= 3; // Triple for wave 10+
+                if (this.wave >= 8) {
+                    waveMultiplier *= 1.1; // Minimal boost for boss waves
                 }
                 
-                // Level-based difficulty
-                if (this.currentLevel === 4) {
-                    waveMultiplier *= 3; // 3x harder
-                } else if (this.currentLevel === 5) {
-                    waveMultiplier *= 5; // 5x harder
+                // Level-based difficulty scaling
+                if (this.wave >= 7) {
+                    // Wave 7+ affected by level scaling
+                    if (this.currentLevel >= 3) {
+                        // Level 3+: Random multiplier for variety
+                        const randomMultiplier = 1.2 + Math.random() * 0.6; // 1.2x to 1.8x
+                        waveMultiplier *= randomMultiplier;
+                    }
+                    
+                    // Base level scaling
+                    if (this.currentLevel === 2) {
+                        waveMultiplier *= 1.5; // 1.5x harder
+                    } else if (this.currentLevel === 3) {
+                        waveMultiplier *= 2.0; // 2x harder
+                    } else if (this.currentLevel === 4) {
+                        waveMultiplier *= 3.0; // 3x harder
+                    } else if (this.currentLevel === 5) {
+                        waveMultiplier *= 5.0; // 5x harder
+                    }
                 }
                 
                 const health = Math.floor(type.health * waveMultiplier);
@@ -1910,13 +1938,13 @@
                     lifePenalty: type.lifePenalty || 1
                 };
                 
-                // console.log(`Spawned enemy: ${newEnemy.name}, health: ${newEnemy.health}, maxHealth: ${newEnemy.maxHealth}`);
+                // // console.log(`Spawned enemy: ${newEnemy.name}, health: ${newEnemy.health}, maxHealth: ${newEnemy.maxHealth}`);
                 
                 this.enemies.push(newEnemy);
             }
             
             spawnBoss() {
-                // Spawn a guaranteed boss for wave 10
+                // Spawn a guaranteed boss for wave 8, 9, 10
                 const bossTypes = [
                     { 
                         health: 2000, speed: 0.2, reward: 100, color: '#8b0000', name: 'Ancient Dragon',
@@ -1932,13 +1960,34 @@
                 
                 const bossType = bossTypes[Math.floor(Math.random() * bossTypes.length)];
                 
-                // Extreme boss scaling
-                let waveMultiplier = 1 + (this.wave - 1) * 0.3;
+                // Gentle boss scaling
+                let waveMultiplier = 1 + (this.wave - 1) * 0.15; // Further reduced base scaling
                 if (this.wave >= 5) {
-                    waveMultiplier *= Math.pow(1.8, this.wave - 4);
+                    waveMultiplier *= Math.pow(1.2, this.wave - 4); // Further reduced from 1.3 to 1.2
                 }
-                if (this.wave >= 10) {
-                    waveMultiplier *= 3;
+                if (this.wave >= 8) {
+                    waveMultiplier *= 1.1; // Minimal boost for boss waves
+                }
+                
+                // Level-based difficulty scaling for bosses
+                if (this.wave >= 7) {
+                    // Wave 7+ affected by level scaling
+                    if (this.currentLevel >= 3) {
+                        // Level 3+: Random multiplier for variety
+                        const randomMultiplier = 1.2 + Math.random() * 0.6; // 1.2x to 1.8x
+                        waveMultiplier *= randomMultiplier;
+                    }
+                    
+                    // Base level scaling
+                    if (this.currentLevel === 2) {
+                        waveMultiplier *= 1.5; // 1.5x harder
+                    } else if (this.currentLevel === 3) {
+                        waveMultiplier *= 2.0; // 2x harder
+                    } else if (this.currentLevel === 4) {
+                        waveMultiplier *= 3.0; // 3x harder
+                    } else if (this.currentLevel === 5) {
+                        waveMultiplier *= 5.0; // 5x harder
+                    }
                 }
                 
                 const health = Math.floor(bossType.health * waveMultiplier);
@@ -1964,7 +2013,7 @@
                     lifePenalty: bossType.lifePenalty
                 };
                 
-                // console.log(`BOSS SPAWNED: ${boss.name}, health: ${boss.health}, speed: ${boss.speed}`);
+                // // console.log(`BOSS SPAWNED: ${boss.name}, health: ${boss.health}, speed: ${boss.speed}`);
                 this.enemies.push(boss);
             }
             
@@ -1973,20 +2022,20 @@
                 
                 // Debug: Log game state every 60 frames (1 second)
                 if (this.frameCount % 60 === 0) {
-                    // console.log('Game State - Enemies:', this.enemies.length, 'Towers:', this.towers.length, 'Projectiles:', this.projectiles.length);
+                    // // console.log('Game State - Enemies:', this.enemies.length, 'Towers:', this.towers.length, 'Projectiles:', this.projectiles.length);
                     
                     // Debug enemy health
                     this.enemies.forEach((enemy, index) => {
-                        // console.log(`Enemy ${index}: ${enemy.name}, health=${enemy.health}, maxHealth=${enemy.maxHealth}, healthPercent=${(enemy.health/enemy.maxHealth*100).toFixed(1)}%`);
+                        // // console.log(`Enemy ${index}: ${enemy.name}, health=${enemy.health}, maxHealth=${enemy.maxHealth}, healthPercent=${(enemy.health/enemy.maxHealth*100).toFixed(1)}%`);
                     });
                     
                     // Debug tower targeting for all levels
                     this.towers.forEach((tower, index) => {
                         if (tower.target) {
                             const dist = Math.sqrt((tower.target.x - tower.x) ** 2 + (tower.target.y - tower.y) ** 2);
-                            // console.log(`Tower ${index} (${tower.type}): target=${tower.target.name}, dist=${dist.toFixed(2)}, range=${tower.range}, lastShot=${tower.lastShot}, fireRate=${tower.fireRate}, canShoot=${tower.lastShot >= tower.fireRate}`);
+                            // // console.log(`Tower ${index} (${tower.type}): target=${tower.target.name}, dist=${dist.toFixed(2)}, range=${tower.range}, lastShot=${tower.lastShot}, fireRate=${tower.fireRate}, canShoot=${tower.lastShot >= tower.fireRate}`);
                         } else {
-                            // console.log(`Tower ${index} (${tower.type}): no target, enemies=${this.enemies.length}`);
+                            // // console.log(`Tower ${index} (${tower.type}): no target, enemies=${this.enemies.length}`);
                         }
                     });
                 }
@@ -1996,8 +2045,8 @@
                 // Spawn enemies
                 if (this.waveInProgress && this.enemiesSpawned < this.enemiesPerWave) {
                     if (this.frameCount % this.enemySpawnRate === 0) {
-                        // Special boss spawn logic for wave 10
-                        if (this.wave === 10 && this.enemiesSpawned === 0) {
+                        // Special boss spawn logic for wave 8, 9, 10
+                        if ((this.wave === 8 || this.wave === 9 || this.wave === 10) && this.enemiesSpawned === 0) {
                             this.spawnBoss();
                         } else {
                         this.spawnEnemy();
@@ -2021,12 +2070,13 @@
                     }
                     
                     // Increase difficulty dramatically
-                    if (this.wave >= 5) {
+                    if (this.wave >= 8) {
+                        // Wave 8-10: Gentle increase for boss waves
+                        this.enemiesPerWave += Math.floor(this.wave / 3) + 2; // Gentle enemy count
+                        this.enemySpawnRate = Math.max(15, this.enemySpawnRate - 2); // Slower spawn rate
+                    } else if (this.wave >= 5) {
                         this.enemiesPerWave += Math.floor(this.wave / 1.5) + 5; // Much more enemies
                         this.enemySpawnRate = Math.max(8, this.enemySpawnRate - 8); // Very fast spawning
-                    } else if (this.wave >= 10) {
-                        this.enemiesPerWave += Math.floor(this.wave / 1.2) + 8; // Even more enemies
-                        this.enemySpawnRate = Math.max(5, this.enemySpawnRate - 10); // Extremely fast spawning
                     } else {
                         this.enemiesPerWave += Math.floor(this.wave / 2) + 2;
                         this.enemySpawnRate = Math.max(20, this.enemySpawnRate - 5);
@@ -2034,7 +2084,8 @@
                     
                     // Check if it's time for a wave break (every wave)
                     this.isWaveBreak = true;
-                    this.waveBreakTime = 1500; // 25 seconds at 60fps
+                    // Longer break for wave 7+ (30 seconds instead of 25)
+                    this.waveBreakTime = this.wave >= 7 ? 1800 : 1500; // 30s for wave 7+, 25s for others
                     this.updateHUD();
                 }
                 
@@ -2057,14 +2108,14 @@
                 }
                 
                 // Update enemies
-                // console.log(`Updating ${this.enemies.length} enemies`);
+                // // console.log(`Updating ${this.enemies.length} enemies`);
                 for (let i = this.enemies.length - 1; i >= 0; i--) {
                     const enemy = this.enemies[i];
-                    // console.log(`Enemy ${i}: ${enemy.name}, health: ${enemy.health}`);
+                    // // console.log(`Enemy ${i}: ${enemy.name}, health: ${enemy.health}`);
                     
                     // Remove dead enemies
                     if (enemy.health <= 0) {
-                        // console.log(`Removing dead enemy: ${enemy.name}, health: ${enemy.health}`);
+                        // // console.log(`Removing dead enemy: ${enemy.name}, health: ${enemy.health}`);
                         this.gold += enemy.reward;
                         this.score += enemy.reward;
                         this.createParticles(enemy.x, enemy.y, enemy.color);
@@ -2080,13 +2131,16 @@
                     // Update animation frame
                     enemy.animationFrame += 0.1;
                     
-                    // Handle slow effect
+                    // Apply elemental effects
+                    this.updateEnemyEffects(enemy);
+                    
+                    // Handle slow effect (legacy)
                     if (enemy.slowTimer > 0) {
                         enemy.slowTimer--;
                         enemy.speed = enemy.speed * 0.5;
                     }
                     
-                    // Handle poison effect
+                    // Handle poison effect (legacy)
                     if (enemy.poisonTimer > 0) {
                         enemy.poisonTimer--;
                         if (enemy.poisonTimer % 30 === 0) { // Damage every 0.5 seconds
@@ -2108,7 +2162,10 @@
                             // Apply speed modifiers
                             let currentSpeed = enemy.speed;
                             if (enemy.slowTimer > 0) {
-                                currentSpeed *= 0.5; // Slow effect
+                                currentSpeed *= 0.5; // Slow effect (legacy)
+                            }
+                            if (enemy.speedMultiplier) {
+                                currentSpeed *= enemy.speedMultiplier; // Elemental effects
                             }
                             
                             // Smooth movement with interpolation
@@ -2122,7 +2179,7 @@
                         // Enemy reached the end
                         if (enemy.isBoss) {
                             this.lives -= enemy.lifePenalty; // Boss takes 15 lives!
-                            // console.log(`BOSS ${enemy.name} reached the end! Lost ${enemy.lifePenalty} lives!`);
+                            // // console.log(`BOSS ${enemy.name} reached the end! Lost ${enemy.lifePenalty} lives!`);
                         } else {
                         this.lives--;
                         }
@@ -2197,7 +2254,7 @@
                     if (tower.target && tower.target.health > 0 && tower.lastShot < tower.fireRate) {
                         const dist = Math.sqrt((tower.target.x - tower.x) ** 2 + (tower.target.y - tower.y) ** 2);
                         if (dist <= tower.range) {
-                            // console.log(`Tower ${this.towers.indexOf(tower)} waiting to shoot: lastShot=${tower.lastShot}, fireRate=${tower.fireRate}, target=${tower.target.name}, targetHealth=${tower.target.health}`);
+                            // // console.log(`Tower ${this.towers.indexOf(tower)} waiting to shoot: lastShot=${tower.lastShot}, fireRate=${tower.fireRate}, target=${tower.target.name}, targetHealth=${tower.target.health}`);
                         }
                     }
                 });
@@ -2213,14 +2270,14 @@
                     if (projectile.target && projectile.target.health > 0 && this.enemies.includes(projectile.target)) {
                         const dist = Math.sqrt((projectile.target.x - projectile.x) ** 2 + (projectile.target.y - projectile.y) ** 2);
                         if (dist < 20) { // Increased collision radius
-                            // console.log(`Projectile hit: ${projectile.target.name}, damage: ${projectile.damage}`);
+                            // // console.log(`Projectile hit: ${projectile.target.name}, damage: ${projectile.damage}`);
                             this.hitEnemy(projectile.target, projectile.damage, projectile.type, projectile.special);
                             this.projectiles.splice(i, 1);
                             continue;
                         }
                     } else {
                         // Target is dead or not found, remove projectile
-                        // console.log(`Projectile target invalid: ${projectile.target ? projectile.target.name : 'null'}, health: ${projectile.target ? projectile.target.health : 'N/A'}`);
+                        // // console.log(`Projectile target invalid: ${projectile.target ? projectile.target.name : 'null'}, health: ${projectile.target ? projectile.target.health : 'N/A'}`);
                         this.projectiles.splice(i, 1);
                         continue;
                     }
@@ -2302,9 +2359,9 @@
                 // Calculate damage with resistances/weaknesses
                 const actualDamage = this.calculateDamage(damage, projectileType, enemy);
                 
-                // console.log(`Hit enemy: ${enemy.name}, health before: ${enemy.health}, damage: ${damage}, actual: ${actualDamage}, maxHealth: ${enemy.maxHealth}`);
+                // // console.log(`Hit enemy: ${enemy.name}, health before: ${enemy.health}, damage: ${damage}, actual: ${actualDamage}, maxHealth: ${enemy.maxHealth}`);
                 enemy.health -= actualDamage;
-                // console.log(`Health after: ${enemy.health}, maxHealth: ${enemy.maxHealth}, healthPercent: ${(enemy.health/enemy.maxHealth*100).toFixed(1)}%`);
+                // // console.log(`Health after: ${enemy.health}, maxHealth: ${enemy.maxHealth}, healthPercent: ${(enemy.health/enemy.maxHealth*100).toFixed(1)}%`);
                 
                 // Special effects
                 if (special === 'ice') {
@@ -2350,7 +2407,7 @@
                 }
                 
                 if (enemy.health <= 0) {
-                    // console.log(`Enemy ${enemy.name} died with health: ${enemy.health}`);
+                    // // console.log(`Enemy ${enemy.name} died with health: ${enemy.health}`);
                     this.gold += enemy.reward;
                     this.score += enemy.reward;
                     
@@ -2399,6 +2456,9 @@
                 const synergyBonus = this.calculateSynergyBonus(projectileType);
                 let finalDamage = baseDamage * synergyBonus;
                 
+                // Enhanced elemental effects
+                this.applyElementalEffects(enemy, damageType, projectileType);
+                
                 // Check resistances (reduce damage by 50%)
                 if (enemy.resistances && enemy.resistances.includes(damageType)) {
                     finalDamage *= 0.5;
@@ -2412,6 +2472,107 @@
                 return Math.floor(finalDamage);
             }
             
+            applyElementalEffects(enemy, damageType, projectileType) {
+                const towerType = this.towerTypes[projectileType];
+                
+                // Initialize enemy effects if not exists
+                if (!enemy.effects) {
+                    enemy.effects = {};
+                }
+                
+                switch (damageType) {
+                    case 'fire':
+                        // Fire: Burn damage over time, slow attack speed
+                        enemy.effects.burn = {
+                            damage: Math.floor(towerType.damage * 0.1),
+                            duration: 60, // 1 second at 60fps
+                            tick: 0
+                        };
+                        enemy.effects.slow = {
+                            speedMultiplier: 0.7, // 30% slower
+                            duration: 120, // 2 seconds
+                            tick: 0
+                        };
+                        break;
+                        
+                    case 'ice':
+                        // Ice: Slow movement and attack speed
+                        enemy.effects.freeze = {
+                            speedMultiplier: 0.5, // 50% slower
+                            duration: 180, // 3 seconds
+                            tick: 0
+                        };
+                        break;
+                        
+                    case 'poison':
+                        // Poison: Damage over time, reduces healing
+                        enemy.effects.poison = {
+                            damage: Math.floor(towerType.damage * 0.15),
+                            duration: 300, // 5 seconds
+                            tick: 0,
+                            healingReduction: 0.5 // 50% less healing
+                        };
+                        break;
+                        
+                    case 'lightning':
+                        // Lightning: Chain to nearby enemies, stun effect
+                        enemy.effects.stun = {
+                            duration: 30, // 0.5 seconds
+                            tick: 0
+                        };
+                        this.chainLightning(enemy, towerType.damage * 0.8);
+                        break;
+                        
+                    case 'energy':
+                        // Energy: Penetrates armor, charges up for burst
+                        enemy.effects.energyCharge = {
+                            damage: Math.floor(towerType.damage * 0.2),
+                            duration: 240, // 4 seconds
+                            tick: 0,
+                            armorPenetration: 0.3 // 30% armor penetration
+                        };
+                        break;
+                        
+                    case 'magic':
+                        // Magic: Random effects, can be beneficial or harmful
+                        const randomEffect = Math.random();
+                        if (randomEffect < 0.3) {
+                            enemy.effects.curse = {
+                                damage: Math.floor(towerType.damage * 0.25),
+                                duration: 180,
+                                tick: 0
+                            };
+                        } else if (randomEffect < 0.6) {
+                            enemy.effects.hex = {
+                                speedMultiplier: 0.8,
+                                duration: 120,
+                                tick: 0
+                            };
+                        }
+                        break;
+                }
+            }
+            
+            chainLightning(sourceEnemy, damage) {
+                // Find nearby enemies within chain range
+                const chainRange = 80;
+                const nearbyEnemies = this.enemies.filter(enemy => 
+                    enemy !== sourceEnemy && 
+                    Math.sqrt((enemy.x - sourceEnemy.x) ** 2 + (enemy.y - sourceEnemy.y) ** 2) <= chainRange
+                );
+                
+                // Chain to up to 3 nearby enemies
+                const chainTargets = nearbyEnemies.slice(0, 3);
+                chainTargets.forEach(target => {
+                    target.health -= Math.floor(damage);
+                    if (!target.effects) target.effects = {};
+                    target.effects.stun = {
+                        duration: 20, // Shorter stun for chained targets
+                        tick: 0
+                    };
+                });
+            }
+            
             calculateSynergyBonus(towerType) {
                 const synergy = this.towerTypes[towerType].synergy;
                 let bonus = 1.0;
@@ -2421,13 +2582,112 @@
                     this.towerTypes[tower.type].synergy === synergy
                 ).length;
                 
-                // Synergy bonus: 10% per tower of same type (max 50%)
+                // Enhanced synergy bonus: 15% per tower of same type (max 75%)
                 if (sameSynergyTowers > 1) {
-                    bonus += (sameSynergyTowers - 1) * 0.1;
-                    bonus = Math.min(bonus, 1.5); // Cap at 50% bonus
+                    bonus += (sameSynergyTowers - 1) * 0.15;
+                    bonus = Math.min(bonus, 1.75); // Cap at 75% bonus
+                }
+                
+                // Cross-synergy bonuses
+                const elementalTowers = this.towers.filter(tower => 
+                    this.towerTypes[tower.type].synergy === 'elemental'
+                ).length;
+                const energyTowers = this.towers.filter(tower => 
+                    this.towerTypes[tower.type].synergy === 'energy'
+                ).length;
+                
+                // Elemental + Energy synergy
+                if (elementalTowers > 0 && energyTowers > 0) {
+                    bonus += 0.2; // 20% bonus for mixed synergy
                 }
                 
                 return bonus;
+            }
+            
+            updateEnemyEffects(enemy) {
+                if (!enemy.effects) return;
+                
+                // Apply speed modifiers from effects
+                let speedMultiplier = 1.0;
+                
+                // Process each effect
+                Object.keys(enemy.effects).forEach(effectType => {
+                    const effect = enemy.effects[effectType];
+                    effect.tick++;
+                    
+                    switch (effectType) {
+                        case 'burn':
+                            if (effect.tick % 60 === 0) { // Every second
+                                enemy.health -= effect.damage;
+                                this.createParticles(enemy.x, enemy.y, '#ff4500');
+                            }
+                            if (effect.tick >= effect.duration) {
+                                delete enemy.effects[effectType];
+                            }
+                            break;
+                            
+                        case 'freeze':
+                            speedMultiplier *= effect.speedMultiplier;
+                            if (effect.tick >= effect.duration) {
+                                delete enemy.effects[effectType];
+                            }
+                            break;
+                            
+                        case 'poison':
+                            if (effect.tick % 30 === 0) { // Every 0.5 seconds
+                                enemy.health -= effect.damage;
+                                this.createParticles(enemy.x, enemy.y, '#32cd32');
+                            }
+                            if (effect.tick >= effect.duration) {
+                                delete enemy.effects[effectType];
+                            }
+                            break;
+                            
+                        case 'stun':
+                            speedMultiplier *= 0.1; // Almost stop
+                            if (effect.tick >= effect.duration) {
+                                delete enemy.effects[effectType];
+                            }
+                            break;
+                            
+                        case 'energyCharge':
+                            if (effect.tick % 60 === 0) { // Every second
+                                enemy.health -= effect.damage;
+                                this.createParticles(enemy.x, enemy.y, '#ff1493');
+                            }
+                            if (effect.tick >= effect.duration) {
+                                delete enemy.effects[effectType];
+                            }
+                            break;
+                            
+                        case 'curse':
+                            if (effect.tick % 30 === 0) { // Every 0.5 seconds
+                                enemy.health -= effect.damage;
+                                this.createParticles(enemy.x, enemy.y, '#8b008b');
+                            }
+                            if (effect.tick >= effect.duration) {
+                                delete enemy.effects[effectType];
+                            }
+                            break;
+                            
+                        case 'hex':
+                            speedMultiplier *= effect.speedMultiplier;
+                            if (effect.tick >= effect.duration) {
+                                delete enemy.effects[effectType];
+                            }
+                            break;
+                            
+                        case 'slow':
+                            speedMultiplier *= effect.speedMultiplier;
+                            if (effect.tick >= effect.duration) {
+                                delete enemy.effects[effectType];
+                            }
+                            break;
+                    }
+                });
+                
+                // Apply speed modifier
+                enemy.speedMultiplier = speedMultiplier;
             }
             
             createParticles(x, y, color) {

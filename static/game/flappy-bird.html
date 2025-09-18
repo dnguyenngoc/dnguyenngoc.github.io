@@ -517,8 +517,8 @@
                     width: 30,
                     height: 25,
                     velocity: 0,
-                    gravity: 0.6,
-                    jumpPower: -12,
+                    gravity: 0.4, // Reduced from 0.6 to 0.4 (easier)
+                    jumpPower: -8, // Reduced from -12 to -10 (gentler jump)
                     color: '#FFD700'
                 };
                 
@@ -526,9 +526,9 @@
                 
                 this.pipes = [];
                 this.pipeWidth = 60;
-                this.pipeGap = 150;
+                this.pipeGap = 200; // Start with wider gap (easier)
                 this.pipeSpeed = 2;
-                this.pipeSpawnRate = 90; // frames
+                this.pipeSpawnRate = 120; // Start with slower spawn rate (easier)
                 this.frameCount = 0;
                 
                 this.background = {
@@ -597,7 +597,13 @@
                 if (this.gameState === 'start') {
                     this.startGame();
                 } else if (this.gameState === 'playing') {
+                    // Gentle jump with glide effect
                     this.bird.velocity = this.bird.jumpPower;
+                    
+                    // Add slight upward momentum for easier control
+                    if (this.bird.velocity > 0) {
+                        this.bird.velocity *= 0.8; // Reduce falling speed after jump
+                    }
                 } else if (this.gameState === 'gameOver') {
                     this.restartGame();
                 }
@@ -615,6 +621,11 @@
                 this.pipes = [];
                 this.score = 0;
                 this.frameCount = 0;
+                
+                // Reset difficulty to easy
+                this.pipeGap = 200;
+                this.pipeSpawnRate = 120;
+                
                 this.updateScoreDisplay();
             }
             
@@ -628,8 +639,14 @@
             update() {
                 if (this.gameState !== 'playing') return;
                 
-                // Update bird
+                // Update bird with floating effect
                 this.bird.velocity += this.bird.gravity;
+                
+                // Add floating effect - reduce gravity when falling slowly
+                if (this.bird.velocity > 0 && this.bird.velocity < 3) {
+                    this.bird.velocity *= 0.95; // Slight floating effect
+                }
+                
                 this.bird.y += this.bird.velocity;
                 
                 // Update background
@@ -653,6 +670,9 @@
                         pipe.scored = true;
                         this.score++;
                         this.updateScoreDisplay();
+                        
+                        // Progressive difficulty - make game harder as score increases
+                        this.updateDifficulty();
                     }
                     
                     // Remove off-screen pipes
@@ -829,8 +849,84 @@
                 document.getElementById('scoreDisplay').textContent = this.score;
             }
             
+            updateDifficulty() {
+                // Progressive difficulty based on score
+                if (this.score <= 5) {
+                    // Very easy - wide gaps, slow spawn
+                    this.pipeGap = 200;
+                    this.pipeSpawnRate = 120;
+                } else if (this.score <= 10) {
+                    // Easy - medium gaps, medium spawn
+                    this.pipeGap = 180;
+                    this.pipeSpawnRate = 100;
+                } else if (this.score <= 20) {
+                    // Medium - smaller gaps, faster spawn
+                    this.pipeGap = 160;
+                    this.pipeSpawnRate = 90;
+                } else if (this.score <= 35) {
+                    // Hard - even smaller gaps, faster spawn
+                    this.pipeGap = 140;
+                    this.pipeSpawnRate = 80;
+                } else if (this.score <= 50) {
+                    // Very hard - small gaps, fast spawn
+                    this.pipeGap = 120;
+                    this.pipeSpawnRate = 70;
+                } else {
+                    // Extreme - tiny gaps, very fast spawn
+                    this.pipeGap = 100;
+                    this.pipeSpawnRate = 60;
+                }
+                
+                // Debug difficulty changes
+                if (this.score % 5 === 0) {
+                    console.log(`Score: ${this.score} - Gap: ${this.pipeGap}, Spawn Rate: ${this.pipeSpawnRate}`);
+                    
+                    // Visual feedback for difficulty change
+                    this.showDifficultyChange();
+                }
+            }
+            
             updateHighScoreDisplay() {
                 document.getElementById('highScore').textContent = `High Score: ${this.highScore}`;
+            }
+            
+            showDifficultyChange() {
+                // Create temporary difficulty indicator
+                const difficultyText = document.createElement('div');
+                difficultyText.style.position = 'absolute';
+                difficultyText.style.top = '50%';
+                difficultyText.style.left = '50%';
+                difficultyText.style.transform = 'translate(-50%, -50%)';
+                difficultyText.style.color = '#FFD700';
+                difficultyText.style.fontSize = '1.5em';
+                difficultyText.style.fontWeight = 'bold';
+                difficultyText.style.zIndex = '1000';
+                difficultyText.style.pointerEvents = 'none';
+                difficultyText.style.textShadow = '2px 2px 4px rgba(0,0,0,0.8)';
+                
+                // Set difficulty message based on score
+                if (this.score <= 5) {
+                    difficultyText.textContent = 'Very Easy';
+                } else if (this.score <= 10) {
+                    difficultyText.textContent = 'Easy';
+                } else if (this.score <= 20) {
+                    difficultyText.textContent = 'Medium';
+                } else if (this.score <= 35) {
+                    difficultyText.textContent = 'Hard';
+                } else if (this.score <= 50) {
+                    difficultyText.textContent = 'Very Hard';
+                } else {
+                    difficultyText.textContent = 'Extreme!';
+                }
+                
+                document.body.appendChild(difficultyText);
+                
+                // Remove after 2 seconds
+                setTimeout(() => {
+                    if (difficultyText.parentNode) {
+                        difficultyText.parentNode.removeChild(difficultyText);
+                    }
+                }, 2000);
             }
             
             showTouchFeedback(x, y) {

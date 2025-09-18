@@ -87,9 +87,31 @@
 
         @media (max-width: 768px) {
             .game-container {
-                height: calc(100vh - 120px);
+                height: calc(100vh - 60px);
                 min-height: 500px;
                 max-height: 800px;
+            }
+            
+            .header {
+                top: 10px;
+                transform: translateX(-50%) scale(0.7);
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+                margin-bottom: 5px;
+            }
+            
+            .header p {
+                font-size: 0.9em;
+            }
+            
+            .hud-toggle {
+                width: 35px;
+                height: 35px;
+                font-size: 1em;
+                top: 8px;
+                right: 8px;
             }
         }
 
@@ -119,6 +141,36 @@
             justify-content: space-between;
             align-items: flex-start;
             z-index: 20;
+            transition: opacity 0.3s ease;
+        }
+        
+        .hud.hidden {
+            opacity: 0.3;
+        }
+        
+        .hud-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            font-size: 1.2em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .hud-toggle:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
         }
 
         .hud-left {
@@ -402,29 +454,31 @@
             }
             
             .hud {
-                top: 60px;
-                left: 10px;
-                right: 10px;
+                top: 50px;
+                left: 8px;
+                right: 8px;
                 position: fixed;
                 z-index: 15;
+                transform: scale(0.8);
+                transform-origin: top center;
             }
             
             .hud-item {
-                padding: 8px 12px;
-                font-size: 1em;
-                margin-bottom: 5px;
+                padding: 6px 10px;
+                font-size: 0.9em;
+                margin-bottom: 3px;
             }
             
             .score {
-                font-size: 1.3em;
+                font-size: 1.2em;
             }
             
             .health {
-                font-size: 1.1em;
+                font-size: 1em;
             }
             
             .wave, .level {
-                font-size: 1.1em;
+                font-size: 1em;
             }
             
             .weapon, .shield {
@@ -520,25 +574,36 @@
             }
             
             .hud {
-                top: 50px;
-                left: 8px;
-                right: 8px;
+                top: 40px;
+                left: 5px;
+                right: 5px;
                 position: fixed;
                 z-index: 15;
+                transform: scale(0.7);
+                transform-origin: top center;
             }
             
             .hud-item {
-                padding: 6px 10px;
-                font-size: 0.9em;
+                padding: 4px 8px;
+                font-size: 0.8em;
+                margin-bottom: 2px;
             }
             
             .score {
-                font-size: 1.2em;
+                font-size: 1.1em;
             }
             
             .game-over-screen {
                 padding: 25px 15px;
                 margin: 0 15px;
+            }
+            
+            .hud-toggle {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9em;
+                top: 5px;
+                right: 5px;
             }
             
             .game-over-screen h2 {
@@ -581,16 +646,17 @@
             <div class="stars" id="stars"></div>
             
             <div class="game-ui">
-                <div class="hud">
+                <button class="hud-toggle" id="hudToggle" title="Toggle HUD">👁️</button>
+                <div class="hud" id="hud">
                     <div class="hud-left">
                         <div class="hud-item score" id="scoreDisplay">Score: 0</div>
-                        <div class="hud-item health" id="healthDisplay">Health: 120</div>
+                        <div class="hud-item health" id="healthDisplay">Lives: 3</div>
                         <div class="hud-item weapon" id="weaponInfo">🔫 SINGLE | DMG: 15 | Lv.1</div>
                     </div>
                     <div class="hud-right">
                         <div class="hud-item wave" id="waveDisplay">Wave: 1</div>
                         <div class="hud-item level" id="levelDisplay">Level: 1</div>
-                        <div class="hud-item shield" id="shieldInfo">🛡️ Shield: 0/0</div>
+                        <div class="hud-item shield" id="shieldInfo">🛡️ Shield: OFF</div>
                     </div>
                 </div>
                 
@@ -624,6 +690,7 @@
                 this.canvas = document.getElementById('gameCanvas');
                 this.ctx = this.canvas.getContext('2d');
                 this.gameState = 'start'; // start, playing, gameOver
+                this.gameLoopRunning = false; // Track if game loop is running
                 this.score = 0;
                 this.highScore = localStorage.getItem('spaceDefenderHighScore') || 0;
                 this.level = 1;
@@ -634,17 +701,16 @@
                     y: 0,
                     width: 40,
                     height: 30,
-                    health: 120, // increased health
-                    maxHealth: 120,
+                    lives: 3, // 3 lives system like classic shooters
+                    maxLives: 3,
                     speed: 6, // increased speed
                     color: '#4ecdc4',
-                    weaponType: 'single', // single, double, triple, spread
+                    weaponType: 'ion-blaster', // Chicken Invaders weapons
                     weaponLevel: 1,
-                    damage: 15,
-                    fireRate: 10, // frames between shots
+                    damage: 1, // Base damage per bullet
+                    fireRate: 8, // frames between shots (auto-shooting)
                     lastShot: 0,
-                    shield: 0,
-                    maxShield: 0
+                    autoShoot: true // enable auto shooting
                 };
                 
                 this.bullets = [];
@@ -653,11 +719,16 @@
                 this.powerups = [];
                 this.particles = [];
                 
-                this.enemySpawnRate = 80; // frames - slower spawning
-                this.powerupSpawnRate = 200; // frames - more frequent powerups
+                this.enemySpawnRate = 90; // frames - much slower spawning
+                this.powerupSpawnRate = 600; // frames - much less frequent powerups
                 this.frameCount = 0;
                 this.enemiesKilled = 0;
                 this.enemiesPerWave = 8; // fewer enemies per wave
+                this.waveTransitionTimer = null; // Reset transition timer
+                this.bossBreakTimer = null; // Timer for boss break time
+                this.isBossBreak = false; // Flag for boss break state
+                this.asteroidSizeMultiplier = 1; // size multiplier
+                this.asteroidSpeedMultiplier = 1; // speed multiplier
                 
                 this.powerupActive = false;
                 this.powerupType = '';
@@ -708,8 +779,8 @@
                     this.handleInput();
                 });
                 
-                // Touch events - improved for mobile
-                this.canvas.addEventListener('touchmove', (e) => {
+                // Touch events - improved for mobile (touch-to-move)
+                this.canvas.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     if (this.gameState === 'playing' && e.touches.length > 0) {
                         const rect = this.canvas.getBoundingClientRect();
@@ -720,15 +791,11 @@
                         // Keep player within bounds
                         this.player.x = Math.max(0, Math.min(this.canvas.width - this.player.width, this.player.x));
                         this.player.y = Math.max(0, Math.min(this.canvas.height - this.player.height, this.player.y));
-                    }
-                });
                 
-                this.canvas.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    this.handleInput();
                     // Add visual feedback for touch
-                    if (e.touches.length > 0) {
-                        this.showTouchFeedback(e.touches[0].clientX, e.touches[0].clientY);
+                        this.showTouchFeedback(touch.clientX, touch.clientY);
+                    } else {
+                        this.handleInput();
                     }
                 });
                 
@@ -755,12 +822,18 @@
                 this.gameState = 'playing';
                 document.getElementById('startScreen').style.display = 'none';
                 this.resetGame();
+                
+                // Restart game loop if it was stopped
+                if (!this.gameLoopRunning) {
+                    this.gameLoopRunning = true;
+                    this.gameLoop();
+                }
             }
             
             resetGame() {
                 this.player.x = this.canvas.width / 2 - this.player.width / 2;
                 this.player.y = this.canvas.height - 100;
-                this.player.health = this.player.maxHealth;
+                this.player.lives = this.player.maxLives;
                 this.bullets = [];
                 this.enemies = [];
                 this.explosions = [];
@@ -780,6 +853,12 @@
                 document.getElementById('gameOverScreen').classList.remove('show');
                 document.getElementById('startScreen').style.display = 'block';
                 this.resetGame();
+                
+                // Restart game loop if it was stopped
+                if (!this.gameLoopRunning) {
+                    this.gameLoopRunning = true;
+                    this.gameLoop();
+                }
             }
             
             createStars() {
@@ -801,122 +880,342 @@
             shoot() {
                 if (this.player.lastShot < this.player.fireRate) return;
                 
+                // Performance check - limit total bullets
+                if (this.bullets.length > 100) return; // Don't shoot if too many bullets
+                
                 this.player.lastShot = 0;
                 
                 switch (this.player.weaponType) {
-                    case 'single':
+                    case 'ion-blaster':
+                        // Ion Blaster - rapid fire single shots
+                        for (let i = 0; i < this.player.weaponLevel; i++) {
+                        this.bullets.push({
+                                x: this.player.x + this.player.width / 2 - 2 + (i - this.player.weaponLevel/2) * 6,
+                            y: this.player.y,
+                            width: 4,
+                            height: 10,
+                            speed: 8,
+                            damage: this.player.damage,
+                                color: '#00ff00', // Green ion energy
+                                type: 'ion-blaster'
+                        });
+                        }
+                        break;
+                        
+                    case 'neutron-gun':
+                        // Neutron Gun - powerful concentrated shots (based on CI Wiki)
+                        for (let i = 0; i < this.player.weaponLevel; i++) {
+                        this.bullets.push({
+                                x: this.player.x + this.player.width / 2 - 3 + (i - this.player.weaponLevel/2) * 8,
+                            y: this.player.y,
+                                width: 6,
+                                height: 15,
+                                speed: 5, // Slow but powerful
+                                damage: Math.floor(this.player.damage * (2.5 + this.player.weaponLevel * 0.3)),
+                                color: '#00ff00', // Green nuclear energy (as per CI Wiki)
+                                type: 'neutron-gun',
+                                trail: true // Add trail effect
+                            });
+                        }
+                        break;
+                        
+                    case 'laser-cannon':
+                        // Laser Cannon - continuous beam (based on CI Wiki)
+                        const laserWidth = Math.min(2 + this.player.weaponLevel, 8); // Cap at 8
+                        const laserHeight = Math.min(30 + this.player.weaponLevel * 8, 80); // Cap at 80
+                        this.bullets.push({
+                            x: this.player.x + this.player.width / 2 - 1,
+                            y: this.player.y,
+                            width: laserWidth,
+                            height: laserHeight,
+                            speed: 15, // Fast laser
+                            damage: Math.floor(this.player.damage * (2 + this.player.weaponLevel * 0.4)),
+                            color: '#ff0000', // Red laser
+                            type: 'laser-cannon',
+                            beam: true, // Continuous beam effect
+                            pierce: true // Can pierce through enemies
+                        });
+                        break;
+                        
+                    case 'vulcan-chaingun':
+                        // Vulcan Chaingun - rapid fire spread (based on CI Wiki)
+                        const vulcanCount = Math.min(3 + this.player.weaponLevel, 8); // Cap at 8 bullets
+                        for (let i = 0; i < vulcanCount; i++) {
+                            const angle = (i - vulcanCount/2) * 0.3;
+                            this.bullets.push({
+                                x: this.player.x + this.player.width / 2 - 2,
+                            y: this.player.y,
+                            width: 4,
+                                height: 8,
+                                speed: 10,
+                                damage: this.player.damage * 0.9,
+                                color: '#ff8800', // Orange vulcan rounds
+                                angle: angle,
+                                type: 'vulcan-chaingun',
+                                spread: true // Wide spread effect
+                            });
+                        }
+                        break;
+                        
+                    case 'lightning-fryer':
+                        // Lightning Fryer - electric bolts
+                        const lightningCount = Math.min(this.player.weaponLevel, 6); // Cap at 6 bolts
+                        for (let i = 0; i < lightningCount; i++) {
+                            this.bullets.push({
+                                x: this.player.x + this.player.width / 2 - 2 + (i - lightningCount/2) * 8,
+                                y: this.player.y,
+                                width: 3,
+                                height: 12,
+                                speed: 9,
+                                damage: this.player.damage * 1.2,
+                                color: '#00ffff', // Cyan lightning
+                                type: 'lightning-fryer'
+                            });
+                        }
+                        break;
+                        
+                    case 'plasma-rifle':
+                        // Plasma Rifle - homing plasma missiles (based on CI Wiki)
+                        const plasmaCount = Math.min(this.player.weaponLevel, 5); // Cap at 5 missiles
+                        for (let i = 0; i < plasmaCount; i++) {
+                            this.bullets.push({
+                                x: this.player.x + this.player.width / 2 - 3 + (i - plasmaCount/2) * 8,
+                                y: this.player.y,
+                                width: 5,
+                                height: 12,
+                                speed: 6,
+                                damage: this.player.damage * 1.8,
+                                color: '#ff00ff', // Magenta plasma
+                                type: 'plasma-rifle',
+                                homing: true, // Homing missiles
+                                explosionRadius: Math.min(20 + this.player.weaponLevel * 5, 50) // Cap explosion radius at 50
+                            });
+                        }
+                        break;
+                        
+                    case 'photon-swarm':
+                        // Photon Swarm - multiple photon particles (capped for performance)
+                        const photonCount = Math.min(5 + this.player.weaponLevel * 2, 12); // Cap at 12 particles
+                        for (let i = 0; i < photonCount; i++) {
+                            const angle = (i / photonCount) * Math.PI * 0.5; // Spread in cone
+                            this.bullets.push({
+                                x: this.player.x + this.player.width / 2 - 1,
+                                y: this.player.y,
+                                width: 2,
+                                height: 6,
+                            speed: 8,
+                                damage: this.player.damage * 0.5,
+                                color: '#ffffff', // White photons
+                                angle: angle,
+                                type: 'photon-swarm'
+                            });
+                        }
+                        break;
+                        
+                    case 'positron-stream':
+                        // Positron Stream - continuous positron beam
+                        this.bullets.push({
+                            x: this.player.x + this.player.width / 2 - 2,
+                            y: this.player.y,
+                            width: 4 + this.player.weaponLevel,
+                            height: 15 + this.player.weaponLevel * 3,
+                            speed: 10,
+                            damage: Math.floor(this.player.damage * (1.8 + this.player.weaponLevel * 0.3)),
+                            color: '#ff6600', // Orange positron stream
+                            type: 'positron-stream'
+                        });
+                        break;
+                        
+                    case 'utensil-poker':
+                        // Utensil Poker - fork-like projectiles
+                        for (let i = 0; i < this.player.weaponLevel; i++) {
+                            this.bullets.push({
+                                x: this.player.x + this.player.width / 2 - 2 + (i - this.player.weaponLevel/2) * 8,
+                                y: this.player.y,
+                                width: 3,
+                                height: 15,
+                            speed: 8,
+                                damage: this.player.damage * 1.1,
+                                color: '#c0c0c0', // Silver utensils
+                                type: 'utensil-poker'
+                        });
+                        }
+                        break;
+                        
+                    case 'boron-railgun':
+                        // Boron Railgun - high-speed rail projectiles
                         this.bullets.push({
                             x: this.player.x + this.player.width / 2 - 2,
                             y: this.player.y,
                             width: 4,
-                            height: 10,
-                            speed: 8,
-                            damage: this.player.damage,
-                            color: '#feca57'
+                            height: 20,
+                            speed: 15,
+                            damage: Math.floor(this.player.damage * (2.5 + this.player.weaponLevel * 0.3)),
+                            color: '#00ff88', // Bright green boron
+                            type: 'boron-railgun'
                         });
                         break;
                         
-                    case 'double':
-                        this.bullets.push({
-                            x: this.player.x + this.player.width / 2 - 8,
-                            y: this.player.y,
-                            width: 4,
-                            height: 10,
-                            speed: 8,
-                            damage: this.player.damage,
-                            color: '#feca57'
-                        });
-                        this.bullets.push({
-                            x: this.player.x + this.player.width / 2 + 4,
-                            y: this.player.y,
-                            width: 4,
-                            height: 10,
-                            speed: 8,
-                            damage: this.player.damage,
-                            color: '#feca57'
-                        });
+                    case 'hypergun':
+                        // Hypergun - rapid fire hyper rounds
+                        for (let i = 0; i < this.player.weaponLevel * 2; i++) {
+                            this.bullets.push({
+                                x: this.player.x + this.player.width / 2 - 1 + (i - this.player.weaponLevel) * 4,
+                                y: this.player.y,
+                                width: 2,
+                                height: 8,
+                                speed: 11,
+                            damage: this.player.damage * 0.8,
+                                color: '#ff0088', // Pink hyper energy
+                                type: 'hypergun'
+                            });
+                        }
                         break;
                         
-                    case 'triple':
+                    case 'riddler':
+                        // Riddler - puzzle-like projectiles
+                        const riddlerCount = 3 + this.player.weaponLevel;
+                        for (let i = 0; i < riddlerCount; i++) {
+                            const angle = (i / riddlerCount) * Math.PI * 0.3;
                         this.bullets.push({
-                            x: this.player.x + this.player.width / 2 - 2,
-                            y: this.player.y,
-                            width: 4,
-                            height: 10,
-                            speed: 8,
-                            damage: this.player.damage,
-                            color: '#feca57'
-                        });
-                        this.bullets.push({
-                            x: this.player.x + this.player.width / 2 - 8,
+                                x: this.player.x + this.player.width / 2 - 2,
                             y: this.player.y,
                             width: 4,
                             height: 10,
                             speed: 7,
-                            damage: this.player.damage * 0.8,
-                            color: '#feca57'
-                        });
-                        this.bullets.push({
-                            x: this.player.x + this.player.width / 2 + 4,
-                            y: this.player.y,
-                            width: 4,
-                            height: 10,
-                            speed: 7,
-                            damage: this.player.damage * 0.8,
-                            color: '#feca57'
-                        });
+                                damage: this.player.damage * 0.9,
+                                color: '#8800ff', // Purple riddles
+                                angle: angle,
+                                type: 'riddler'
+                            });
+                        }
                         break;
                         
-                    case 'spread':
-                        for (let i = -2; i <= 2; i++) {
+                    case 'corn-shotgun':
+                        // Corn Shotgun - corn kernel spread
+                        const cornCount = 4 + this.player.weaponLevel;
+                        for (let i = 0; i < cornCount; i++) {
+                            const angle = (i - cornCount/2) * 0.25;
                             this.bullets.push({
                                 x: this.player.x + this.player.width / 2 - 2,
                                 y: this.player.y,
-                                width: 4,
-                                height: 10,
+                                width: 3,
+                                height: 8,
                                 speed: 6,
-                                damage: this.player.damage * 0.6,
-                                color: '#feca57',
-                                angle: i * 0.2
+                                damage: this.player.damage * 0.7,
+                                color: '#ffaa00', // Yellow corn
+                                angle: angle,
+                                type: 'corn-shotgun'
                             });
                         }
+                        break;
+                        
+                    case 'moron-railgun':
+                        // Moron Railgun - unpredictable projectiles
+                        for (let i = 0; i < this.player.weaponLevel; i++) {
+                            this.bullets.push({
+                                x: this.player.x + this.player.width / 2 - 3 + (i - this.player.weaponLevel/2) * 10,
+                                y: this.player.y,
+                                width: 5,
+                                height: 12,
+                                speed: 5 + Math.random() * 5, // Random speed
+                                damage: this.player.damage * (1.5 + Math.random()),
+                                color: '#ff4400', // Red moron energy
+                                type: 'moron-railgun'
+                            });
+                        }
+                        break;
+                        
+                    case 'absolver-beam':
+                        // Absolver Beam - ultimate beam weapon
+                        this.bullets.push({
+                            x: this.player.x + this.player.width / 2 - 3,
+                            y: this.player.y,
+                            width: 6 + this.player.weaponLevel * 2,
+                            height: 25 + this.player.weaponLevel * 8,
+                            speed: 8,
+                            damage: Math.floor(this.player.damage * (3 + this.player.weaponLevel * 0.5)),
+                            color: '#ffffff', // White absolver beam
+                            type: 'absolver-beam'
+                        });
                         break;
                 }
             }
             
             spawnEnemy() {
                 const enemyTypes = [
-                    { width: 30, height: 25, speed: 1.5, health: 1, color: '#ff6b6b', points: 15 }, // slower, more points
-                    { width: 40, height: 30, speed: 1.2, health: 2, color: '#ff9ff3', points: 25 }, // slower, more points
-                    { width: 50, height: 35, speed: 0.8, health: 3, color: '#a8e6cf', points: 35 } // slower, more points
+                    // Small asteroids - 1-2 hits (falling) - slower speeds
+                    { width: 15, height: 15, speed: 1.5, health: 1, color: '#ff6b6b', points: 10, shape: 'circle', fragments: 0, floating: false },
+                    { width: 18, height: 18, speed: 1.3, health: 2, color: '#ff9ff3', points: 15, shape: 'circle', fragments: 1, floating: false },
+                    
+                    // Medium asteroids - 3-5 hits (mixed floating/falling) - slower speeds
+                    { width: 22, height: 22, speed: 1.2, health: 3, color: '#a8e6cf', points: 25, shape: 'circle', fragments: 2, floating: false },
+                    { width: 25, height: 25, speed: 1.0, health: 4, color: '#ffa726', points: 30, shape: 'square', fragments: 2, floating: true },
+                    { width: 28, height: 28, speed: 0.9, health: 5, color: '#ab47bc', points: 35, shape: 'square', fragments: 3, floating: true },
+                    
+                    // Large asteroids - 6-10 hits (mostly floating)
+                    { width: 32, height: 32, speed: 1.2, health: 6, color: '#26a69a', points: 50, shape: 'square', fragments: 3, floating: true },
+                    { width: 35, height: 35, speed: 1.0, health: 8, color: '#ef5350', points: 60, shape: 'triangle', fragments: 4, floating: true },
+                    { width: 38, height: 38, speed: 0.8, health: 10, color: '#42a5f5', points: 70, shape: 'triangle', fragments: 4, floating: true },
+                    
+                    // Huge asteroids - 12-20 hits (all floating)
+                    { width: 42, height: 42, speed: 0.6, health: 12, color: '#66bb6a', points: 100, shape: 'triangle', fragments: 5, floating: true },
+                    { width: 45, height: 45, speed: 0.5, health: 15, color: '#ff7043', points: 120, shape: 'diamond', fragments: 6, floating: true },
+                    { width: 48, height: 48, speed: 0.4, health: 18, color: '#8e24aa', points: 150, shape: 'diamond', fragments: 7, floating: true },
+                    
+                    // Massive asteroids - 25+ hits (all floating)
+                    { width: 55, height: 55, speed: 0.3, health: 25, color: '#26c6da', points: 200, shape: 'diamond', fragments: 8, floating: true },
+                    { width: 60, height: 60, speed: 0.2, health: 35, color: '#795548', points: 300, shape: 'circle', fragments: 10, floating: true }
                 ];
                 
                 const type = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
                 
+                // Apply size and speed multipliers with wave scaling
+                const waveMultiplier = 1 + (this.wave - 1) * 0.05; // 5% increase per wave
+                const scaledWidth = Math.floor(type.width * this.asteroidSizeMultiplier * waveMultiplier);
+                const scaledHeight = Math.floor(type.height * this.asteroidSizeMultiplier * waveMultiplier);
+                const scaledSpeed = type.speed * this.asteroidSpeedMultiplier * waveMultiplier;
+                
+                // Calculate health based on size and wave - ensure larger asteroids have more health
+                const scaledHealth = Math.floor(type.health * (1 + (this.wave - 1) * 1.0)); // 100% health increase per wave
+                
+                // Debug health scaling
+                if (this.frameCount % 600 === 0) { // Every 10 seconds
+                    console.log(`Wave ${this.wave} - Asteroid health scaling: Base=${type.health}, Scaled=${scaledHealth}, Multiplier=${(1 + (this.wave - 1) * 1.0).toFixed(2)}x`);
+                }
+                
                 this.enemies.push({
-                    x: Math.random() * (this.canvas.width - type.width),
-                    y: -type.height,
-                    width: type.width,
-                    height: type.height,
-                    speed: type.speed + (this.level - 1) * 0.2,
-                    health: type.health,
-                    maxHealth: type.health,
+                    x: Math.random() * (this.canvas.width - scaledWidth),
+                    y: -scaledHeight,
+                    width: scaledWidth,
+                    height: scaledHeight,
+                    speed: scaledSpeed + (this.level - 1) * 0.2,
+                    health: scaledHealth,
+                    maxHealth: scaledHealth,
                     color: type.color,
-                    points: type.points,
+                    points: Math.floor(type.points * this.asteroidSizeMultiplier * waveMultiplier), // More points for bigger asteroids
+                    shape: type.shape,
+                    fragments: type.fragments,
+                    floating: type.floating,
                     shootTimer: 0,
-                    shootRate: 60 + Math.random() * 60
+                    shootRate: 60 + Math.random() * 60,
+                    floatDirection: Math.random() < 0.5 ? 1 : -1,
+                    floatSpeed: 0.5 + Math.random() * 0.5,
+                    floatTimer: 0
                 });
             }
             
             spawnPowerup() {
-                const powerupTypes = ['health', 'rapid', 'shield', 'weapon', 'upgrade'];
+                // Only 2 powerup types: W+ (upgrade) and WT (weapon type)
+                const powerupTypes = [
+                    'weapon', 'weapon', 'weapon', // 60% chance - W+ (weapon upgrade)
+                    'weapon-change', 'weapon-change' // 40% chance - WT (weapon type)
+                ];
                 const type = powerupTypes[Math.floor(Math.random() * powerupTypes.length)];
                 
-                let color = '#ff6b6b';
-                if (type === 'rapid') color = '#feca57';
-                else if (type === 'shield') color = '#4ecdc4';
-                else if (type === 'weapon') color = '#ff9ff3';
-                else if (type === 'upgrade') color = '#32cd32';
+                let color = '#ffd700'; // Default gold
+                if (type === 'weapon') color = '#ffd700'; // Gold for W+ (upgrade)
+                else if (type === 'weapon-change') color = '#ff6b6b'; // Red for WT (weapon type)
                 
                 this.powerups.push({
                     x: Math.random() * (this.canvas.width - 20),
@@ -929,56 +1228,260 @@
                 });
             }
             
+            spawnPowerupAt(x, y) {
+                // Only 2 powerup types: W+ (upgrade) and WT (weapon type)
+                const powerupTypes = [
+                    'weapon', 'weapon', 'weapon', // 60% chance - W+ (weapon upgrade)
+                    'weapon-change', 'weapon-change' // 40% chance - WT (weapon type)
+                ];
+                const type = powerupTypes[Math.floor(Math.random() * powerupTypes.length)];
+                
+                let color = '#ffd700'; // Default gold
+                if (type === 'weapon') color = '#ffd700'; // Gold for W+ (upgrade)
+                else if (type === 'weapon-change') color = '#ff6b6b'; // Red for WT (weapon type)
+                
+                this.powerups.push({
+                    x: x - 10, // Center the power-up
+                    y: y - 10,
+                    width: 20,
+                    height: 20,
+                    speed: 2,
+                    type: type,
+                    color: color
+                });
+            }
+            
             update() {
-                if (this.gameState !== 'playing') return;
+                if (this.gameState !== 'playing') {
+                    // Don't run game loop if not playing to prevent memory leak
+                    if (this.gameState === 'start') {
+                        // Only update frame count for start screen animations
+                        this.frameCount++;
+                        return;
+                    }
+                    // Debug: Log game state if not playing
+                    if (this.frameCount % 300 === 0) { // Every 5 seconds
+                        console.log(`Game not playing - State: ${this.gameState}`);
+                    }
+                    return;
+                }
+                
+                // Performance: Skip frames if too many objects (very conservative)
+                const totalObjects = this.bullets.length + this.enemies.length + this.particles.length + this.explosions.length;
+                if (totalObjects > 500 && this.frameCount % 8 === 0) {
+                    if (this.frameCount % 300 === 0) { // Debug every 5 seconds
+                        console.log(`Skipping frame - Very high load: ${totalObjects} objects`);
+                    }
+                    return; // Skip frame for very high load only
+                }
+                if (totalObjects > 400 && this.frameCount % 6 === 0) {
+                    if (this.frameCount % 300 === 0) { // Debug every 5 seconds
+                        console.log(`Skipping frame - High load: ${totalObjects} objects`);
+                    }
+                    return; // Skip frame for high load
+                }
                 
                 this.frameCount++;
                 
-                // Spawn enemies
-                if (this.frameCount % this.enemySpawnRate === 0 && this.enemies.length < 8) {
+                // Safety check: Force restart if game loop seems stuck
+                if (this.frameCount > 0 && this.frameCount % 1800 === 0) { // Every 30 seconds
+                    console.log(`Game loop health check - Frame: ${this.frameCount}, State: ${this.gameState}, Objects: ${totalObjects}`);
+                    
+                    // Debug animation state
+                    const movingEnemies = this.enemies.filter(enemy => enemy.speed > 0).length;
+                    const movingBullets = this.bullets.filter(bullet => bullet.speed > 0).length;
+                    console.log(`Animation debug - Moving enemies: ${movingEnemies}/${this.enemies.length}, Moving bullets: ${movingBullets}/${this.bullets.length}`);
+                }
+                
+                // Spawn enemies - Continuous spawning for survival challenge
+                const isBossWave = this.wave % 5 === 0;
+                if (!isBossWave && !this.isBossBreak) {
+                    const adjustedSpawnRate = Math.max(40, this.enemySpawnRate - (this.wave - 1) * 1); // Much slower spawning as waves progress
+                    if (this.frameCount % adjustedSpawnRate === 0 && 
+                        this.enemies.length < 15) { // Reduced from 20 to 15 for performance
                     this.spawnEnemy();
                 }
                 
-                // Spawn powerups
-                if (this.frameCount % this.powerupSpawnRate === 0) {
+                    // Performance: Limit total enemies
+                    if (this.enemies.length > 20) {
+                        this.enemies = this.enemies.slice(-15); // Keep only last 15 enemies
+                    }
+                } else {
+                    // Boss wave - only spawn boss, no regular enemies
+                    const hasBoss = this.enemies.some(enemy => enemy.isBoss);
+                    const hasDefeatedBoss = this.enemies.some(enemy => enemy.isBoss && enemy.isDefeated);
+                    
+                    if (!hasBoss && !hasDefeatedBoss && !this.bossSpawned) {
+                        this.startBossWave();
+                        console.log(`Boss wave ${this.wave} - Boss spawned!`);
+                    } else if (hasBoss && !this.bossSpawned) {
+                        // Boss exists but flag not set - fix the flag
+                        this.bossSpawned = true;
+                        console.log(`Boss wave ${this.wave} - Boss flag fixed!`);
+                    }
+                    
+                    // Boss spawn logic is handled in startBossWave() function
+                    // This check is redundant and causes confusion
+                    // Clear any remaining regular enemies in boss wave, but keep boss
+                    this.enemies = this.enemies.filter(enemy => enemy.isBoss);
+                    
+                    // Safety check: ensure only one boss exists
+                    const bosses = this.enemies.filter(enemy => enemy.isBoss);
+                    if (bosses.length > 1) {
+                        console.error(`Multiple bosses detected in wave ${this.wave}! Removing duplicates...`);
+                        this.enemies = this.enemies.filter(enemy => !enemy.isBoss);
+                        this.enemies.push(bosses[0]); // Keep only the first boss
+                    }
+                    
+                    // Ensure boss exists and is valid
+                    const boss = this.enemies.find(enemy => enemy.isBoss);
+                    if (boss) {
+                        // Validate boss properties
+                        if (typeof boss.x !== 'number' || typeof boss.y !== 'number') {
+                            console.error('Boss position invalid, respawning...');
+                            this.enemies = this.enemies.filter(enemy => !enemy.isBoss);
+                            this.bossSpawned = false;
+                        }
+                    } else if (this.bossSpawned && !this.isBossBreak) {
+                        // Boss should exist but doesn't - this is a problem
+                        console.error(`Boss wave ${this.wave} - Boss missing but flag set! Resetting...`);
+                        this.bossSpawned = false;
+                    }
+                }
+                
+                // Debug info (reduced frequency for better performance)
+                if (this.frameCount % 600 === 0) { // Every 10 seconds
+                    const hasBoss = this.enemies.some(enemy => enemy.isBoss);
+                    const hasDefeatedBoss = this.enemies.some(enemy => enemy.isBoss && enemy.isDefeated);
+                    const boss = this.enemies.find(enemy => enemy.isBoss);
+                    const bossHealth = boss ? `${boss.health}/${boss.maxHealth}` : 'N/A';
+                    const bossStatus = boss ? (boss.isDefeated ? 'DEFEATED' : 'ALIVE') : 'NONE';
+                    console.log(`Wave: ${this.wave}, Enemies: ${this.enemies.length}, HasBoss: ${hasBoss}, BossStatus: ${bossStatus}, BossHealth: ${bossHealth}, BossSpawned: ${this.bossSpawned}, TransitionTimer: ${this.waveTransitionTimer}, IsBossWave: ${isBossWave}, IsBossBreak: ${this.isBossBreak}, BossBreakTimer: ${this.bossBreakTimer}`);
+                }
+                
+                // Safety check: Force wave transition if stuck
+                if (this.waveTransitionTimer !== null && this.waveTransitionTimer > 1000) {
+                    console.log(`Wave transition stuck! Force transitioning to wave ${this.wave + 1}...`);
+                    this.nextWave();
+                    this.waveTransitionTimer = null;
+                }
+                
+                // Additional safety check: prevent infinite boss waves
+                if (isBossWave && this.frameCount > 18000) { // 5 minutes max for boss wave
+                    console.log(`Boss wave ${this.wave} taking too long! Force transitioning...`);
+                    this.nextWave();
+                    this.waveTransitionTimer = null;
+                }
+                
+                // Spawn powerups - much less frequent (not during boss break)
+                if (!this.isBossBreak) {
+                    const adjustedPowerupRate = Math.max(400, this.powerupSpawnRate - (this.wave - 1) * 20); // Much slower spawning
+                    if (this.frameCount % adjustedPowerupRate === 0) {
                     this.spawnPowerup();
+                    }
                 }
                 
                 // Update player
                 this.player.lastShot++;
                 
+                
+                // Auto shooting
+                if (this.player.autoShoot) {
+                    this.shoot();
+                }
+                
                 // Update bullets
                 this.bullets.forEach((bullet, index) => {
-                    if (bullet.angle) {
+                    if (bullet.laser) {
+                        // Laser bullets have limited life
+                        bullet.life--;
+                        if (bullet.life <= 0) {
+                            this.bullets.splice(index, 1);
+                            return;
+                        }
+                    } else if (bullet.vx !== undefined && bullet.vy !== undefined) {
+                        // Boss bullets with vx, vy movement
+                        bullet.x += bullet.vx;
+                        bullet.y += bullet.vy;
+                    } else if (bullet.angle) {
                         // Spread shot bullets
                         bullet.x += Math.sin(bullet.angle) * 2;
-                        bullet.y -= bullet.speed;
+                        if (typeof bullet.speed === 'number' && bullet.speed > 0) {
+                            bullet.y -= bullet.speed;
+                        } else {
+                            bullet.speed = 5.0; // Fix broken bullet speed
+                            bullet.y -= bullet.speed;
+                        }
                     } else {
-                        bullet.y -= bullet.speed;
+                        if (typeof bullet.speed === 'number' && bullet.speed > 0) {
+                            bullet.y -= bullet.speed;
+                        } else {
+                            bullet.speed = 5.0; // Fix broken bullet speed
+                            bullet.y -= bullet.speed;
+                        }
                     }
                     
-                    if (bullet.y < 0 || bullet.x < 0 || bullet.x > this.canvas.width) {
+                    if (bullet.y < 0 || bullet.x < 0 || bullet.x > this.canvas.width || bullet.y > this.canvas.height) {
                         this.bullets.splice(index, 1);
                     }
                 });
                 
+                // Performance: Limit total bullets to prevent lag
+                if (this.bullets.length > 150) {
+                    this.bullets = this.bullets.slice(-100); // Keep only last 100 bullets
+                }
+                
                 // Update enemies
                 this.enemies.forEach((enemy, index) => {
-                    enemy.y += enemy.speed;
+                    // Handle fragment movement (with vx, vy) or normal movement
+                    if (enemy.vx !== undefined && enemy.vy !== undefined) {
+                        enemy.x += enemy.vx;
+                        enemy.y += enemy.vy;
+                    } else if (!enemy.isBoss) {
+                        // Regular enemies movement - floating or falling
+                        if (enemy.floating) {
+                            // Floating asteroids - move horizontally and slightly up/down
+                            enemy.x += Math.sin(enemy.floatTimer * 0.02) * enemy.floatSpeed;
+                            enemy.y += enemy.speed * 0.3; // Slower downward movement
+                            enemy.floatTimer++;
+                            
+                            // Keep floating asteroids in bounds
+                            if (enemy.x < 0) enemy.x = 0;
+                            if (enemy.x > this.canvas.width - enemy.width) enemy.x = this.canvas.width - enemy.width;
+                        } else {
+                            // Falling asteroids - normal downward movement
+                            if (typeof enemy.speed === 'number' && enemy.speed > 0) {
+                                enemy.y += enemy.speed;
+                            } else {
+                                // Fix broken enemy speed
+                                enemy.speed = 1.0;
+                                enemy.y += enemy.speed;
+                            }
+                        }
+                    }
+                    // Boss movement is handled in updateBossAbilities()
                     enemy.shootTimer++;
                     
-                    // Enemy shooting
-                    if (enemy.shootTimer >= enemy.shootRate) {
-                        enemy.shootTimer = 0;
-                        this.bullets.push({
-                            x: enemy.x + enemy.width / 2 - 2,
-                            y: enemy.y + enemy.height,
-                            width: 4,
-                            height: 8,
-                            speed: 4,
-                            color: '#ff6b6b',
-                            isEnemy: true
-                        });
+                    // Boss special abilities
+                    if (enemy.isBoss && !enemy.isDefeated) {
+                        try {
+                            this.updateBossAbilities(enemy);
+                            // Debug boss position and shooting
+                            if (this.frameCount % 120 === 0) { // Every 2 seconds
+                                console.log(`Boss: x=${enemy.x.toFixed(1)}, y=${enemy.y.toFixed(1)}, health=${enemy.health}/${enemy.maxHealth}, shootTimer=${enemy.shootTimer}, shootRate=${enemy.shootRate}, skillCooldown=${enemy.skillCooldown}`);
+                            }
+                        } catch (error) {
+                            console.error('Boss update error:', error);
+                            // Try to fix boss instead of removing
+                            enemy.moveDirection = enemy.moveDirection || 1;
+                            enemy.moveSpeed = enemy.moveSpeed || 1.0;
+                            enemy.verticalDirection = enemy.verticalDirection || 1;
+                            enemy.shootTimer = enemy.shootTimer || 0;
+                            enemy.shootRate = enemy.shootRate || 30;
+                            enemy.skillCooldown = enemy.skillCooldown || 0;
+                        }
+                    } else {
+                        // Regular enemies don't shoot - removed for better gameplay
                     }
                     
                     // Remove off-screen enemies
@@ -1005,15 +1508,18 @@
                     }
                 });
                 
-                // Update particles
-                this.particles.forEach((particle, index) => {
+                // Update particles with performance optimization
+                this.particles = this.particles.filter(particle => {
                     particle.x += particle.vx;
                     particle.y += particle.vy;
                     particle.life--;
-                    if (particle.life <= 0) {
-                        this.particles.splice(index, 1);
-                    }
+                    return particle.life > 0;
                 });
+                
+                // Performance: Limit particles to prevent lag
+                if (this.particles.length > 50) {
+                    this.particles = this.particles.slice(-30); // Keep only last 30 particles
+                }
                 
                 // Check collisions
                 this.checkCollisions();
@@ -1038,13 +1544,81 @@
                 });
                 
                 // Check game over
-                if (this.player.health <= 0) {
+                if (this.player.lives <= 0) {
                     this.gameOver();
                 }
                 
-                // Check wave completion
-                if (this.enemiesKilled >= this.enemiesPerWave) {
+                // Wave progression logic - Boss waves require boss defeat
+                if (isBossWave) {
+                    // Boss wave - only progress when boss is defeated
+                    const hasBoss = this.enemies.some(enemy => enemy.isBoss);
+                    const hasDefeatedBoss = this.enemies.some(enemy => enemy.isBoss && enemy.isDefeated);
+                    
+                    // Debug logging for boss wave
+                    if (this.frameCount % 300 === 0) { // Every 5 seconds
+                        console.log(`Boss wave debug: hasBoss=${hasBoss}, hasDefeatedBoss=${hasDefeatedBoss}, waveTransitionTimer=${this.waveTransitionTimer}, bossSpawned=${this.bossSpawned}, isBossBreak=${this.isBossBreak}, bossBreakTimer=${this.bossBreakTimer}`);
+                    }
+                    
+                    // Boss defeat is now handled immediately in checkCollisions()
+                    // This section is no longer needed
+                    
+                    // Handle boss break timer
+                    if (this.isBossBreak && this.bossBreakTimer !== null) {
+                        this.bossBreakTimer--;
+                        
+                        // Show countdown
+                        if (this.bossBreakTimer % 60 === 0) { // Every second
+                            const secondsLeft = Math.ceil(this.bossBreakTimer / 60);
+                            console.log(`Boss break: ${secondsLeft} seconds remaining...`);
+                            
+                            // Show countdown on UI
+                            document.getElementById('powerupIndicator').textContent = `BOSS DEFEATED! Next wave in ${secondsLeft} seconds...`;
+                            document.getElementById('powerupIndicator').style.display = 'block';
+                            document.getElementById('powerupIndicator').style.color = '#00ff00';
+                            document.getElementById('powerupIndicator').style.fontSize = '1.2em';
+                        }
+                        
+                        // Debug logging for boss break
+                        if (this.bossBreakTimer % 120 === 0) { // Every 2 seconds
+                            console.log(`Boss break debug: isBossBreak=${this.isBossBreak}, bossBreakTimer=${this.bossBreakTimer}`);
+                        }
+                        
+                        // Clean up memory during break time
+                        if (this.bossBreakTimer % 120 === 0) { // Every 2 seconds
+                            this.cleanupMemory();
+                        }
+                        
+                        if (this.bossBreakTimer <= 0) {
+                            console.log(`Boss break finished! Transitioning to wave ${this.wave + 1}...`);
+                            
+                            // Hide countdown UI
+                            document.getElementById('powerupIndicator').style.display = 'none';
+                            
+                            this.isBossBreak = false;
+                            this.bossBreakTimer = null;
                     this.nextWave();
+                        }
+                    }
+                    
+                    // Safety check: If no boss and no break timer, force transition
+                    if ((!hasBoss || hasDefeatedBoss) && !this.isBossBreak && this.bossSpawned) {
+                        console.log(`Boss wave ${this.wave} - No boss found or boss defeated, force transitioning...`);
+                        console.log(`Force transition debug: hasBoss=${hasBoss}, hasDefeatedBoss=${hasDefeatedBoss}, isBossBreak=${this.isBossBreak}, bossSpawned=${this.bossSpawned}`);
+                        this.isBossBreak = true;
+                        this.bossBreakTimer = 60; // 1 second delay
+                    }
+                } else {
+                    // Regular wave - auto progression with 7 second pause
+                    if (!this.waveTransitionTimer) {
+                        this.waveTransitionTimer = 420; // 7 seconds per wave (60fps * 7)
+                        console.log(`Regular wave ${this.wave} - Starting 7 second timer...`);
+                    }
+                    this.waveTransitionTimer--;
+                    if (this.waveTransitionTimer <= 0) {
+                        console.log(`Regular wave ${this.wave} timer expired - transitioning to wave ${this.wave + 1}...`);
+                        this.nextWave();
+                        this.waveTransitionTimer = null; // Reset
+                    }
                 }
             }
             
@@ -1056,16 +1630,52 @@
                     this.enemies.forEach((enemy, enemyIndex) => {
                         if (this.isColliding(bullet, enemy)) {
                             this.bullets.splice(bulletIndex, 1);
-                            enemy.health -= bullet.damage || 15;
+                            enemy.health -= bullet.damage || 1; // Each bullet does 1 damage by default
+                            
+                            // Fix floating point precision issues
+                            enemy.health = Math.max(0, Math.floor(enemy.health * 100) / 100);
                             
                             // Create explosion
                             this.createExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2);
                             
                             if (enemy.health <= 0) {
+                                if (enemy.isBoss) {
+                                    if (!enemy.isDefeated) {
+                                        console.log(`Boss defeated! Health: ${enemy.health}, Wave: ${this.wave}`);
+                                        // Mark boss as defeated and remove immediately
+                                        enemy.isDefeated = true;
+                                        enemy.health = 0; // Ensure health is 0
+                                        enemy.defeatLogged = true; // Prevent multiple defeat logs
+                                        
+                                        // Remove boss immediately to prevent visual glitch
+                                        this.enemies.splice(enemyIndex, 1);
+                                        this.score += enemy.points;
+                                        this.enemiesKilled++;
+                                        this.createExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2, '#ff0000');
+                                        
+                                        // Start boss break immediately
+                                        this.isBossBreak = true;
+                                        this.bossBreakTimer = 600; // 10 seconds
+                                        console.log(`Boss defeated! Starting 10-second break...`);
+                                        return; // Exit collision check early
+                                    }
+                                } else {
+                                    // Regular enemies can be removed immediately
                                 this.enemies.splice(enemyIndex, 1);
                                 this.score += enemy.points;
                                 this.enemiesKilled++;
                                 this.createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2);
+                                    
+                                    // Random power-up drop (5% chance - much rarer)
+                                    if (Math.random() < 0.05) {
+                                        this.spawnPowerupAt(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2);
+                                    }
+                                    
+                                    // Create fragments if enemy has fragments
+                                    if (enemy.fragments && enemy.fragments > 1) {
+                                        this.createFragments(enemy);
+                                    }
+                                }
                             }
                         }
                     });
@@ -1076,11 +1686,7 @@
                     if (bullet.isEnemy && this.isColliding(bullet, this.player)) {
                         this.bullets.splice(index, 1);
                         
-                        if (this.player.shield > 0) {
-                            this.player.shield -= 10;
-                        } else {
-                            this.player.health -= 10;
-                        }
+                        this.player.lives--;
                         
                         this.createExplosion(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2);
                         this.updateHUD();
@@ -1092,11 +1698,7 @@
                     if (this.isColliding(enemy, this.player)) {
                         this.enemies.splice(index, 1);
                         
-                        if (this.player.shield > 0) {
-                            this.player.shield -= 20;
-                        } else {
-                            this.player.health -= 20;
-                        }
+                        this.player.lives--;
                         
                         this.createExplosion(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2);
                         this.updateHUD();
@@ -1125,30 +1727,23 @@
                 this.powerupTimer = 300; // 5 seconds at 60fps
                 
                 switch (type) {
-                    case 'health':
-                        this.player.health = Math.min(this.player.maxHealth, this.player.health + 30);
-                        document.getElementById('powerupIndicator').textContent = 'Health Restored!';
-                        break;
-                    case 'rapid':
-                        this.player.fireRate = Math.max(3, this.player.fireRate - 2);
-                        document.getElementById('powerupIndicator').textContent = 'Rapid Fire Active!';
-                        break;
-                    case 'shield':
-                        this.player.shield = Math.min(this.player.maxShield + 50, 100);
-                        this.player.maxShield = Math.max(this.player.maxShield, this.player.shield);
-                        document.getElementById('powerupIndicator').textContent = 'Shield Active!';
-                        break;
                     case 'weapon':
-                        const weapons = ['single', 'double', 'triple', 'spread'];
+                        // W+ - Upgrade current weapon level
+                        this.player.weaponLevel++;
+                        this.player.damage += 2;
+                        document.getElementById('powerupIndicator').textContent = `W+ Weapon Upgraded! (Lv.${this.player.weaponLevel})`;
+                        break;
+                    case 'weapon-change':
+                        const weapons = [
+                            'ion-blaster', 'neutron-gun', 'laser-cannon', 'vulcan-chaingun', 'lightning-fryer',
+                            'plasma-rifle', 'utensil-poker', 'boron-railgun', 'photon-swarm', 'positron-stream',
+                            'hypergun', 'riddler', 'corn-shotgun', 'moron-railgun', 'absolver-beam'
+                        ];
                         const currentIndex = weapons.indexOf(this.player.weaponType);
                         const nextIndex = (currentIndex + 1) % weapons.length;
                         this.player.weaponType = weapons[nextIndex];
-                        document.getElementById('powerupIndicator').textContent = `Weapon: ${this.player.weaponType.toUpperCase()}!`;
-                        break;
-                    case 'upgrade':
-                        this.player.damage += 5;
-                        this.player.weaponLevel++;
-                        document.getElementById('powerupIndicator').textContent = 'Ship Upgraded!';
+                        // Keep the same damage level when switching weapons
+                        document.getElementById('powerupIndicator').textContent = `WT Weapon Changed to ${this.player.weaponType.toUpperCase().replace('-', ' ')} (Lv.${this.player.weaponLevel})!`;
                         break;
                 }
                 
@@ -1167,29 +1762,579 @@
             }
             
             createParticles(x, y) {
-                for (let i = 0; i < 10; i++) {
+                // Reduced particles for performance
+                const particleCount = Math.min(10, 6); // Cap at 6 particles
+                for (let i = 0; i < particleCount; i++) {
                     this.particles.push({
                         x: x,
                         y: y,
                         vx: (Math.random() - 0.5) * 4,
                         vy: (Math.random() - 0.5) * 4,
-                        life: 30,
+                        life: 20, // Reduced life for faster cleanup
                         color: `hsl(${Math.random() * 60 + 30}, 100%, 50%)`
+                    });
+                }
+            }
+            
+            createFragments(parentEnemy) {
+                const fragmentCount = Math.min(parentEnemy.fragments, 8); // Max 8 fragments for better explosion effect
+                const fragmentSize = Math.max(parentEnemy.width * 0.4, 15); // Smaller fragments
+                
+                for (let i = 0; i < fragmentCount; i++) {
+                    // Create fragments that spread in all directions (360 degrees)
+                    const angle = (i / fragmentCount) * 2 * Math.PI; // Full 360 degrees spread
+                    const speed = 3 + Math.random() * 2;
+                    
+                    this.enemies.push({
+                        x: parentEnemy.x + parentEnemy.width / 2 - fragmentSize / 2,
+                        y: parentEnemy.y + parentEnemy.height / 2 - fragmentSize / 2,
+                        width: fragmentSize,
+                        height: fragmentSize,
+                        speed: speed,
+                        health: 1,
+                        maxHealth: 1,
+                        color: parentEnemy.color,
+                        points: Math.floor(parentEnemy.points * 0.3), // Less points for fragments
+                        shape: parentEnemy.shape,
+                        fragments: 0, // Fragments don't create more fragments
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed, // Full 360 degree movement
+                        shootTimer: 0,
+                        shootRate: 120 // Fragments don't shoot
                     });
                 }
             }
             
             nextWave() {
                 this.wave++;
-                this.enemiesKilled = 0;
-                this.enemiesPerWave += 1; // slower increase
+                this.bossSpawned = false; // Reset boss spawn flag
+                this.waveTransitionTimer = null; // Reset transition timer
+                this.isBossBreak = false; // Reset boss break flag
+                this.bossBreakTimer = null; // Reset boss break timer
+                // Don't reset enemiesKilled - keep track of total kills
                 
-                if (this.wave % 4 === 0) { // slower level progression
+                // Wave progression - just for display and difficulty scaling
+                console.log(`Starting Wave ${this.wave} - Survival Challenge!`);
+                
+                // Increase asteroid size and difficulty
+                this.asteroidSizeMultiplier = 1 + (this.wave - 1) * 0.1; // 10% size increase per wave
+                this.asteroidSpeedMultiplier = 1 + (this.wave - 1) * 0.05; // 5% speed increase per wave
+                
+                // Level progression every 3 waves (avoid conflict with boss waves)
+                if (this.wave % 3 === 0) {
                     this.level++;
-                    this.enemySpawnRate = Math.max(50, this.enemySpawnRate - 3); // slower spawn rate increase
+                    this.enemySpawnRate = Math.max(20, this.enemySpawnRate - 1);
                 }
                 
+                // Special intense waves every 4 waves (but not in boss waves)
+                if (this.wave % 4 === 0 && this.wave % 5 !== 0) {
+                    this.startIntenseWave();
+                }
+                
+                // Boss wave every 10 waves
+                // Boss wave every 5 waves - handled in update()
+                // Boss will be spawned automatically when wave starts
+                
                 this.updateHUD();
+            }
+            
+            startIntenseWave() {
+                // Spawn many enemies at once for intense gameplay
+                const intenseEnemyCount = 8 + Math.floor(this.wave / 2) * 3; // More intense as waves progress
+                
+                for (let i = 0; i < intenseEnemyCount; i++) {
+                    setTimeout(() => {
+                        this.spawnEnemy();
+                    }, i * 200); // Stagger spawns
+                }
+                
+                document.getElementById('powerupIndicator').textContent = `INTENSE WAVE! ${intenseEnemyCount} enemies incoming!`;
+                document.getElementById('powerupIndicator').style.display = 'block';
+                document.getElementById('powerupIndicator').style.color = '#ff0000';
+                setTimeout(() => {
+                    document.getElementById('powerupIndicator').style.display = 'none';
+                    document.getElementById('powerupIndicator').style.color = '#ffffff';
+                }, 3000);
+            }
+            
+            cleanupMemory() {
+                // Clean up memory during boss break time
+                console.log('Cleaning up memory...');
+                
+                // Clean up bullets
+                this.bullets = this.bullets.filter(bullet => {
+                    return bullet.y > -50 && bullet.y < this.canvas.height + 50 && 
+                           bullet.x > -50 && bullet.x < this.canvas.width + 50;
+                });
+                
+                // Clean up particles
+                this.particles = this.particles.filter(particle => particle.life > 0);
+                
+                // Clean up explosions
+                this.explosions = this.explosions.filter(explosion => explosion.timer > 0);
+                
+                // Clean up powerups
+                this.powerups = this.powerups.filter(powerup => {
+                    return powerup.y < this.canvas.height + 100;
+                });
+                
+                // Force garbage collection if available
+                if (window.gc) {
+                    window.gc();
+                }
+                
+                console.log(`Memory cleanup complete. Objects: Bullets: ${this.bullets.length}, Particles: ${this.particles.length}, Explosions: ${this.explosions.length}, Powerups: ${this.powerups.length}`);
+            }
+            
+            startBossWave() {
+                // Prevent multiple boss spawns in same wave
+                if (this.bossSpawned) {
+                    console.log(`Boss already spawned for wave ${this.wave}, skipping...`);
+                    return;
+                }
+                
+                // Double check - ensure no boss exists
+                const existingBoss = this.enemies.find(enemy => enemy.isBoss);
+                if (existingBoss) {
+                    console.log(`Boss already exists for wave ${this.wave}, skipping spawn...`);
+                    this.bossSpawned = true; // Set flag to prevent further attempts
+                    return;
+                }
+                
+                // Triple check - ensure no defeated boss exists
+                const existingDefeatedBoss = this.enemies.find(enemy => enemy.isBoss && enemy.isDefeated);
+                if (existingDefeatedBoss) {
+                    console.log(`Defeated boss already exists for wave ${this.wave}, skipping spawn...`);
+                    this.bossSpawned = true; // Set flag to prevent further attempts
+                    return;
+                }
+                
+                // Spawn massive boss with different types
+                const bossTypes = ['asteroid', 'crystal', 'mechanical', 'energy', 'void'];
+                const bossType = bossTypes[Math.floor(this.wave / 5) % bossTypes.length];
+                
+                const bossSize = 120 + (this.wave - 1) * 10; // Boss size - reasonable size
+                const bossHealth = Math.floor(5000 + (this.wave - 1) * 5000); // Boss health - 5K+ HP (integer)
+                
+                // Boss properties based on type
+                let bossColor = '#ff0000';
+                let bossShape = 'circle';
+                let bossSpeed = 0.2;
+                
+                switch (bossType) {
+                    case 'asteroid':
+                        bossColor = '#8B4513';
+                        bossShape = 'circle';
+                        bossSpeed = 0.15;
+                        break;
+                    case 'crystal':
+                        bossColor = '#00BFFF';
+                        bossShape = 'diamond';
+                        bossSpeed = 0.25;
+                        break;
+                    case 'mechanical':
+                        bossColor = '#C0C0C0';
+                        bossShape = 'square';
+                        bossSpeed = 0.3;
+                        break;
+                    case 'energy':
+                        bossColor = '#FFD700';
+                        bossShape = 'circle';
+                        bossSpeed = 0.35;
+                        break;
+                    case 'void':
+                        bossColor = '#4B0082';
+                        bossShape = 'triangle';
+                        bossSpeed = 0.4;
+                        break;
+                }
+                
+                // Create boss object
+                const boss = {
+                    x: this.canvas.width / 2 - bossSize / 2,
+                    y: 50, // Spawn boss in upper area, not off-screen
+                    width: bossSize,
+                    height: bossSize,
+                    speed: 0, // Boss doesn't fall down
+                    health: bossHealth,
+                    maxHealth: bossHealth,
+                    color: bossColor,
+                    points: 10000 + (this.wave - 1) * 5000,
+                    shape: bossShape,
+                    fragments: 20,
+                    shootTimer: 0,
+                    shootRate: 30,
+                    isBoss: true,
+                    bossType: bossType,
+                    bossPhase: 1, // 1: normal, 2: bullet hell, 3: laser sweep, 4: ultimate, 5: final
+                    phaseTimer: 0,
+                    laserAngle: 0,
+                    bulletHellTimer: 0,
+                    skillCooldown: 0,
+                    ultimateTimer: 0,
+                    invulnerableTimer: 0,
+                    specialAbilityTimer: 0,
+                    rageMode: false,
+                    moveDirection: Math.random() < 0.5 ? 1 : -1,
+                    moveSpeed: 1.2 + (this.wave - 1) * 0.1,
+                    verticalDirection: Math.random() < 0.5 ? 1 : -1,
+                    isDefeated: false // Initialize defeat flag
+                };
+                
+                this.enemies.push(boss);
+                
+                // Mark boss as spawned to prevent multiple spawns
+                this.bossSpawned = true;
+                
+                console.log(`Boss created: ${bossType} boss with ${bossHealth} HP for wave ${this.wave}`);
+                console.log(`Boss spawn debug: bossSpawned=${this.bossSpawned}, enemies.length=${this.enemies.length}, hasBoss=${this.enemies.some(enemy => enemy.isBoss)}`);
+                
+                // Additional safety check
+                if (this.enemies.filter(enemy => enemy.isBoss).length > 1) {
+                    console.error(`Multiple bosses detected! Removing duplicates...`);
+                    const bosses = this.enemies.filter(enemy => enemy.isBoss);
+                    this.enemies = this.enemies.filter(enemy => !enemy.isBoss);
+                    this.enemies.push(bosses[0]); // Keep only the first boss
+                }
+                
+                // Boss wave - only boss spawns
+                
+                document.getElementById('powerupIndicator').textContent = `BOSS WAVE! ${bossType.toUpperCase()} BOSS - ${bossHealth.toLocaleString()} HP!`;
+                document.getElementById('powerupIndicator').style.display = 'block';
+                document.getElementById('powerupIndicator').style.color = '#ff0000';
+                document.getElementById('powerupIndicator').style.fontSize = '1.5em';
+                setTimeout(() => {
+                    document.getElementById('powerupIndicator').style.display = 'none';
+                    document.getElementById('powerupIndicator').style.color = '#ffffff';
+                    document.getElementById('powerupIndicator').style.fontSize = '1em';
+                }, 4000);
+            }
+            
+            updateBossAbilities(boss) {
+                try {
+                    // Safety check: prevent infinite loops
+                    if (!boss || typeof boss.health !== 'number' || boss.health <= 0) {
+                        return;
+                    }
+                    
+                    boss.phaseTimer++;
+                    boss.skillCooldown--;
+                    boss.ultimateTimer++;
+                    boss.specialAbilityTimer++;
+                    
+                    // Initialize boss movement properties if not set
+                    if (typeof boss.moveDirection !== 'number') {
+                        boss.moveDirection = Math.random() < 0.5 ? 1 : -1;
+                    }
+                    if (typeof boss.moveSpeed !== 'number') {
+                        boss.moveSpeed = 0.8 + (this.wave - 1) * 0.05; // Slower, more stable movement
+                    }
+                    if (typeof boss.verticalDirection !== 'number') {
+                        boss.verticalDirection = Math.random() < 0.5 ? 1 : -1;
+                    }
+                
+                // Safety checks for boss properties
+                if (typeof boss.x !== 'number' || typeof boss.y !== 'number') {
+                    console.error('Boss position invalid:', boss.x, boss.y);
+                    boss.x = boss.x || this.canvas.width / 2;
+                    boss.y = boss.y || 50;
+                    return;
+                }
+                
+                // Horizontal movement with better boundary detection
+                if (typeof boss.moveDirection === 'number' && typeof boss.moveSpeed === 'number') {
+                    boss.x += boss.moveDirection * boss.moveSpeed;
+                    if (boss.x <= 0) {
+                        boss.x = 0;
+                        boss.moveDirection = 1;
+                    } else if (boss.x >= this.canvas.width - boss.width) {
+                        boss.x = this.canvas.width - boss.width;
+                        boss.moveDirection = -1;
+                    }
+                } else {
+                    // Fix broken boss movement
+                    boss.moveDirection = 1;
+                    boss.moveSpeed = 0.8;
+                    boss.x += boss.moveDirection * boss.moveSpeed;
+                }
+                
+                // Vertical movement - more stable
+                if (typeof boss.verticalDirection === 'number') {
+                    boss.y += boss.verticalDirection * 0.3; // Slower vertical movement
+                    if (boss.y <= 50) {
+                        boss.y = 50;
+                        boss.verticalDirection = 1;
+                    } else if (boss.y >= this.canvas.height * 0.3) {
+                        boss.y = this.canvas.height * 0.3;
+                        boss.verticalDirection = -1;
+                    }
+                } else {
+                    // Fix broken boss vertical movement
+                    boss.verticalDirection = 1;
+                    boss.y += boss.verticalDirection * 0.3;
+                }
+                
+                // Change phases based on health with more phases
+                const healthPercent = boss.health / boss.maxHealth;
+                if (healthPercent > 0.8) {
+                    boss.bossPhase = 1; // Normal phase
+                } else if (healthPercent > 0.6) {
+                    boss.bossPhase = 2; // Bullet hell phase
+                } else if (healthPercent > 0.4) {
+                    boss.bossPhase = 3; // Laser sweep phase
+                } else if (healthPercent > 0.2) {
+                    boss.bossPhase = 4; // Ultimate phase
+                } else {
+                    boss.bossPhase = 5; // Final rage phase
+                    boss.rageMode = true;
+                }
+                
+                // Calculate skill power based on wave - slower scaling
+                const skillPower = 1 + (this.wave - 1) * 0.15; // 15% increase per wave (slower)
+                const bulletCount = Math.floor(5 + (this.wave - 1) * 0.3); // Fewer bullets per wave (more dramatic)
+                
+                // Dynamic boss shooting with varied patterns
+                if (boss.shootTimer >= boss.shootRate && boss.skillCooldown <= 0) {
+                    boss.shootTimer = 0;
+                    boss.skillCooldown = Math.max(30, 60 - (this.wave - 1) * 2); // Balanced cooldown
+                    
+                    // Safety check for bullets array
+                    if (!this.bullets || !Array.isArray(this.bullets)) {
+                        console.error('Bullets array invalid');
+                        return;
+                    }
+                    
+                    // Limit total bullets to prevent lag
+                    if (this.bullets.length > 50) {
+                        return; // Don't shoot if too many bullets
+                    }
+                    
+                    // Different attack patterns based on phase
+                    switch (boss.bossPhase) {
+                        case 1: // Normal spread shot - minimal bullets
+                            for (let i = 0; i < 1; i++) { // Only 1 bullet for stability
+                                this.bullets.push({
+                                    x: boss.x + boss.width / 2 - 3,
+                                    y: boss.y + boss.height,
+                                    width: 6,
+                                    height: 12,
+                                    speed: 2 + skillPower * 0.2,
+                                    damage: skillPower,
+                                    color: '#ff4444',
+                                    isEnemy: true,
+                                    vx: 0,
+                                    vy: 2 + skillPower * 0.2
+                                });
+                            }
+                            break;
+                            
+                        case 2: // Wider spread - minimal bullets
+                            for (let i = 0; i < 2; i++) { // Only 2 bullets
+                                const angle = (i - 0.5) * 0.3; // Smaller spread
+                                this.bullets.push({
+                                    x: boss.x + boss.width / 2 - 3,
+                                    y: boss.y + boss.height,
+                                    width: 5,
+                                    height: 10,
+                                    speed: 2 + skillPower * 0.2,
+                                    damage: skillPower * 0.8,
+                                    color: '#ff8800',
+                                    isEnemy: true,
+                                    vx: Math.sin(angle) * 1,
+                                    vy: 2 + skillPower * 0.2
+                                });
+                            }
+                            break;
+                            
+                        case 3: // Rapid fire - reduced bullets
+                            for (let i = 0; i < 4; i++) { // Reduced from 7 to 4
+                                const angle = (i - 1.5) * 0.3; // Adjusted spread
+                                this.bullets.push({
+                                    x: boss.x + boss.width / 2 - 2,
+                                    y: boss.y + boss.height,
+                                    width: 4,
+                                    height: 8,
+                                    speed: 4 + skillPower * 0.4,
+                                    damage: skillPower * 0.6,
+                                    color: '#00ff44',
+                                    isEnemy: true,
+                                    vx: Math.sin(angle) * 1.5,
+                                    vy: 4 + skillPower * 0.4
+                                });
+                            }
+                            break;
+                            
+                        case 4: // Circular pattern - reduced bullets
+                            for (let i = 0; i < 5; i++) { // Reduced from 8 to 5
+                                const angle = (i / 5) * Math.PI * 2; // Adjusted for 5 bullets
+                                this.bullets.push({
+                                    x: boss.x + boss.width / 2 - 3,
+                                    y: boss.y + boss.height / 2 - 3,
+                                    width: 6,
+                                    height: 6,
+                                    speed: 3 + skillPower * 0.3,
+                                    damage: skillPower * 0.7,
+                                    color: '#8844ff',
+                                    isEnemy: true,
+                                    vx: Math.cos(angle) * 2,
+                                    vy: Math.sin(angle) * 2 + 1
+                                });
+                            }
+                            break;
+                            
+                        case 5: // Ultimate pattern - combination (reduced)
+                            // Spread shot - reduced
+                            for (let i = 0; i < 3; i++) { // Reduced from 5 to 3
+                                const angle = (i - 1) * 0.4;
+                                this.bullets.push({
+                                    x: boss.x + boss.width / 2 - 3,
+                                    y: boss.y + boss.height,
+                                    width: 6,
+                                    height: 12,
+                                    speed: 3 + skillPower * 0.3,
+                                    damage: skillPower,
+                                    color: '#ff0044',
+                                    isEnemy: true,
+                                    vx: Math.sin(angle) * 2,
+                                    vy: 3 + skillPower * 0.3
+                                });
+                            }
+                            // Circular shot - reduced
+                            for (let i = 0; i < 4; i++) { // Reduced from 6 to 4
+                                const angle = (i / 4) * Math.PI * 2;
+                                this.bullets.push({
+                                    x: boss.x + boss.width / 2 - 3,
+                                    y: boss.y + boss.height / 2 - 3,
+                                    width: 5,
+                                    height: 5,
+                                    speed: 2.5 + skillPower * 0.2,
+                                    damage: skillPower * 0.8,
+                                    color: '#ffaa00',
+                                    isEnemy: true,
+                                    vx: Math.cos(angle) * 1.5,
+                                    vy: Math.sin(angle) * 1.5 + 0.5
+                                });
+                            }
+                            break;
+                    }
+                }
+                
+                // Boss phases affect shooting pattern (already handled above)
+                // No complex warning system - just different shot patterns per phase
+                } catch (error) {
+                    console.error('Boss abilities error:', error);
+                    // Reset boss to safe state
+                    boss.moveDirection = boss.moveDirection || 1;
+                    boss.moveSpeed = boss.moveSpeed || 1.0;
+                    boss.verticalDirection = boss.verticalDirection || 1;
+                }
+            }
+            
+            activateBossSpecialAbility(boss) {
+                switch (boss.bossType) {
+                    case 'asteroid':
+                        // Spawn mini asteroids
+                        for (let i = 0; i < 5; i++) {
+                            this.enemies.push({
+                                x: boss.x + Math.random() * boss.width,
+                                y: boss.y + Math.random() * boss.height,
+                                width: 30,
+                                height: 30,
+                                speed: 2,
+                                health: 1,
+                                maxHealth: 1,
+                                color: '#8B4513',
+                                points: 100,
+                                shape: 'circle',
+                                fragments: 0,
+                                shootTimer: 0,
+                                shootRate: 120
+                            });
+                        }
+                        break;
+                        
+                    case 'crystal':
+                        // Crystal shards attack
+                        for (let i = 0; i < 8; i++) {
+                            const angle = (i / 8) * 2 * Math.PI;
+                            this.bullets.push({
+                                x: boss.x + boss.width / 2,
+                                y: boss.y + boss.height / 2,
+                                width: 15,
+                                height: 15,
+                                speed: 8,
+                                color: '#00BFFF',
+                                isEnemy: true,
+                                angle: angle,
+                                vx: Math.cos(angle) * 8,
+                                vy: Math.sin(angle) * 8,
+                                crystal: true
+                            });
+                        }
+                        break;
+                        
+                    case 'mechanical':
+                        // Missile barrage
+                        for (let i = 0; i < 6; i++) {
+                            this.bullets.push({
+                                x: boss.x + boss.width / 2 - 5,
+                                y: boss.y + boss.height,
+                                width: 12,
+                                height: 25,
+                                speed: 7,
+                                color: '#C0C0C0',
+                                isEnemy: true,
+                                missile: true,
+                                explosionRadius: 50
+                            });
+                        }
+                        break;
+                        
+                    case 'energy':
+                        // Energy pulse
+                        for (let i = 0; i < 12; i++) {
+                            const angle = (i / 12) * 2 * Math.PI;
+                            this.bullets.push({
+                                x: boss.x + boss.width / 2,
+                                y: boss.y + boss.height / 2,
+                                width: 20,
+                                height: 20,
+                                speed: 6,
+                                color: '#FFD700',
+                                isEnemy: true,
+                                angle: angle,
+                                vx: Math.cos(angle) * 6,
+                                vy: Math.sin(angle) * 6,
+                                energy: true
+                            });
+                        }
+                        break;
+                        
+                    case 'void':
+                        // Void portal - teleport and spawn
+                        boss.x = Math.random() * (this.canvas.width - boss.width);
+                        boss.y = Math.random() * (this.canvas.height / 2);
+                        
+                        // Spawn void minions
+                        for (let i = 0; i < 3; i++) {
+                            this.enemies.push({
+                                x: boss.x + Math.random() * boss.width,
+                                y: boss.y + Math.random() * boss.height,
+                                width: 40,
+                                height: 40,
+                                speed: 3,
+                                health: 2,
+                                maxHealth: 2,
+                                color: '#4B0082',
+                                points: 200,
+                                shape: 'triangle',
+                                fragments: 0,
+                                shootTimer: 0,
+                                shootRate: 90
+                            });
+                        }
+                        break;
+                }
             }
             
             gameOver() {
@@ -1207,8 +2352,18 @@
             }
             
             render() {
+                try {
                 // Clear canvas
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    
+                    // Only render game elements if playing
+                    if (this.gameState !== 'playing') {
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Render error:', error);
+                    return;
+                }
                 
                 // Draw background gradient
                 const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
@@ -1224,12 +2379,157 @@
                 // Draw bullets
                 this.bullets.forEach(bullet => {
                     this.ctx.fillStyle = bullet.color;
+                    
+                    if (bullet.laser) {
+                        // Boss laser bullets - bright and glowing
+                        this.ctx.shadowColor = bullet.color;
+                        this.ctx.shadowBlur = 8;
                     this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                        this.ctx.shadowBlur = 0;
+                    } else if (bullet.isEnemy && bullet.vx !== undefined) {
+                        // Boss bullet hell bullets
+                        this.ctx.shadowColor = bullet.color;
+                        this.ctx.shadowBlur = 5;
+                        this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                        this.ctx.shadowBlur = 0;
+                    } else {
+                        switch (bullet.type) {
+                            case 'single':
+                                // Single shot - bright yellow
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 3;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                break;
+                                
+                            case 'double':
+                                // Double shot - cyan
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 4;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                break;
+                                
+                            case 'triple':
+                                // Triple shot - red
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 5;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                break;
+                                
+                            case 'spread':
+                                // Spread shot - green
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 4;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                break;
+                                
+                            case 'laser':
+                                // Laser beam - bright pink with strong glow
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 15;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                break;
+                                
+                            case 'missile':
+                                // Missile with trail and explosion effect
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 8;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                // Add trail effect
+                                this.ctx.fillStyle = 'rgba(255, 68, 68, 0.6)';
+                                this.ctx.fillRect(bullet.x + 1, bullet.y + bullet.height, bullet.width - 2, 8);
+                                break;
+                                
+                            case 'plasma':
+                                // Plasma ball - cyan with pulsing effect
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 12;
+                                this.ctx.beginPath();
+                                this.ctx.arc(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2, bullet.width / 2, 0, 2 * Math.PI);
+                                this.ctx.fill();
+                                this.ctx.shadowBlur = 0;
+                                // Add inner glow
+                                this.ctx.fillStyle = 'rgba(0, 255, 255, 0.3)';
+                                this.ctx.beginPath();
+                                this.ctx.arc(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2, bullet.width / 4, 0, 2 * Math.PI);
+                                this.ctx.fill();
+                                break;
+                                
+                            case 'ion-blaster':
+                                // Ion Blaster - green energy bullets with trail
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 10;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                // Add energy trail
+                                this.ctx.fillStyle = 'rgba(0, 255, 0, 0.3)';
+                                this.ctx.fillRect(bullet.x - 2, bullet.y + bullet.height, bullet.width + 4, 6);
+                                break;
+                                
+                            case 'neutron-gun':
+                                // Neutron Gun - green nuclear energy with trail (based on CI Wiki)
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 15;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                // Add nuclear trail
+                                this.ctx.strokeStyle = bullet.color;
+                                this.ctx.lineWidth = 2;
+                                this.ctx.beginPath();
+                                this.ctx.moveTo(bullet.x + bullet.width/2, bullet.y + bullet.height);
+                                this.ctx.lineTo(bullet.x + bullet.width/2, bullet.y + bullet.height + 8);
+                                this.ctx.stroke();
+                                break;
+                                
+                            case 'laser-cannon':
+                                // Laser Cannon - continuous beam effect
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 20;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                break;
+                                
+                            case 'vulcan-chaingun':
+                                // Vulcan Chaingun - spread shot effect
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 8;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                break;
+                                
+                            case 'plasma-rifle':
+                                // Plasma Rifle - homing missile effect
+                                this.ctx.shadowColor = bullet.color;
+                                this.ctx.shadowBlur = 12;
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                                this.ctx.shadowBlur = 0;
+                                // Add missile trail
+                                this.ctx.strokeStyle = bullet.color;
+                                this.ctx.lineWidth = 2;
+                                this.ctx.beginPath();
+                                this.ctx.moveTo(bullet.x + bullet.width/2, bullet.y + bullet.height);
+                                this.ctx.lineTo(bullet.x + bullet.width/2, bullet.y + bullet.height + 10);
+                                this.ctx.stroke();
+                                break;
+                                
+                            default:
+                                // Regular bullets
+                                this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                        }
+                    }
                 });
                 
                 // Draw enemies
                 this.enemies.forEach(enemy => {
                     this.drawEnemy(enemy);
+                    
+                    // Draw boss warning if in warning phase
+                    // Boss warning system removed - simplified boss skills
                 });
                 
                 // Draw powerups
@@ -1257,17 +2557,6 @@
             }
             
             drawPlayer() {
-                // Shield effect
-                if (this.player.shield > 0) {
-                    this.ctx.strokeStyle = '#4ecdc4';
-                    this.ctx.lineWidth = 3;
-                    this.ctx.globalAlpha = this.player.shield / 100;
-                    this.ctx.beginPath();
-                    this.ctx.arc(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, 
-                                this.player.width / 2 + 10, 0, 2 * Math.PI);
-                    this.ctx.stroke();
-                    this.ctx.globalAlpha = 1;
-                }
                 
                 // Player ship
                 this.ctx.fillStyle = this.player.color;
@@ -1294,19 +2583,123 @@
                 this.ctx.fillText(`Lv.${this.player.weaponLevel}`, this.player.x + this.player.width / 2, this.player.y - 5);
             }
             
+            // drawBossWarning function removed - simplified boss skills
+            
             drawEnemy(enemy) {
+                // Add glow effect for larger asteroids
+                if (enemy.width >= 60) {
+                    this.ctx.shadowColor = enemy.color;
+                    this.ctx.shadowBlur = 12;
+                } else if (enemy.width >= 40) {
+                    this.ctx.shadowColor = enemy.color;
+                    this.ctx.shadowBlur = 8;
+                }
+                
                 this.ctx.fillStyle = enemy.color;
                 this.ctx.strokeStyle = '#ffffff';
-                this.ctx.lineWidth = 1;
+                this.ctx.lineWidth = 2;
                 
-                // Enemy body
+                // Draw different shapes based on enemy.shape
+                switch (enemy.shape) {
+                    case 'circle':
                 this.ctx.beginPath();
-                this.ctx.moveTo(enemy.x + enemy.width / 2, enemy.y + enemy.height);
-                this.ctx.lineTo(enemy.x, enemy.y);
-                this.ctx.lineTo(enemy.x + enemy.width, enemy.y);
+                        this.ctx.arc(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.width / 2, 0, 2 * Math.PI);
+                        this.ctx.fill();
+                        this.ctx.stroke();
+                        
+                        // Add inner details for larger circles
+                        if (enemy.width >= 60) {
+                            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                            this.ctx.beginPath();
+                            this.ctx.arc(enemy.x + enemy.width / 2 - 8, enemy.y + enemy.height / 2 - 8, enemy.width / 3, 0, 2 * Math.PI);
+                            this.ctx.fill();
+                        } else if (enemy.width >= 40) {
+                            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                            this.ctx.beginPath();
+                            this.ctx.arc(enemy.x + enemy.width / 2 - 5, enemy.y + enemy.height / 2 - 5, enemy.width / 4, 0, 2 * Math.PI);
+                            this.ctx.fill();
+                        }
+                        break;
+                        
+                    case 'square':
+                        this.ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+                        this.ctx.strokeRect(enemy.x, enemy.y, enemy.width, enemy.height);
+                        
+                        // Add inner details for larger squares
+                        if (enemy.width >= 60) {
+                            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                            this.ctx.fillRect(enemy.x + 8, enemy.y + 8, enemy.width - 16, enemy.height - 16);
+                        } else if (enemy.width >= 40) {
+                            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                            this.ctx.fillRect(enemy.x + 5, enemy.y + 5, enemy.width - 10, enemy.height - 10);
+                        }
+                        break;
+                        
+                    case 'triangle':
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(enemy.x + enemy.width / 2, enemy.y);
+                        this.ctx.lineTo(enemy.x, enemy.y + enemy.height);
+                        this.ctx.lineTo(enemy.x + enemy.width, enemy.y + enemy.height);
                 this.ctx.closePath();
                 this.ctx.fill();
                 this.ctx.stroke();
+                        
+                        // Add inner details for larger triangles
+                        if (enemy.width >= 60) {
+                            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(enemy.x + enemy.width / 2, enemy.y + 15);
+                            this.ctx.lineTo(enemy.x + 15, enemy.y + enemy.height - 15);
+                            this.ctx.lineTo(enemy.x + enemy.width - 15, enemy.y + enemy.height - 15);
+                            this.ctx.closePath();
+                            this.ctx.fill();
+                        } else if (enemy.width >= 40) {
+                            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(enemy.x + enemy.width / 2, enemy.y + 10);
+                            this.ctx.lineTo(enemy.x + 10, enemy.y + enemy.height - 10);
+                            this.ctx.lineTo(enemy.x + enemy.width - 10, enemy.y + enemy.height - 10);
+                            this.ctx.closePath();
+                            this.ctx.fill();
+                        }
+                        break;
+                        
+                    case 'diamond':
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(enemy.x + enemy.width / 2, enemy.y);
+                        this.ctx.lineTo(enemy.x + enemy.width, enemy.y + enemy.height / 2);
+                        this.ctx.lineTo(enemy.x + enemy.width / 2, enemy.y + enemy.height);
+                        this.ctx.lineTo(enemy.x, enemy.y + enemy.height / 2);
+                        this.ctx.closePath();
+                        this.ctx.fill();
+                        this.ctx.stroke();
+                        
+                        // Add inner details for diamonds
+                        if (enemy.width >= 30) {
+                            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(enemy.x + enemy.width / 2, enemy.y + 5);
+                            this.ctx.lineTo(enemy.x + enemy.width - 5, enemy.y + enemy.height / 2);
+                            this.ctx.lineTo(enemy.x + enemy.width / 2, enemy.y + enemy.height - 5);
+                            this.ctx.lineTo(enemy.x + 5, enemy.y + enemy.height / 2);
+                            this.ctx.closePath();
+                            this.ctx.fill();
+                        }
+                        break;
+                        
+                    default:
+                        // Default triangle shape
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(enemy.x + enemy.width / 2, enemy.y);
+                        this.ctx.lineTo(enemy.x, enemy.y + enemy.height);
+                        this.ctx.lineTo(enemy.x + enemy.width, enemy.y + enemy.height);
+                        this.ctx.closePath();
+                        this.ctx.fill();
+                        this.ctx.stroke();
+                }
+                
+                // Reset shadow
+                this.ctx.shadowBlur = 0;
                 
                 // Health bar
                 if (enemy.health < enemy.maxHealth) {
@@ -1323,29 +2716,38 @@
             }
             
             drawPowerup(powerup) {
+                // Add pulsing glow effect to distinguish from asteroids
+                this.ctx.shadowColor = powerup.color;
+                this.ctx.shadowBlur = 15;
+                
                 this.ctx.fillStyle = powerup.color;
                 this.ctx.strokeStyle = '#ffffff';
-                this.ctx.lineWidth = 2;
+                this.ctx.lineWidth = 3;
                 
-                // Powerup icon
+                // Powerup icon with pulsing effect
+                const pulse = Math.sin(this.frameCount * 0.1) * 0.2 + 0.8;
+                const radius = (powerup.width / 2) * pulse;
+                
                 this.ctx.beginPath();
                 this.ctx.arc(powerup.x + powerup.width / 2, powerup.y + powerup.height / 2, 
-                            powerup.width / 2, 0, 2 * Math.PI);
+                            radius, 0, 2 * Math.PI);
                 this.ctx.fill();
                 this.ctx.stroke();
                 
-                // Powerup symbol
+                // Add inner symbol based on type
                 this.ctx.fillStyle = '#ffffff';
-                this.ctx.font = '10px Arial';
+                this.ctx.font = `${powerup.width * 0.6}px Arial`;
                 this.ctx.textAlign = 'center';
-                let symbol = '?';
-                if (powerup.type === 'health') symbol = 'H';
-                else if (powerup.type === 'rapid') symbol = 'R';
-                else if (powerup.type === 'shield') symbol = 'S';
-                else if (powerup.type === 'weapon') symbol = 'W';
-                else if (powerup.type === 'upgrade') symbol = 'U';
+                this.ctx.textBaseline = 'middle';
                 
-                this.ctx.fillText(symbol, powerup.x + powerup.width / 2, powerup.y + powerup.height / 2 + 3);
+                let symbol = '?';
+                if (powerup.type === 'weapon') symbol = 'W+'; // W+ for weapon upgrade
+                else if (powerup.type === 'weapon-change') symbol = 'WT'; // WT for weapon type
+                
+                this.ctx.fillText(symbol, powerup.x + powerup.width / 2, powerup.y + powerup.height / 2);
+                
+                // Reset shadow
+                this.ctx.shadowBlur = 0;
             }
             
             drawExplosion(explosion) {
@@ -1366,7 +2768,7 @@
             
             updateHUD() {
                 document.getElementById('scoreDisplay').textContent = `Score: ${this.score}`;
-                document.getElementById('healthDisplay').textContent = `Health: ${this.player.health}`;
+                document.getElementById('healthDisplay').textContent = `Lives: ${this.player.lives}`;
                 document.getElementById('waveDisplay').textContent = `Wave: ${this.wave}`;
                 document.getElementById('levelDisplay').textContent = `Level: ${this.level}`;
                 
@@ -1376,11 +2778,6 @@
                     weaponInfo.textContent = `🔫 ${this.player.weaponType.toUpperCase()} | DMG: ${this.player.damage} | Lv.${this.player.weaponLevel}`;
                 }
                 
-                // Update shield info
-                const shieldInfo = document.getElementById('shieldInfo');
-                if (shieldInfo) {
-                    shieldInfo.textContent = `🛡️ Shield: ${this.player.shield}/${this.player.maxShield}`;
-                }
             }
             
             showTouchFeedback(x, y) {
@@ -1407,9 +2804,32 @@
             }
             
             gameLoop() {
-                this.update();
-                this.render();
-                requestAnimationFrame(() => this.gameLoop());
+                try {
+                    // Safety check: prevent infinite loops
+                    if (this.frameCount > 1000000) { // 1 million frames max
+                        console.error('Game loop frame count too high, resetting...');
+                        this.frameCount = 0;
+                    }
+                    
+                    this.update();
+                    this.render();
+                    
+                    // Only continue game loop if game is active
+                    if (this.gameState === 'playing' || this.gameState === 'start') {
+                        requestAnimationFrame(() => this.gameLoop());
+                    } else {
+                        // Stop game loop for gameOver state to prevent memory leak
+                        this.gameLoopRunning = false;
+                        console.log('Game loop stopped - State:', this.gameState);
+                    }
+                } catch (error) {
+                    console.error('Game loop error:', error);
+                    this.gameLoopRunning = false;
+                    // Try to recover
+                    setTimeout(() => {
+                        this.gameLoop();
+                    }, 100);
+                }
             }
         }
         
@@ -1417,19 +2837,43 @@
         let game;
         document.addEventListener('DOMContentLoaded', function() {
             game = new SpaceDefender();
+            
+            // HUD toggle functionality
+            const hudToggle = document.getElementById('hudToggle');
+            const hud = document.getElementById('hud');
+            let hudVisible = true;
+            
+            hudToggle.addEventListener('click', function() {
+                hudVisible = !hudVisible;
+                if (hudVisible) {
+                    hud.classList.remove('hidden');
+                    hudToggle.textContent = '👁️';
+                    hudToggle.title = 'Hide HUD';
+                } else {
+                    hud.classList.add('hidden');
+                    hudToggle.textContent = '👁️‍🗨️';
+                    hudToggle.title = 'Show HUD';
+                }
+            });
         });
         
         // Global functions
         function startGame() {
+            if (game) {
             game.startGame();
+            }
         }
         
         function restartGame() {
+            if (game) {
             game.restartGame();
+            }
         }
         
         function resetGame() {
+            if (game) {
             game.restartGame();
+            }
         }
     </script>
 </body>
