@@ -68,16 +68,6 @@ Take a break from coding and challenge yourself with our collection of interacti
 
 If you find my content helpful and would like to support my work, you can:
 
-### 🛍️ Shop My Recommendations
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 20px; margin: 15px 0; text-align: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
-  <h4 style="margin: 0 0 10px 0; color: white; font-size: 1.2em;">🛍️ Discover Amazing Products</h4>
-  <p style="margin: 0 0 15px 0; color: rgba(255,255,255,0.9); font-size: 0.95em;">Products I personally use and recommend</p>
-  <a href="/shop/" class="shop-cta-button" style="display: inline-block; background: white; color: #667eea; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
-    🛒 Visit My Shop
-  </a>
-  <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.8); font-size: 0.8em;">Every purchase supports my content creation!</p>
-</div>
-
 ### 💰 Direct Donation
 You can also donate directly via TRC20:
 
