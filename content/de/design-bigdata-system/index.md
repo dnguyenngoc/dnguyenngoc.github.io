@@ -1,7 +1,7 @@
 ---
 title: "Introduction and How to Design Big Data Systems"
 date: 2025-09-15 10:00:00
-draft: false
+draft: true
 description: "A comprehensive guide to designing scalable big data systems, covering architecture patterns, technology stacks, and best practices for handling massive datasets"
 tags: ["big-data", "data-engineering", "system-design", "architecture", "scalability", "distributed-systems"]
 featured_image: "/de/design-bigdata-system/img/DataArchitecture.png"
