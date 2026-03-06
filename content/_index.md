@@ -1,11 +1,11 @@
 ---
 title: "Welcome to My Digital Space"
-description: "Senior Data Engineer crafting intelligent solutions at the intersection of AI, big data, and scalable systems"
+description: "Data Engineer crafting intelligent solutions at the intersection of AI, big data, and scalable systems"
 ---
 
-## Hello, I'm Duy! 👋
+## Hello, I'm Duy! 👋 
 
-Welcome to my corner of the internet! I'm a **Senior Data Engineer** at [VieON](https://vieon.vn/), where I architect and build robust data infrastructure that powers intelligent decision-making. With a passion for transforming raw data into actionable insights, I specialize in creating scalable systems that handle massive datasets with precision and efficiency.
+Welcome to my corner of the internet! I'm a **Data Engineer**, where I architect and build robust data infrastructure that powers intelligent decision-making. With a passion for transforming raw data into actionable insights, I specialize in creating scalable systems that handle massive datasets with precision and efficiency.
 
 ### My Journey in Data & AI
 
@@ -16,7 +16,7 @@ I'm deeply fascinated by the transformative power of artificial intelligence and
         <div class="interests">
             <h3>Core Expertise</h3>
             <ul>
-                <li><strong>Data Engineering</strong> - Building scalable ETL pipelines and data warehouses</li>
+                <li><strong>Data Engineering</strong> - Building scalable BigData System supporting both streaming and batch processing</li>
                 <li><strong>Machine Learning</strong> - Developing and deploying ML models in production</li>
                 <li><strong>Cloud Infrastructure</strong> - Apache Spark, Kubernetes, and distributed computing</li>
                 <li><strong>Real-time Analytics</strong> - Streaming data processing and real-time insights</li>

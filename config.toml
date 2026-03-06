@@ -1,5 +1,5 @@
 baseURL = "https://duynguyenngoc.com/"
-title = "Duy Nguyen - Senior Data Engineer"
+title = "Duy Nguyen - Data Engineer"
 theme = "wisdom"
 languageCode = "en-us"
 enableRobotsTXT = true
@@ -11,7 +11,7 @@ enableInlineShortcodes = true
 
 [params]
   author = "Duy Nguyen"
-  description = "Senior Data Engineer at VieON. Blog about data engineering, AI, big data, and technology."
+  description = "Data Engineer. Blog about data engineering, AI, big data, and technology."
   latestPostsLimit = 10
   hideReadingTime = false
   hideAuthor = false
