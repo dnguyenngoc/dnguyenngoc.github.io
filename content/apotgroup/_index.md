@@ -1,24 +1,19 @@
 ---
 title: "OpenClaw AI"
-description: "OpenClaw AI helps creators turn ideas into viral content with AI videos, captions, and tools to boost engagement."
+description: "Turn ideas into scroll-stopping posts with AI-assisted video, on-brand captions, and tools tuned for engagement—built for creators who move fast."
 legal_page: true
 legal_back_url: "/"
 legal_back_label: "Personal site"
+hero_badge: "AI for creators"
+cta_note: "Mobile and web releases are rolling out. Add store links in this page’s front matter when they’re live."
+features:
+  - title: "AI video workflows"
+    description: "Go from prompt or outline to polished short-form clips—pacing, structure, and formats that fit today’s feeds."
+  - title: "Captions & hooks"
+    description: "Drafts that match your voice, plus hooks and CTAs designed to stop the scroll without sounding generic."
+  - title: "Engagement toolkit"
+    description: "Ideas, variants, and helpers aimed at consistency, reach, and posting cadence—not one-off viral guesses."
+store_ios: ""
+store_android: ""
+web_app: ""
 ---
-
-**OpenClaw AI** helps creators turn ideas into viral content with **AI-powered videos**, **smart captions**, and **tools built to boost engagement**—so you can ship scroll-stopping posts faster.
-
-## What you get
-
-- **AI video workflows** — From concept to polished clips, tuned for short-form and social platforms.
-- **Captions & copy** — Drafts, hooks, and on-brand text that match your tone.
-- **Engagement-focused tools** — Ideas and helpers aimed at reach, retention, and consistency.
-
-## Legal & policies
-
-- [Privacy Policy](/apotgroup/privacy-policy/)
-- [Terms of Service](/apotgroup/terms-of-service/)
-
-## Get the app
-
-_Add your App Store, Google Play, or web app link here when ready._

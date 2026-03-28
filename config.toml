@@ -11,7 +11,7 @@ enableInlineShortcodes = true
 
 [params]
   # Bump when editing static/scss/style.css so browsers/CDN fetch a fresh file (not a cached old copy).
-  cssVersion = "3"
+  cssVersion = "4"
   author = "Duy Nguyen"
   description = "Data Engineer. Blog about data engineering, AI, big data, and technology."
   latestPostsLimit = 10

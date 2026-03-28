@@ -1,10 +1,58 @@
 {{ define "main" }}
-<main>
-<article class="entry apotgroup-home">
-    <h1>{{ .Title }}</h1>
-    <div>
-        {{ .Content | emojify }}
+<main class="apotgroup-landing">
+  <section class="apotgroup-hero" aria-labelledby="apotgroup-title">
+    {{ with .Params.hero_badge }}
+    <p class="apotgroup-badge">{{ . }}</p>
+    {{ end }}
+    <h1 id="apotgroup-title" class="apotgroup-title">{{ .Title }}</h1>
+    <p class="apotgroup-lead">{{ .Description }}</p>
+  </section>
+
+  {{ with .Params.features }}
+  <section class="apotgroup-section" aria-labelledby="apotgroup-features-heading">
+    <h2 id="apotgroup-features-heading" class="apotgroup-section-title">Everything you need to ship content</h2>
+    <p class="apotgroup-section-intro">One place to ideate, generate, and polish—built for creators who care about reach and consistency.</p>
+    <div class="apotgroup-feature-grid">
+      {{ range . }}
+      <article class="apotgroup-card">
+        <h3 class="apotgroup-card-title">{{ .title }}</h3>
+        <p class="apotgroup-card-text">{{ .description }}</p>
+      </article>
+      {{ end }}
     </div>
-</article>
+  </section>
+  {{ end }}
+
+  <section class="apotgroup-section apotgroup-section--cta" aria-labelledby="apotgroup-cta-heading">
+    <h2 id="apotgroup-cta-heading" class="apotgroup-section-title">Get OpenClaw AI</h2>
+    <p class="apotgroup-cta-note">{{ .Params.cta_note | default "Download on mobile or use the web app when available." }}</p>
+    <div class="apotgroup-cta-row">
+      {{ with .Params.store_ios }}
+      <a class="apotgroup-btn apotgroup-btn--primary" href="{{ . }}" rel="noopener noreferrer" target="_blank">App Store</a>
+      {{ else }}
+      <span class="apotgroup-btn apotgroup-btn--soon" aria-disabled="true">App Store — soon</span>
+      {{ end }}
+      {{ with .Params.store_android }}
+      <a class="apotgroup-btn apotgroup-btn--primary" href="{{ . }}" rel="noopener noreferrer" target="_blank">Google Play</a>
+      {{ else }}
+      <span class="apotgroup-btn apotgroup-btn--soon" aria-disabled="true">Google Play — soon</span>
+      {{ end }}
+      {{ with .Params.web_app }}
+      <a class="apotgroup-btn apotgroup-btn--secondary" href="{{ . }}" rel="noopener noreferrer" target="_blank">Web app</a>
+      {{ else }}
+      <span class="apotgroup-btn apotgroup-btn--soon" aria-disabled="true">Web — soon</span>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="apotgroup-section apotgroup-section--legal" aria-labelledby="apotgroup-legal-heading">
+    <h2 id="apotgroup-legal-heading" class="apotgroup-legal-title">Legal</h2>
+    <nav class="apotgroup-legal-nav" aria-label="Legal">
+      <a href="{{ "/apotgroup/privacy-policy/" | relLangURL }}">Privacy Policy</a>
+      <span class="apotgroup-legal-sep" aria-hidden="true">·</span>
+      <a href="{{ "/apotgroup/terms-of-service/" | relLangURL }}">Terms of Service</a>
+    </nav>
+  </section>
+
 </main>
 {{ end }}

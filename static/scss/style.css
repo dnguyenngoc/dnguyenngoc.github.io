@@ -312,3 +312,350 @@ header.legal-header .header-content,
 .legal-header__home:hover {
   text-decoration: underline;
 }
+
+/* —— OpenClaw / apotgroup product landing —— */
+.apotgroup-landing {
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  letter-spacing: -0.02em;
+  max-width: 52rem;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.apotgroup-landing h1,
+.apotgroup-landing h2,
+.apotgroup-landing h3 {
+  font-family: inherit;
+  letter-spacing: -0.03em;
+}
+
+.apotgroup-hero {
+  position: relative;
+  padding: 2.25rem 1.5rem 2.5rem;
+  border-radius: 20px;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+  background: linear-gradient(145deg, #f4f7ff 0%, #eef2ff 38%, #e0e7ff 100%);
+  border: 1px solid rgba(99, 102, 241, 0.18);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 12px 40px rgba(79, 70, 229, 0.08);
+}
+
+.apotgroup-hero::before {
+  content: "";
+  position: absolute;
+  inset: -40% -20% auto auto;
+  width: 70%;
+  height: 120%;
+  background: radial-gradient(circle at center, rgba(99, 102, 241, 0.22) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.apotgroup-badge {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #4338ca;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 999px;
+}
+
+.apotgroup-title {
+  position: relative;
+  margin: 0 0 0.85rem;
+  font-size: clamp(1.85rem, 4.5vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #0f172a;
+  background: linear-gradient(120deg, #0f172a 0%, #312e81 55%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.apotgroup-lead {
+  position: relative;
+  margin: 0;
+  max-width: 36rem;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: #334155;
+}
+
+.apotgroup-section {
+  margin-bottom: 2.75rem;
+}
+
+.apotgroup-section-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.apotgroup-section-intro {
+  margin: 0 0 1.35rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #64748b;
+  max-width: 40rem;
+}
+
+.apotgroup-feature-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .apotgroup-feature-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
+  }
+}
+
+.apotgroup-card {
+  padding: 1.25rem 1.2rem;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.apotgroup-card:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+  transform: translateY(-2px);
+}
+
+.apotgroup-card-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.apotgroup-card-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #64748b;
+}
+
+.apotgroup-section--cta {
+  padding: 1.75rem 1.35rem;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fafafa 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.apotgroup-section--cta .apotgroup-section-title {
+  text-align: center;
+}
+
+.apotgroup-cta-note {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  color: #64748b;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.apotgroup-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.apotgroup-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.65rem;
+  padding: 0 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 10px;
+  text-decoration: none !important;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.apotgroup-btn--primary {
+  color: #fff !important;
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #7c3aed 100%);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+}
+
+.apotgroup-btn--primary:hover {
+  color: #fff !important;
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+  filter: brightness(1.05);
+}
+
+.apotgroup-btn--secondary {
+  color: #312e81 !important;
+  background: #fff;
+  border: 1px solid #c7d2fe;
+}
+
+.apotgroup-btn--secondary:hover {
+  background: #eef2ff !important;
+  color: #1e1b4b !important;
+}
+
+.apotgroup-btn--soon {
+  color: #94a3b8 !important;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  cursor: default;
+  pointer-events: none;
+}
+
+.apotgroup-section--legal {
+  padding-top: 0.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.apotgroup-legal-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+
+.apotgroup-legal-nav {
+  font-size: 0.875rem;
+}
+
+.apotgroup-legal-nav a {
+  color: #6366f1 !important;
+  font-weight: 500;
+}
+
+.apotgroup-legal-nav a:hover {
+  color: #4f46e5 !important;
+}
+
+.apotgroup-legal-sep {
+  margin: 0 0.35rem;
+  color: #cbd5e1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .apotgroup-hero {
+    background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 42%, #312e81 100%);
+    border-color: rgba(129, 140, 248, 0.25);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.2),
+      0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .apotgroup-badge {
+    color: #c7d2fe;
+    background: rgba(30, 27, 75, 0.6);
+    border-color: rgba(129, 140, 248, 0.35);
+  }
+
+  .apotgroup-title {
+    background: linear-gradient(120deg, #f8fafc 0%, #c7d2fe 45%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .apotgroup-lead {
+    color: #cbd5e1;
+  }
+
+  .apotgroup-section-title {
+    color: #f1f5f9;
+  }
+
+  .apotgroup-section-intro {
+    color: #94a3b8;
+  }
+
+  .apotgroup-card {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .apotgroup-card:hover {
+    border-color: rgba(129, 140, 248, 0.45);
+    box-shadow: 0 8px 28px rgba(79, 70, 229, 0.2);
+  }
+
+  .apotgroup-card-title {
+    color: #f1f5f9;
+  }
+
+  .apotgroup-card-text {
+    color: #94a3b8;
+  }
+
+  .apotgroup-section--cta {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    border-color: #334155;
+  }
+
+  .apotgroup-cta-note {
+    color: #94a3b8;
+  }
+
+  .apotgroup-btn--secondary {
+    background: #1e293b;
+    border-color: #475569;
+    color: #e2e8f0 !important;
+  }
+
+  .apotgroup-btn--secondary:hover {
+    background: #334155 !important;
+    color: #f8fafc !important;
+  }
+
+  .apotgroup-btn--soon {
+    color: #64748b !important;
+    background: #0f172a;
+    border-color: #334155;
+  }
+
+  .apotgroup-section--legal {
+    border-top-color: #334155;
+  }
+
+  .apotgroup-legal-nav a {
+    color: #a5b4fc !important;
+  }
+
+  .apotgroup-legal-nav a:hover {
+    color: #c7d2fe !important;
+  }
+}
