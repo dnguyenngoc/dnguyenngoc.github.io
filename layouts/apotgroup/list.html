@@ -1,0 +1,10 @@
+{{ define "main" }}
+<main>
+<article class="entry apotgroup-home">
+    <h1>{{ .Title }}</h1>
+    <div>
+        {{ .Content | emojify }}
+    </div>
+</article>
+</main>
+{{ end }}

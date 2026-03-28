@@ -10,6 +10,8 @@ enableEmoji = true
 enableInlineShortcodes = true
 
 [params]
+  # Bump when editing static/scss/style.css so browsers/CDN fetch a fresh file (not a cached old copy).
+  cssVersion = "3"
   author = "Duy Nguyen"
   description = "Data Engineer. Blog about data engineering, AI, big data, and technology."
   latestPostsLimit = 10
@@ -74,3 +76,8 @@ enableInlineShortcodes = true
   name = 'Games/'
   url = '/game/'
   weight = 5
+[[menu.main]]
+  identifier = 'apotgroup'
+  name = 'ApotGroup/'
+  url = '/apotgroup/'
+  weight = 6
