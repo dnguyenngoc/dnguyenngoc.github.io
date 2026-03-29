@@ -62,10 +62,17 @@
 
 {{- /* Open Graph Image */}}
 {{ $ogImage := .Site.Params.og_image | default "/avatar.jpeg" }}
+{{ $ogImageBust := false }}
 {{ if .Params.featured_image }}
   {{ $ogImage = .Params.featured_image }}
+{{ else if .Site.Params.avatarVersion }}
+  {{ $ogImageBust = true }}
 {{ end }}
-<meta property="og:image" content="{{ $ogImage | absURL }}">
+{{ $ogImageURL := $ogImage | absURL }}
+{{ if $ogImageBust }}
+  {{ $ogImageURL = printf "%s?v=%s" ($ogImage | absURL) .Site.Params.avatarVersion }}
+{{ end }}
+<meta property="og:image" content="{{ $ogImageURL }}">
 
 {{- /* Article specific meta tags */}}
 {{ if .IsPage }}

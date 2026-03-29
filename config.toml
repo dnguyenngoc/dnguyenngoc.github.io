@@ -11,7 +11,7 @@ enableInlineShortcodes = true
 
 [params]
   # Bump when editing static/scss/style.css so browsers/CDN fetch a fresh file (not a cached old copy).
-  cssVersion = "4"
+  cssVersion = "8"
   author = "Duy Nguyen"
   description = "Data Engineer. Blog about data engineering, AI, big data, and technology."
   latestPostsLimit = 10
@@ -27,6 +27,8 @@ enableInlineShortcodes = true
   # SEO
   twitter = "@dnguyenngoc"
   og_image = "/avatar.jpeg"
+  # Bump when you replace static/avatar.jpeg so browsers and link previews fetch the new file.
+  avatarVersion = "1"
 
 [markup.goldmark.renderer]
   unsafe = true

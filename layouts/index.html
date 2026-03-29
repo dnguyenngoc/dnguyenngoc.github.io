@@ -1,0 +1,173 @@
+{{ define "main" }}
+{{ $postsLimit := .Site.Params.latestPostsLimit | default 5 }}
+{{ $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+<main class="home-landing">
+  <section class="home-hero" aria-labelledby="home-title">
+    {{ with .Params.hero_badge }}
+    <p class="home-badge">{{ . }}</p>
+    {{ end }}
+    <div class="home-hero-inner">
+      {{ $avatar := .Params.avatar | default .Site.Params.og_image }}
+      {{ with $avatar }}
+      <img
+        class="home-avatar"
+        src="{{ . | relURL }}{{ with $.Site.Params.avatarVersion }}?v={{ . }}{{ end }}"
+        alt="{{ $.Site.Params.author }}"
+        width="104"
+        height="104"
+        decoding="async"
+      />
+      {{ end }}
+      <div class="home-hero-copy">
+        <h1 id="home-title" class="home-title">{{ .Title }}</h1>
+        <p class="home-lead">{{ .Description }}</p>
+        <div class="home-hero-actions">
+          <a class="home-btn home-btn--primary" href="{{ "/pdf-cv/duynguyen-cv.pdf" | relURL }}" download="duynguyen-cv.pdf">Download résumé</a>
+          <a class="home-btn home-btn--secondary" href="{{ "/posts/" | relURL }}">Latest writing</a>
+          <a class="home-btn home-btn--secondary" href="{{ "/de/" | relURL }}">Design docs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{ with .Params.intro }}
+  <section class="home-section" aria-labelledby="home-about-heading">
+    <h2 id="home-about-heading" class="home-section-title">About</h2>
+    <div class="home-prose">{{ . | markdownify }}</div>
+  </section>
+  {{ end }}
+
+  {{ with .Params.expertise }}
+  <section class="home-section" aria-labelledby="home-expertise-heading">
+    <h2 id="home-expertise-heading" class="home-section-title">Core expertise</h2>
+    <p class="home-section-intro">
+      {{ $.Params.expertise_intro | default "Infrastructure and ML systems focused on reliability, scale, and clear outcomes." }}
+    </p>
+    <div class="home-feature-grid">
+      {{ range . }}
+      <article class="home-card">
+        <h3 class="home-card-title">{{ .title }}</h3>
+        <p class="home-card-text">{{ .description }}</p>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  <section class="home-section home-section--cv" aria-labelledby="home-cv-heading">
+    <h2 id="home-cv-heading" class="home-section-title">Résumé</h2>
+    <div class="home-cv-frame">
+      <iframe
+        src="{{ "/pdf-cv/duynguyen-cv.pdf" | relURL }}#view=FitH"
+        title="CV PDF preview"
+        loading="lazy"
+      ></iframe>
+    </div>
+    <p class="home-cv-fallback">
+      If the preview does not load,
+      <a href="{{ "/pdf-cv/duynguyen-cv.pdf" | relURL }}" download="duynguyen-cv.pdf">download the PDF</a>.
+    </p>
+  </section>
+
+  {{- if $posts }}
+  <section class="home-section home-section--posts" aria-labelledby="home-posts-heading">
+    <h2 id="home-posts-heading" class="home-section-title">{{ i18n "latest_posts" }}</h2>
+    <ul class="home-post-list">
+      {{ range first $postsLimit $posts }}
+        {{ partial "entry_item.html" . }}
+      {{ end }}
+      {{ if gt (len $posts) $postsLimit }}
+      <li class="item-more">
+        <a href="{{ "/posts/" | relURL }}">{{ i18n "more" }}</a>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{- end }}
+
+  {{ if or .Params.featured_projects .Params.featured_posts }}
+  <section class="home-section" aria-labelledby="home-featured-heading">
+    <h2 id="home-featured-heading" class="home-section-title">Featured work</h2>
+    <p class="home-section-intro">Selected projects and long-form notes from the blog.</p>
+    {{ with .Params.featured_projects }}
+    <h3 class="home-subheading">Engineering</h3>
+    <ul class="home-link-list">
+      {{ range . }}
+      <li>
+        <a href="{{ if hasPrefix .url "http" }}{{ .url }}{{ else }}{{ .url | relURL }}{{ end }}">{{ .title }}</a>
+        {{ with .description }}<span class="home-link-desc">{{ . }}</span>{{ end }}
+      </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+    {{ with .Params.featured_posts }}
+    <h3 class="home-subheading">Articles</h3>
+    <ul class="home-link-list">
+      {{ range . }}
+      <li>
+        <a href="{{ if hasPrefix .url "http" }}{{ .url }}{{ else }}{{ .url | relURL }}{{ end }}">{{ .title }}</a>
+        {{ with .description }}<span class="home-link-desc">{{ . }}</span>{{ end }}
+      </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+  </section>
+  {{ end }}
+
+  <section class="home-section home-section--connect" aria-labelledby="home-connect-heading">
+    <h2 id="home-connect-heading" class="home-section-title">Connect</h2>
+    <p class="home-section-intro">
+      Open to conversations on data platforms, ML in production, and pragmatic system design.
+    </p>
+    <ul class="home-connect-list">
+      {{ with .Site.Params.email }}
+      <li><a href="mailto:{{ . }}">{{ . }}</a></li>
+      {{ end }}
+      {{ with .Site.Params.linkedin }}
+      <li><a href="{{ . }}" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
+      {{ end }}
+      {{ with .Site.Params.github }}
+      <li><a href="{{ . }}" rel="noopener noreferrer" target="_blank">GitHub</a></li>
+      {{ end }}
+    </ul>
+  </section>
+
+  <section class="home-section home-section--cta" aria-labelledby="home-games-heading">
+    <h2 id="home-games-heading" class="home-section-title">Games</h2>
+    <p class="home-cta-note">Small browser experiments—good for a short break between deep work.</p>
+    <a class="home-btn home-btn--primary" href="{{ "/game/" | relURL }}">Open games</a>
+  </section>
+
+  {{ with .Params.donate_address }}
+  <section class="home-section home-section--support" aria-labelledby="home-support-heading">
+    <h2 id="home-support-heading" class="home-section-title">Support</h2>
+    <p class="home-section-intro">If my writing or tools helped you, TRC20 donations are welcome.</p>
+    <button type="button" class="home-donate-box" id="home-donate-copy" data-address="{{ . }}" aria-label="Copy wallet address">
+      <span class="home-donate-address" id="home-donate-address">{{ . }}</span>
+      <span class="home-donate-hint" id="home-donate-hint">Click to copy</span>
+    </button>
+  </section>
+  <script>
+    (function () {
+      var box = document.getElementById("home-donate-copy");
+      if (!box) return;
+      var hint = document.getElementById("home-donate-hint");
+      var addr = box.getAttribute("data-address") || "";
+      box.addEventListener("click", function () {
+        function ok() {
+          hint.textContent = "Copied";
+          box.classList.add("home-donate-box--copied");
+          setTimeout(function () {
+            hint.textContent = "Click to copy";
+            box.classList.remove("home-donate-box--copied");
+          }, 2000);
+        }
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(addr).then(ok).catch(function () {});
+        }
+      });
+    })();
+  </script>
+  {{ end }}
+</main>
+{{ end }}
