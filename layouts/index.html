@@ -26,6 +26,24 @@
           <a class="home-btn home-btn--secondary" href="{{ "/posts/" | relURL }}">Latest writing</a>
           <a class="home-btn home-btn--secondary" href="{{ "/de/" | relURL }}">Design docs</a>
         </div>
+        {{ if or .Site.Params.email .Site.Params.linkedin .Site.Params.github }}
+        <div class="home-hero-connect">
+          <p class="home-hero-connect-intro">
+            {{ .Params.connect_intro | default "Open to conversations on data platforms, ML in production, and pragmatic system design." }}
+          </p>
+          <ul class="home-hero-connect-list" aria-label="Contact links">
+            {{ with .Site.Params.email }}
+            <li><a href="mailto:{{ . }}">{{ . }}</a></li>
+            {{ end }}
+            {{ with .Site.Params.linkedin }}
+            <li><a href="{{ . }}" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
+            {{ end }}
+            {{ with .Site.Params.github }}
+            <li><a href="{{ . }}" rel="noopener noreferrer" target="_blank">GitHub</a></li>
+            {{ end }}
+          </ul>
+        </div>
+        {{ end }}
       </div>
     </div>
   </section>
@@ -54,19 +72,42 @@
   </section>
   {{ end }}
 
-  <section class="home-section home-section--cv" aria-labelledby="home-cv-heading">
-    <h2 id="home-cv-heading" class="home-section-title">Résumé</h2>
-    <div class="home-cv-frame">
-      <iframe
-        src="{{ "/pdf-cv/duynguyen-cv.pdf" | relURL }}#view=FitH"
-        title="CV PDF preview"
-        loading="lazy"
-      ></iframe>
-    </div>
-    <p class="home-cv-fallback">
-      If the preview does not load,
-      <a href="{{ "/pdf-cv/duynguyen-cv.pdf" | relURL }}" download="duynguyen-cv.pdf">download the PDF</a>.
-    </p>
+  <section class="home-section home-section--cta home-section--games" aria-labelledby="home-games-heading">
+    <h2 id="home-games-heading" class="home-section-title">Games</h2>
+    <p class="home-cta-note">Small browser experiments—good for a short break between deep work.</p>
+    <ul class="home-game-quick">
+      <li>
+        <a class="home-game-tile" href="{{ "/game/tic-tac-toe.html" | relURL }}">
+          <span class="home-game-tile-icon" aria-hidden="true">⭕</span>
+          <span class="home-game-tile-label">Tic-Tac-Toe</span>
+        </a>
+      </li>
+      <li>
+        <a class="home-game-tile" href="{{ "/game/2048.html" | relURL }}">
+          <span class="home-game-tile-icon" aria-hidden="true">🔢</span>
+          <span class="home-game-tile-label">2048</span>
+        </a>
+      </li>
+      <li>
+        <a class="home-game-tile" href="{{ "/game/flappy-bird.html" | relURL }}">
+          <span class="home-game-tile-icon" aria-hidden="true">🐦</span>
+          <span class="home-game-tile-label">Flappy Bird</span>
+        </a>
+      </li>
+      <li>
+        <a class="home-game-tile" href="{{ "/game/space-defender.html" | relURL }}">
+          <span class="home-game-tile-icon" aria-hidden="true">🚀</span>
+          <span class="home-game-tile-label">Space Defender</span>
+        </a>
+      </li>
+      <li>
+        <a class="home-game-tile" href="{{ "/game/tower-defense.html" | relURL }}">
+          <span class="home-game-tile-icon" aria-hidden="true">🏰</span>
+          <span class="home-game-tile-label">Castle Defense</span>
+        </a>
+      </li>
+    </ul>
+    <a class="home-btn home-btn--secondary" href="{{ "/game/" | relURL }}">More games</a>
   </section>
 
   {{- if $posts }}
@@ -113,30 +154,6 @@
     {{ end }}
   </section>
   {{ end }}
-
-  <section class="home-section home-section--connect" aria-labelledby="home-connect-heading">
-    <h2 id="home-connect-heading" class="home-section-title">Connect</h2>
-    <p class="home-section-intro">
-      Open to conversations on data platforms, ML in production, and pragmatic system design.
-    </p>
-    <ul class="home-connect-list">
-      {{ with .Site.Params.email }}
-      <li><a href="mailto:{{ . }}">{{ . }}</a></li>
-      {{ end }}
-      {{ with .Site.Params.linkedin }}
-      <li><a href="{{ . }}" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
-      {{ end }}
-      {{ with .Site.Params.github }}
-      <li><a href="{{ . }}" rel="noopener noreferrer" target="_blank">GitHub</a></li>
-      {{ end }}
-    </ul>
-  </section>
-
-  <section class="home-section home-section--cta" aria-labelledby="home-games-heading">
-    <h2 id="home-games-heading" class="home-section-title">Games</h2>
-    <p class="home-cta-note">Small browser experiments—good for a short break between deep work.</p>
-    <a class="home-btn home-btn--primary" href="{{ "/game/" | relURL }}">Open games</a>
-  </section>
 
   {{ with .Params.donate_address }}
   <section class="home-section home-section--support" aria-labelledby="home-support-heading">
