@@ -4,6 +4,7 @@ date: 2024-05-04 13:48:00
 draft: true
 aliases:
     - /notes/minio-operator-on-k8s.html
+    - /de/minio-operator-on-k8s/
 ---
 
 <div>

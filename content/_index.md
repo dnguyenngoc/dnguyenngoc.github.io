@@ -21,7 +21,7 @@ intro: |
   If you’re working on similar problems, the notes below are where I document what actually worked (and what didn’t).
 featured_projects:
   - title: "Spark Operator on Kubernetes"
-    url: "/de/spark-operator-on-k8s"
+    url: "/posts/spark-operator-on-k8s"
     description: "Orchestrating distributed Spark on Kubernetes."
   - title: "ML models in production"
     url: "https://github.com/apot-group/ml-models-in-production"

@@ -69,17 +69,7 @@ enableInlineShortcodes = true
   url = '/pdf-cv/duynguyen-cv.pdf'
   weight = 3
 [[menu.main]]
-  identifier = 'de'
-  name = 'De/'
-  url = '/de/'
-  weight = 4
-[[menu.main]]
   identifier = 'games'
   name = 'Games/'
   url = '/game/'
-  weight = 5
-[[menu.main]]
-  identifier = 'apotgroup'
-  name = 'ApotGroup/'
-  url = '/apotgroup/'
-  weight = 6
+  weight = 4

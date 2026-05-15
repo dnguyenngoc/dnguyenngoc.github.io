@@ -4,9 +4,10 @@ date: 2025-09-15 10:00:00
 draft: true
 description: "A comprehensive guide to designing scalable big data systems, covering architecture patterns, technology stacks, and best practices for handling massive datasets"
 tags: ["big-data", "data-engineering", "system-design", "architecture", "scalability", "distributed-systems"]
-featured_image: "/de/design-bigdata-system/img/DataArchitecture.png"
+featured_image: "/posts/design-bigdata-system/img/DataArchitecture.png"
 aliases:
     - /de/design-bigdata-system.html
+    - /de/design-bigdata-system/
 ---
 
 <div class="post-stats">
@@ -20,7 +21,7 @@ In today's data-driven world, organizations are generating and collecting massiv
 Designing effective big data systems is both an art and a science, requiring deep understanding of distributed computing principles, data processing patterns, and the unique challenges that come with scale. This comprehensive guide will walk you through the fundamental concepts, architectural patterns, and best practices needed to build robust, scalable big data solutions.
 
 <div style="text-align: center; margin: 20px 0; padding: 15px; border: 2px solid #ddd; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-  <img src="/de/design-bigdata-system/img/DataArchitecture.png" alt="Big Data Architecture Overview" style="max-width: 100%; height: auto; border-radius: 4px;">
+  <img src="/posts/design-bigdata-system/img/DataArchitecture.png" alt="Big Data Architecture Overview" style="max-width: 100%; height: auto; border-radius: 4px;">
   <p style="margin-top: 10px; font-style: italic; color: #666; font-size: 0.9em;">Figure 1: Overview of Big Data System Architecture</p>
 </div>
 
@@ -536,7 +537,7 @@ The key to success lies in understanding your data, choosing the right technolog
 
 ## Related Articles in the Big Data Engineering Series
 
-- **[Spark Operator on Kubernetes](/de/spark-operator-on-k8s)** - Computing Layer: Deploy and manage Apache Spark applications on Kubernetes
+- **[Spark Operator on Kubernetes](/posts/spark-operator-on-k8s)** - Computing Layer: Deploy and manage Apache Spark applications on Kubernetes
 - **MinIO Operator on Kubernetes** - Storage Layer: S3-compatible object storage (coming soon)
 - **Trino Operator on Kubernetes** - Query Engine: Distributed SQL query engine (coming soon)
 - **JupyterLab on Kubernetes** - Analysis Layer: Multi-user data science environment (coming soon)
