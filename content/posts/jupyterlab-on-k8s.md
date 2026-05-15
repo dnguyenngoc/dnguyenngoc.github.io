@@ -4,6 +4,7 @@ date: 2024-05-04 13:48:00
 draft: true
 aliases:
     - /notes/jupyterlab-on-k8s.html
+    - /de/jupyterlab-on-k8s/
 ---
 
 <div>
