@@ -1,6 +1,6 @@
 ---
 title: "Multi-Agent Systems in 2026: The Rise of Collaborative AI"
-date: 2026-08-12 18:00:00
+date: 2026-08-12
 draft: false
 description: "Deep dive into multi-agent systems (MAS) — why 2026 is the year of collaborative AI agents, key architectures, frameworks, and how to build your own"
 tags: ["ai-agents", "multi-agent-systems", "agentic-ai", "langgraph", "crewai", "autogen", "ai-trends-2026", "orchestration"]

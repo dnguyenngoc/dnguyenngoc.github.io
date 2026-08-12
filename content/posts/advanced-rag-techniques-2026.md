@@ -1,6 +1,6 @@
 ---
 title: "Advanced RAG Techniques in 2026: From Naive to Production-Grade"
-date: 2026-08-12 19:00:00
+date: 2026-08-12
 draft: false
 description: "Comprehensive guide to 20+ RAG variants in 2026 — Agentic RAG, Graph RAG, Multimodal RAG, and how to move beyond basic retrieval to production-ready systems"
 tags: ["rag", "retrieval-augmented-generation", "llm", "vector-database", "knowledge-graph", "agentic-rag", "multimodal-rag", "ai-trends-2026", "nlp"]
