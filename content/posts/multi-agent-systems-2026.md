@@ -19,46 +19,40 @@ aliases:
 
 ## Why Multi-Agent Systems Are the Defining Trend of 2026
 
-The AI landscape is undergoing a fundamental shift. Throughout 2024–2025, we saw the rise of single-agent applications — LLMs wrapped with tools, chaining prompts, and executing tasks one step at a time. But as these systems hit production, their limitations became clear: single agents struggle with complex, multi-step workflows that require specialization, parallel execution, and coordination.
+The AI landscape is undergoing a fundamental shift. Throughout 2024–2025, we saw the rise of single-agent applications — LLMs wrapped with tools, chaining prompts, and executing tasks one step at a time. In production, those systems hit a wall: one agent struggles with complex, multi-step workflows that need specialization, parallel execution, and coordination.
 
-Enter **Multi-Agent Systems (MAS)**. In 2026, the center of gravity is decisively moving from monolithic agents to coordinated teams of specialized AI agents — each with a narrow, focused role — that share context, memory, and decision-making in real time.
+Enter **Multi-Agent Systems (MAS)**. In 2026, the center of gravity is moving from monolithic agents to coordinated teams of specialists — each with a narrow role — that share context, memory, and decisions in real time.
 
-> **Google Cloud's 2026 AI Agent Trends Report** calls this "the agent leap" — where AI orchestrates complex, end-to-end workflows semi-autonomously.
+> Google Cloud's [2026 AI Agent Trends Report](https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/ai-business-trends-report-2026/) frames this as **the agent leap**: AI orchestrating complex, end-to-end workflows semi-autonomously, including "digital assembly lines" of cooperating agents.
 
 ---
 
 ## The Anatomy of a Modern Multi-Agent System
 
-A production-grade MAS in 2026 typically follows this architecture:
+A production-grade MAS in 2026 typically looks like this:
 
-```
-┌─────────────────────────────────────────────┐
-│              Orchestrator Agent              │
-│  (Task decomposition, routing, verification) │
-└──────┬──────────┬──────────┬────────────────┘
-       │          │          │
-   ┌───▼───┐  ┌───▼───┐  ┌───▼───┐
-   │Planner│  │Research│  │ Execute│
-   │ Agent │  │ Agent  │  │ Agent  │
-   └───┬───┘  └───┬───┘  └───┬───┘
-       │          │          │
-   ┌───▼──────────▼──────────▼───┐
-   │     Shared Memory / State   │
-   │   (Vector DB + Graph DB)    │
-   └─────────────────────────────┘
+```mermaid
+flowchart TD
+  O["Orchestrator Agent — decompose, route, verify"]
+  O --> P["Planner Agent"]
+  O --> R["Research Agent"]
+  O --> E["Execute Agent"]
+  P --> M["Shared Memory / State — Vector DB + Graph DB"]
+  R --> M
+  E --> M
 ```
 
 Each agent has a **narrow, specialized role**:
 
-| Agent Role | Responsibility |
-|------------|---------------|
+| Agent role | Responsibility |
+|------------|----------------|
 | **Planner** | Decomposes complex tasks into sub-tasks, sets priorities |
-| **Researcher** | Gathers information, queries knowledge bases, performs web search |
+| **Researcher** | Gathers information, queries knowledge bases, searches the web |
 | **Executor** | Runs code, makes API calls, manipulates data |
 | **Verifier** | Validates outputs, runs tests, checks compliance |
 | **Compliance** | Ensures outputs follow rules, policies, and regulations |
 
-> **DruidAI predicts** that by 2027, 70% of MAS will use agents with narrow, focused roles — improving overall accuracy dramatically.
+> [DruidAI](https://www.druidai.com/blog/agentic-ai-trends-in-2026) cites a 2026 prediction that by 2027, **70% of MAS** will use agents with narrow, focused roles — improving accuracy versus one generalist bot.
 
 ---
 
@@ -66,33 +60,28 @@ Each agent has a **narrow, specialized role**:
 
 ### 1. LangGraph (LangChain)
 
-LangGraph has emerged as the go-to framework for production multi-agent systems. It models agent workflows as **stateful graphs**, where each node is an agent and edges define control flow.
+LangGraph is the usual production choice. It models workflows as **stateful graphs**: nodes are agents, edges are control flow.
 
 ```python
 from langgraph.graph import StateGraph, END
-from langgraph.prebuilt import ToolExecutor
 
-# Define the workflow graph
 workflow = StateGraph(AgentState)
 
-# Add agent nodes
 workflow.add_node("planner", planner_agent)
 workflow.add_node("researcher", researcher_agent)
 workflow.add_node("executor", executor_agent)
 workflow.add_node("verifier", verifier_agent)
 
-# Define edges with conditional routing
 workflow.add_conditional_edges(
     "planner",
     router_function,
     {
         "research": "researcher",
         "execute": "executor",
-        "complete": END
-    }
+        "complete": END,
+    },
 )
 
-# Compile and run
 app = workflow.compile()
 result = app.invoke({"task": "Build a data pipeline for real-time analytics"})
 ```
@@ -101,7 +90,7 @@ result = app.invoke({"task": "Build a data pipeline for real-time analytics"})
 
 ### 2. CrewAI
 
-CrewAI focuses on **role-based agent collaboration** with a simpler, more intuitive API:
+CrewAI focuses on **role-based collaboration** with a simpler API:
 
 ```python
 from crewai import Agent, Task, Crew
@@ -110,18 +99,18 @@ researcher = Agent(
     role="Data Researcher",
     goal="Find relevant datasets and papers",
     backstory="Expert in data discovery with access to academic databases",
-    tools=[arxiv_tool, web_search_tool]
+    tools=[arxiv_tool, web_search_tool],
 )
 
 engineer = Agent(
     role="Data Engineer",
     goal="Design and implement data pipelines",
-    backstory="Senior data engineer specialized in real-time systems"
+    backstory="Senior data engineer specialized in real-time systems",
 )
 
 task = Task(
     description="Design a real-time anomaly detection system",
-    expected_output="Architecture diagram + implementation plan"
+    expected_output="Architecture diagram + implementation plan",
 )
 
 crew = Crew(agents=[researcher, engineer], tasks=[task])
@@ -132,10 +121,10 @@ result = crew.kickoff()
 
 ### 3. AutoGen (Microsoft)
 
-AutoGen pioneered the **conversation-driven** approach, where agents communicate through structured chat:
+AutoGen pioneered the **conversation-driven** approach, where agents talk through structured chat:
 
 ```python
-from autogen import AssistantAgent, UserProxyAgent, GroupChat
+from autogen import AssistantAgent, UserProxyAgent, GroupChat, GroupChatManager
 
 planner = AssistantAgent("planner", llm_config={"model": "gpt-4o"})
 coder = AssistantAgent("coder", llm_config={"model": "gpt-4o"})
@@ -144,15 +133,16 @@ user = UserProxyAgent("user", code_execution_config={"work_dir": "coding"})
 groupchat = GroupChat(
     agents=[user, planner, coder],
     messages=[],
-    max_round=12
+    max_round=12,
 )
+manager = GroupChatManager(groupchat=groupchat, llm_config={"model": "gpt-4o"})
 ```
 
 **Strengths**: Conversation-first design, code execution sandbox, mature ecosystem.
 
-### 4. OpenAI Swarm (Experimental)
+### 4. OpenAI Swarm → Agents SDK
 
-OpenAI's lightweight experimental framework for agent orchestration — minimal, educational, but influential on the pattern:
+OpenAI's **Swarm** was a lightweight experimental orchestrator. It taught a useful handoff pattern, then was superseded by the [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/). The idea is the same: a router agent transfers work to specialists.
 
 ```python
 from swarm import Swarm, Agent
@@ -165,9 +155,11 @@ def transfer_to_researcher():
 orchestrator = Agent(
     name="Orchestrator",
     instructions="Route tasks to the right specialist",
-    functions=[transfer_to_researcher, transfer_to_engineer]
+    functions=[transfer_to_researcher, transfer_to_engineer],
 )
 ```
+
+Use Swarm only as a teaching example. For new work, start from the Agents SDK (or LangGraph / CrewAI above).
 
 ---
 
@@ -175,38 +167,44 @@ orchestrator = Agent(
 
 One of the hardest problems in MAS is how agents communicate. In 2026, three patterns dominate:
 
-| Pattern | Description | Best For |
+| Pattern | Description | Best for |
 |---------|-------------|----------|
-| **Message Passing** | Agents send structured messages via a bus/queue | Decoupled, async workflows |
-| **Shared Memory** | All agents read/write to a shared state (vector DB + graph DB) | Collaborative reasoning |
-| **Blackboard** | A central "board" where agents post partial results; others pick up and contribute | Open-ended problem solving |
+| **Message passing** | Agents send structured messages via a bus/queue | Decoupled, async workflows |
+| **Shared memory** | All agents read/write a shared state (vector DB + graph DB) | Collaborative reasoning |
+| **Blackboard** | A central board where agents post partial results; others pick up and contribute | Open-ended problem solving |
 
-In practice, production systems often combine all three — using a message queue (Kafka/NATS) for event-driven triggers, a vector database (Pinecone/Qdrant) for semantic memory, and a graph database (Neo4j) for relationship retention.
+Production systems often combine all three — a message queue (Kafka/NATS) for events, a vector database (Pinecone/Qdrant) for semantic memory, and a graph database (Neo4j) for relationships. Google's **Agent2Agent (A2A)** protocol is the interoperability bet: agents from different vendors talking over an open spec.
 
 ---
 
 ## The Agentic SOC Alliance: Standardization is Coming
 
-In 2026, **ExtraHop** launched the **Agentic SOC Alliance** with 15+ founding members including CrowdStrike and Dropzone AI. Their goal: standardize operating models so agents from different vendors can work off a **shared playbook**.
+In July 2026, **ExtraHop** launched the **[Agentic SOC Alliance](https://www.extrahop.com/news/press-releases/agentic-soc-alliance)** with 15 founding members including CrowdStrike, Dropzone AI, and LangChain. The goal is a shared operating model so security agents from different vendors can work off the same playbook.
 
-This mirrors what happened with container orchestration (Kubernetes becoming the standard) — and signals that multi-agent interoperability is the next frontier.
+The alliance describes a three-layer architecture:
+
+1. **Context** — a live operational knowledge graph
+2. **Harness** — governed runtime, permissions, audit trail
+3. **Model** — interchangeable reasoning engines
+
+That is the same story Kubernetes told for containers: interoperability becomes the product.
 
 ---
 
 ## Real-World Use Cases
 
-| Domain | MAS Application |
-|--------|----------------|
-| **Security Operations** | Planner agent triages alerts → Researcher agent enriches with threat intel → Executor agent applies remediation |
-| **Data Engineering** | Planner decomposes pipeline → Researcher finds optimal configs → Executor builds & deploys → Verifier runs data quality checks |
-| **Software Development** | Code generation agents + code review agents + testing agents collaborating on PRs |
-| **Healthcare** | Diagnostic agent + drug interaction checker + compliance verifier |
+| Domain | MAS application |
+|--------|-----------------|
+| **Security operations** | Planner triages alerts → Researcher enriches with threat intel → Executor remediates |
+| **Data engineering** | Planner decomposes the pipeline → Researcher finds configs → Executor deploys → Verifier runs data-quality checks |
+| **Software development** | Code generation + review + testing agents collaborating on PRs |
+| **Healthcare** | Diagnostic agent + drug-interaction checker + compliance verifier |
 
 ---
 
 ## Getting Started: Your First Multi-Agent System
 
-Here's a minimal LangGraph setup to get you started:
+Minimal LangGraph setup:
 
 ```bash
 pip install langgraph langchain langchain-openai
@@ -240,7 +238,6 @@ def executor(state: AgentState) -> AgentState:
     result = llm.invoke(f"Execute based on: {plan}")
     return {"messages": [f"Result: {result}"], "current_step": "complete"}
 
-# Build graph
 workflow = StateGraph(AgentState)
 workflow.add_node("planner", planner)
 workflow.add_node("researcher", researcher)
@@ -261,21 +258,23 @@ print(result["messages"])
 
 Looking ahead to late 2026 and 2027:
 
-1. **Agent Identity & Trust** — Verifiable agent credentials, cryptographic signatures for agent actions
-2. **Cross-Organization Agent Collaboration** — Agents from different companies working together on shared workflows
-3. **Self-Improving Agent Teams** — Agents that learn from past collaborations and optimize their own orchestration graphs
-4. **Multi-Agent RAG** — Combining MAS with advanced RAG for complex knowledge-intensive tasks
+1. **Agent identity and trust** — verifiable credentials, cryptographic signatures for agent actions
+2. **Cross-organization collaboration** — agents from different companies on shared workflows (A2A)
+3. **Self-improving teams** — agents that learn from past runs and rewrite their own graphs
+4. **Multi-agent RAG** — MAS plus the retrieval patterns in the [companion RAG post](/posts/advanced-rag-techniques-2026/)
 
 ---
 
 ## References
 
-- [Google Cloud — AI Agent Trends 2026 Report](https://cloud.google.com/resources/content/ai-agent-trends-2026)
+- [Google Cloud — AI Agent Trends 2026](https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/ai-business-trends-report-2026/)
 - [DruidAI — Agentic AI Trends 2026](https://www.druidai.com/blog/agentic-ai-trends-in-2026)
 - [Firecrawl — Top 15 Agentic AI Trends 2026](https://www.firecrawl.dev/blog/agentic-ai-trends)
 - [AI Agents Directory — 2026 Year of Multi-agent Systems](https://aiagentsdirectory.com/blog/2026-will-be-the-year-of-multi-agent-systems)
+- [ExtraHop — Agentic SOC Alliance](https://www.extrahop.com/news/press-releases/agentic-soc-alliance)
 - [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
 - [CrewAI Documentation](https://docs.crewai.com/)
+- [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/)
 
 ---
 

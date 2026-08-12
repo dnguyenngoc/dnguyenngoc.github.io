@@ -56,6 +56,19 @@ pre {
   background: var(--pre-bg-color);
   padding: 24px;
   overflow-x: auto;
+  white-space: pre;
+}
+.mermaid {
+  margin: 1.5em 0;
+  text-align: center;
+  overflow-x: auto;
+}
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+.highlight:has(code[data-lang="mermaid"]) {
+  background: transparent;
 }
 article {
   padding: 24px 0;
