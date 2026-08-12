@@ -19,13 +19,15 @@ aliases:
 
 ## RAG is Dead. Long Live RAG.
 
-By 2026, Retrieval-Augmented Generation (RAG) has cut hallucinations by **80%** and boosted factual accuracy by **65%** compared to base LLM outputs. But here's the thing: **naive RAG is dead**.
+By 2026, Retrieval-Augmented Generation (RAG) has cut hallucinations by **80%** and boosted factual accuracy by **65%** compared to base LLM outputs ([AI Discovery Digest, 2026](https://aidiscoverydigest.com/tutorials/retrieval-augmented-generation-what-changed-and-what-works/)). But here's the thing: **naive RAG is dead**.
 
-The simple pattern of "chunk documents → embed → store in vector DB → retrieve top-K → inject into prompt" no longer cuts it for production. Enterprise deployments face three critical gaps that basic RAG can't bridge:
+The simple pattern of "chunk documents → embed → store in vector DB → retrieve top-K → inject into prompt" no longer cuts it for production. Enterprise deployments face three critical gaps that basic RAG can't bridge ([Squirro, 2026](https://squirro.com/squirro-blog/state-of-rag-genai)):
 
 1. **Real-time data access** — without the delays of traditional ingestion pipelines
 2. **Knowledge graph integration** — ensuring ALL relevant, interconnected data is retrieved, not just the most semantically similar chunks
 3. **Granular access control** — preventing the AI platform from becoming a vector for data leakage
+
+<!--more-->
 
 Let's explore the 20+ RAG variants that have emerged to solve these problems.
 
@@ -97,7 +99,11 @@ def query_vector_store(query: str) -> str:
 
 def query_knowledge_graph(query: str) -> str:
     """Query the Neo4j knowledge graph for structured relationships."""
-    return kg.query(f"MATCH (n)-[r]->(m) WHERE n.name CONTAINS '{query}' RETURN n, r, m LIMIT 10")
+    # Use parameterized query — NEVER interpolate user input into Cypher
+    return kg.query(
+        "MATCH (n)-[r]->(m) WHERE n.name CONTAINS $query RETURN n, r, m LIMIT 10",
+        params={"query": query}
+    )
 
 tools = [
     Tool(name="vector_search", func=query_vector_store, description="Search internal documents"),
@@ -123,10 +129,15 @@ Graph RAG combines vector search with **knowledge graph traversal**:
 
 ```python
 # Hybrid retrieval: vector + graph
+import os
 from langchain_community.graphs import Neo4jGraph
 from langchain_community.vectorstores import Chroma
 
-graph = Neo4jGraph(url="bolt://localhost:7687", username="neo4j", password="password")
+graph = Neo4jGraph(
+    url=os.getenv("NEO4J_URL", "bolt://localhost:7687"),
+    username=os.getenv("NEO4J_USER", "neo4j"),
+    password=os.getenv("NEO4J_PASSWORD")  # NEVER hardcode credentials
+)
 vector_db = Chroma(embedding_function=embeddings, persist_directory="./chroma_db")
 
 def hybrid_retrieve(query: str, k_vector: int = 5, k_graph: int = 3):
